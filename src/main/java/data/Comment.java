@@ -1,7 +1,9 @@
 package data;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 public class Comment {
@@ -15,6 +17,21 @@ public class Comment {
     private String text;
     private int upVotes;
     private int downVotes;
+
+    @ManyToMany
+    private List<Comment> comments;
+
+
+    public List<Comment> getComments() {
+        if(comments == null){
+            comments = new ArrayList<Comment>();
+        }
+        return comments;
+    }
+
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
+    }
 
     public long getId() {
         return id;

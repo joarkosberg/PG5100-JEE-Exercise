@@ -4,7 +4,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import javax.persistence.*;
-
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
@@ -48,7 +47,23 @@ public class UserTest {
         assertTrue(persistInATransaction(user));
     }
 
+    @Test
+    public void testUserWithAddress(){
 
+        Post post = new Post();
+        PostWithUserLink postWithUserLink = new PostWithUserLink();
 
+        //being an entity, and not an embedded element, can directly save to database
+        assertTrue(persistInATransaction(post));
+        assertTrue(persistInATransaction(postWithUserLink));
 
+        assertNull(postWithUserLink.getUser());
+
+        User user = new User();
+        user.setAddress(post);
+        user.setAddressWithUserLink(postWithUserLink);
+        postWithUserLink.setUser(user);
+
+        assertTrue(persistInATransaction(user));
+    }
 }

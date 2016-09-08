@@ -2,27 +2,28 @@ package data;
 
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
-/*
+
 @NamedQueries({
         @NamedQuery(name = User.GET_COUNTRIES, query =
-                "select country " +
+                "select u.country " +
                         "from User u " +
-                        "group by country;"),
+                        "group by country"),
         @NamedQuery(name = User.GET_COUNT_OF_POSTS, query =
                 "select COUNT(*) " +
-                        "from Post;"),
+                        "from Post p"),
         @NamedQuery(name = User.GET_COUNT_OF_USERS, query =
                 "select COUNT(*)" +
-                        "from User;"),
+                        "from User u"),
         @NamedQuery(name = User.GET_MOST_ACTIVE_USERS, query =
                 "select * " +
-                        "from User " +
+                        "from User u" +
                         "order by posts" +
-                        "limit 5;")
+                        "limit 5")
 })
-*/
+
 
 @Entity
 public class User {
@@ -64,6 +65,9 @@ public class User {
 
 
     public List<Post> getPosts() {
+        if(posts == null){
+            posts = new ArrayList<Post>();
+        }
         return posts;
     }
 
