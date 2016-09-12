@@ -4,12 +4,12 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 
 @Entity
-public class CommentWithUserLink extends Comment {
+public class CommentWithPostLink extends Comment {
 
     @ManyToOne
     private User commenter;
 
-    public CommentWithUserLink(){}
+    public CommentWithPostLink(){}
 
     public User getCommenter() {
         return commenter;

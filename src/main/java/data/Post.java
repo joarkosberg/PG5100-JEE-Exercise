@@ -2,6 +2,7 @@ package data;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 public class Post {
@@ -15,6 +16,11 @@ public class Post {
     private String text;
     private int upVotes;
     private int downVotes;
+
+    @OneToMany(fetch = FetchType.LAZY)
+    private List<Comment> comments;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "commenter", cascade = CascadeType.ALL)
+    private List<CommentWithPostLink> commentsWithPostLink;
 
     public long getId() {
         return id;
@@ -62,5 +68,21 @@ public class Post {
 
     public void setDownVotes(int downVotes) {
         this.downVotes = downVotes;
+    }
+
+    public List<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
+    }
+
+    public List<CommentWithPostLink> getCommentsWithPostLink() {
+        return commentsWithPostLink;
+    }
+
+    public void setCommentsWithPostLink(List<CommentWithPostLink> commentsWithPostLink) {
+        this.commentsWithPostLink = commentsWithPostLink;
     }
 }

@@ -1,8 +1,6 @@
 package data;
 
-
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.List;
 
 /*
@@ -25,14 +23,12 @@ import java.util.List;
 })
 */
 
-
 @Entity
 public class User {
     public static final String GET_COUNTRIES = "GET_COUNTRIES";
     public static final String GET_COUNT_OF_POSTS = "GET_COUNT_OF_POSTS";
     public static final String GET_COUNT_OF_USERS = "GET_COUNT_OF_USERS";
     public static final String GET_MOST_ACTIVE_USERS = "GET_MOST_ACTIVE_USERS";
-
 
     @Id
     @GeneratedValue
@@ -44,12 +40,10 @@ public class User {
     private String email;
     private CountryName country;
 
-
     @OneToMany(fetch = FetchType.LAZY)
     private List<Post> posts;
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "poster", cascade = CascadeType.ALL)
     private List<PostWithUserLink> postsWithUserLink;
-
 
     @OneToMany(fetch = FetchType.LAZY)
     private List<Comment> comments;
@@ -58,12 +52,8 @@ public class User {
 
 
 
-
-
     public User(){
     }
-
-
 
     public List<Post> getPosts() {
         return posts;
