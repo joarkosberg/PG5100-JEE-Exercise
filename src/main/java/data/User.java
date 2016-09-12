@@ -3,25 +3,22 @@ package data;
 import javax.persistence.*;
 import java.util.List;
 
-/*
 @NamedQueries({
         @NamedQuery(name = User.GET_COUNTRIES, query =
                 "select u.country " +
                         "from User u " +
                         "group by country"),
         @NamedQuery(name = User.GET_COUNT_OF_POSTS, query =
-                "select COUNT(*) " +
+                "select count(*) " +
                         "from Post p"),
         @NamedQuery(name = User.GET_COUNT_OF_USERS, query =
-                "select COUNT(*)" +
+                "select count(*)" +
                         "from User u"),
         @NamedQuery(name = User.GET_MOST_ACTIVE_USERS, query =
-                "select * " +
-                        "from User u" +
-                        "order by posts" +
-                        "limit 5")
+                "select u " +
+                        "from User u " +
+                        "order by u.posts.size asc")
 })
-*/
 
 @Entity
 public class User {
@@ -49,8 +46,6 @@ public class User {
     private List<Comment> comments;
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "commenter", cascade = CascadeType.ALL)
     private List<CommentWithUserLink> commentsWithUserLink;
-
-
 
     public User(){
     }

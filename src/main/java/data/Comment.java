@@ -18,9 +18,8 @@ public class Comment {
     private int upVotes;
     private int downVotes;
 
-    @ManyToMany
+    @OneToMany
     private List<Comment> comments;
-
 
     public List<Comment> getComments() {
         if(comments == null){
