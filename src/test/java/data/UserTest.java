@@ -4,6 +4,9 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import javax.persistence.*;
+import java.util.ArrayList;
+
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
@@ -42,14 +45,13 @@ public class UserTest {
     }
 
     @Test
-    public void testEmptyUser(){
+    public void testUserIsPersisted(){
         User user = new User();
         assertTrue(persistInATransaction(user));
     }
 
     @Test
-    public void testUserWithAddress(){
-
+    public void testUserWithPost(){
         Post post = new Post();
         PostWithUserLink postWithUserLink = new PostWithUserLink();
 
@@ -57,13 +59,16 @@ public class UserTest {
         assertTrue(persistInATransaction(post));
         assertTrue(persistInATransaction(postWithUserLink));
 
-        assertNull(postWithUserLink.getUser());
+        assertNull(postWithUserLink.getPoster());
 
         User user = new User();
-        user.setAddress(post);
-        user.setAddressWithUserLink(postWithUserLink);
-        postWithUserLink.setUser(user);
 
-        assertTrue(persistInATransaction(user));
+        assertNull(user.getPosts());
+        user.setPosts(new ArrayList<Post>());
+        user.getPosts().add(post);
+        postWithUserLink.setPoster(user);
+
+        assertTrue(persistInATransaction(user, post));
+        assertEquals(1, user.getPosts().stream().count());
     }
 }

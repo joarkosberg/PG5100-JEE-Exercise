@@ -47,13 +47,14 @@ public class PostTest {
     }
 
     @Test
-    public void testPostIsPersist(){
+    public void testPostIsPersisted(){
         Post post = new Post();
         PostWithUserLink postWithUserLink = new PostWithUserLink();
 
         //being an entity, and not an embedded element, can directly save to database
         assertTrue(persistInATransaction(post));
         assertTrue(persistInATransaction(postWithUserLink));
+
         assertNull(postWithUserLink.getPoster());
     }
 }

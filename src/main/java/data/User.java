@@ -5,7 +5,7 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-
+/*
 @NamedQueries({
         @NamedQuery(name = User.GET_COUNTRIES, query =
                 "select u.country " +
@@ -23,6 +23,7 @@ import java.util.List;
                         "order by posts" +
                         "limit 5")
 })
+*/
 
 
 @Entity
@@ -65,9 +66,6 @@ public class User {
 
 
     public List<Post> getPosts() {
-        if(posts == null){
-            posts = new ArrayList<Post>();
-        }
         return posts;
     }
 
