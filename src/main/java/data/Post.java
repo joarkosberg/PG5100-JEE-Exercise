@@ -1,6 +1,7 @@
 package data;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -71,6 +72,9 @@ public class Post {
     }
 
     public List<Comment> getComments() {
+        if(comments == null){
+            comments = new ArrayList<Comment>();
+        }
         return comments;
     }
 
