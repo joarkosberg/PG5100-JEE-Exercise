@@ -1,6 +1,9 @@
 package data;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Past;
+import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -8,13 +11,23 @@ import java.util.List;
 @Entity
 public class Comment {
 
-    @Id
-    @GeneratedValue
+    @Id @GeneratedValue
     private long id;
 
+    @Past
+    @NotNull
+    @Temporal(TemporalType.DATE)
     private Date created;
+
+    @Past
+    @NotNull
+    @Temporal(TemporalType.DATE)
     private Date updated;
+
+    @NotNull
+    @Size(min = 1, max = 1024)
     private String text;
+
     private int upVotes;
     private int downVotes;
 

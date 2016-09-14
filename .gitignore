@@ -8,8 +8,10 @@
 *.jar
 *.war
 *.ear
-*.db
 
 # Idea
 .idea
 *.iml
+
+# Target folder
+target/

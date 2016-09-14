@@ -1,6 +1,9 @@
 package data;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,6 +34,7 @@ import java.util.List;
 
 @Entity
 public class User {
+    //Queries
     public static final String GET_COUNTRIES = "GET_COUNTRIES";
     public static final String GET_COUNT_OF_ALL_POSTS = "GET_COUNT_OF_ALL_POSTS";
     public static final String GET_COUNT_OF_POSTS_BY_COUNTRY = "GET_COUNT_OF_POSTS_BY_COUNTRY";
@@ -38,13 +42,23 @@ public class User {
     public static final String GET_COUNT_OF_USERS_BY_COUNTRY = "GET_COUNT_OF_USERS_BY_COUNTRY";
     public static final String GET_MOST_ACTIVE_USERS = "GET_MOST_ACTIVE_USERS";
 
-    @Id
-    @GeneratedValue
+    @Id @GeneratedValue
     private long id;
 
+    @NotNull
+    @Size(min = 2, max = 64)
     private String name;
+
+    @NotNull
+    @Size(min = 2, max = 64)
     private String surname;
+
+    @Size(max = 128)
     private String adress;
+
+    @NotNull
+    @Pattern(regexp =
+            "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$")
     private String email;
 
     @Enumerated(EnumType.STRING)
