@@ -15,7 +15,7 @@ import java.util.List;
         @NamedQuery(name = User.GET_COUNT_OF_POSTS_BY_COUNTRY, query =
                 "select sum(u.posts.size) " +
                         "from User u " +
-                        "where u.country = :country")/*,
+                        "where u.country = :country"),
         @NamedQuery(name = User.GET_COUNT_OF_ALL_USERS, query =
                 "select count(*)" +
                         "from User u"),
@@ -24,9 +24,9 @@ import java.util.List;
                         "from User u " +
                         "where u.country = :country"),
         @NamedQuery(name = User.GET_MOST_ACTIVE_USERS, query =
-                "select u.posts.size " +
+                "select u " +
                         "from User u " +
-                        "order by u.posts.size desc")*/
+                        "order by (u.posts.size+u.comments.size) desc")
 })
 
 @Entity

@@ -1,8 +1,6 @@
 package data;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.*;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -83,6 +81,18 @@ public class UserTest {
         Post p7 = new Post();
         f.getPosts().add(p7);
         assertTrue(persistInATransaction(p1,p2,p3,p4,p5,p6,p7));
+
+        //Comments
+        Comment c1 = new Comment();
+        p1.getComments().add(c1);
+        d.getComments().add(c1);
+        Comment c2 = new Comment();
+        p4.getComments().add(c2);
+        c.getComments().add(c2);
+        Comment c3 = new Comment();
+        p3.getComments().add(c3);
+        b.getComments().add(c3);
+        assertTrue(persistInATransaction(c1,c2,c3));
     }
 
     @Test
@@ -144,24 +154,54 @@ public class UserTest {
     }
 
     @Test
-    public void testJPQLNumberOfPosts(){
+    public void testJPQLNumberOfAllPosts(){
         addTestData();
         Query query = em.createNamedQuery(User.GET_COUNT_OF_ALL_POSTS);
 
         List<Long> posts = query.getResultList();
 
         assertEquals(Long.valueOf(7), posts.get(0));
-
     }
 
     @Test
     public void testJPQLNumberOfPostsByCountry(){
         addTestData();
-        Query query2 = em.createNamedQuery(User.GET_COUNT_OF_POSTS_BY_COUNTRY);
-        query2.setParameter("country", CountryName.Albania);
+        Query query = em.createNamedQuery(User.GET_COUNT_OF_POSTS_BY_COUNTRY);
+        query.setParameter("country", CountryName.Albania);
 
-        List<Long> posts2 = query2.getResultList();
+        List<Long> postsPerCountry = query.getResultList();
 
-        assertEquals(Long.valueOf(3), posts2.get(0));
+        assertEquals(Long.valueOf(3), postsPerCountry.get(0));
+    }
+
+    @Test
+    public void testJPQLNumberOfAllUsers(){
+        addTestData();
+        Query query = em.createNamedQuery(User.GET_COUNT_OF_ALL_USERS);
+
+        List<Long> users = query.getResultList();
+
+        assertEquals(Long.valueOf(6), users.get(0));
+    }
+
+    @Test
+    public void testJPQLNumberOfUsersByCountry(){
+        addTestData();
+        Query query = em.createNamedQuery(User.GET_COUNT_OF_USERS_BY_COUNTRY);
+        query.setParameter("country", CountryName.Albania);
+
+        List<Long> usersByCountry = query.getResultList();
+
+        assertEquals(Long.valueOf(2), usersByCountry.get(0));
+    }
+
+    @Test
+    public void testJPQLGetMostActiveUsers(){
+        addTestData();
+        Query query = em.createNamedQuery(User.GET_MOST_ACTIVE_USERS);
+
+        List<User> topUsers = query.getResultList();
+
+        assertEquals("D", topUsers.get(0).getName());
     }
 }
