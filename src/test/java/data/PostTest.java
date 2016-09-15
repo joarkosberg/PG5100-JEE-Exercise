@@ -9,6 +9,8 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 
+import java.util.Date;
+
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
@@ -49,12 +51,9 @@ public class PostTest {
     @Test
     public void testPostIsPersisted(){
         Post post = new Post();
-        PostWithUserLink postWithUserLink = new PostWithUserLink();
-
-        //being an entity, and not an embedded element, can directly save to database
+        post.setTitle("title");
+        post.setText("texttext");
+        post.setCreated(new Date());
         assertTrue(persistInATransaction(post));
-        assertTrue(persistInATransaction(postWithUserLink));
-
-        assertNull(postWithUserLink.getPoster());
     }
 }

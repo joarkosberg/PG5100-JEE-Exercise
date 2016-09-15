@@ -16,15 +16,15 @@ public class Post {
 
     @Past
     @NotNull
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP)
     private Date created;
 
     @NotNull
-    @Size(min = 6, max = 128)
+    @Size(min = 2, max = 128)
     private String title;
 
     @NotNull
-    @Size(min = 6, max = 2048)
+    @Size(min = 2, max = 2048)
     private String text;
 
     private int upVotes;

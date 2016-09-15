@@ -46,10 +46,9 @@ public class User {
     private long id;
 
     @NotNull
-    @Size(min = 2, max = 64)
+    @Size(min = 1, max = 64)
     private String name;
 
-    @NotNull
     @Size(min = 2, max = 64)
     private String surname;
 
@@ -66,13 +65,9 @@ public class User {
 
     @OneToMany(fetch = FetchType.LAZY)
     private List<Post> posts;
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "poster", cascade = CascadeType.ALL)
-    private List<PostWithUserLink> postsWithUserLink;
 
     @OneToMany(fetch = FetchType.LAZY)
     private List<Comment> comments;
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "commenter", cascade = CascadeType.ALL)
-    private List<CommentWithUserLink> commentsWithUserLink;
 
     public User(){
     }
@@ -88,14 +83,6 @@ public class User {
         this.posts = posts;
     }
 
-    public List<PostWithUserLink> getPostsWithUserLink() {
-        return postsWithUserLink;
-    }
-
-    public void setPostsWithUserLink(List<PostWithUserLink> postsWithUserLink) {
-        this.postsWithUserLink = postsWithUserLink;
-    }
-
     public List<Comment> getComments() {
         if(comments == null){
             comments = new ArrayList<>();
@@ -105,14 +92,6 @@ public class User {
 
     public void setComments(List<Comment> comments) {
         this.comments = comments;
-    }
-
-    public List<CommentWithUserLink> getCommentsWithUserLink() {
-        return commentsWithUserLink;
-    }
-
-    public void setCommentsWithUserLink(List<CommentWithUserLink> commentsWithUserLink) {
-        this.commentsWithUserLink = commentsWithUserLink;
     }
 
     public long getId() {

@@ -9,6 +9,8 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 
+import java.util.Date;
+
 import static org.junit.Assert.assertTrue;
 
 public class CommentTest {
@@ -48,6 +50,9 @@ public class CommentTest {
     @Test
     public void testCommentIsPersisted(){
         Comment comment = new Comment();
+        comment.setText("comment");
+        comment.setCreated(new Date());
+        comment.setUpdated(new Date());
         assertTrue(persistInATransaction(comment));
     }
 }
