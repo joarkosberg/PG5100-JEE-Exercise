@@ -15,7 +15,7 @@ public class UserBean {
 
     public UserBean(){}
 
-    public void createNewUser(@NotNull String name, @NotNull String surname,
+    public synchronized void createNewUser(@NotNull String name, @NotNull String surname,
                                 CountryName countryName, @NotNull String email){
         User user = new User();
         user.setName(name);
@@ -26,7 +26,8 @@ public class UserBean {
         em.persist(user);
     }
 
-    public void createNewPost(@NotNull User user, @NotNull String title, @NotNull String text){
+    public synchronized void createNewPost(@NotNull User user, @NotNull String title,
+                                           @NotNull String text){
         Post post = new Post();
         post.setTitle(title);
         post.setText(text);
@@ -35,7 +36,8 @@ public class UserBean {
         em.persist(post);
     }
 
-    public void createNewCommentOnPost(@NotNull User user, @NotNull Post post, @NotNull String text){
+    public synchronized void createNewCommentOnPost(@NotNull User user, @NotNull Post post,
+                                                    @NotNull String text){
         Comment comment = new Comment();
         comment.setText(text);
         post.getComments().add(comment);
@@ -44,7 +46,8 @@ public class UserBean {
         em.persist(comment);
     }
 
-    public void createNewCommentOnComment(@NotNull User user, @NotNull Comment orgComment, @NotNull String text){
+    public synchronized void createNewCommentOnComment(@NotNull User user, @NotNull Comment orgComment,
+                                          @NotNull String text){
         Comment comment = new Comment();
         comment.setText(text);
         orgComment.getComments().add(comment);
