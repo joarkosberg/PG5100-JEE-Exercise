@@ -3,6 +3,7 @@ package data;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
@@ -53,14 +54,19 @@ public class UserBean {
     }
 
     public List<String> getRepresentedCountries(){
-        return null;
+        Query query = em.createNamedQuery(User.GET_COUNTRIES);
+        return query.getResultList();
     }
 
-    public int countRegisteredUsers(){
-        return 0;
+    public long countUsers(){
+        Query query = em.createNamedQuery(User.GET_COUNT_OF_ALL_USERS);
+        List <Long> r = query.getResultList();
+        return r.get(0);
     }
 
-    public int countPosts(){
-        return 0;
+    public long countPosts(){
+        Query query = em.createNamedQuery(User.GET_COUNT_OF_ALL_POSTS);
+        List <Long> r = query.getResultList();
+        return r.get(0);
     }
 }
