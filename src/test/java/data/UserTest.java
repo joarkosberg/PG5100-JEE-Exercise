@@ -45,7 +45,6 @@ public class UserTest {
         return true;
     }
 
-    //TODO Use UserBean for more clarity
     private void addTestData(){
         //Users
         User a = new User();
@@ -75,60 +74,30 @@ public class UserTest {
         assertTrue(persistInATransaction(a,b,c,d,e,f));
 
         //Posts
-        Post p1 = new Post();
-        p1.setTitle("title");
-        p1.setText("texttext");
-        p1.setCreated(new Date());
+        Post p1 = testFactory.getNewPost("title", "texttext", new Date());
         a.getPosts().add(p1);
-        Post p2 = new Post();
-        p2.setTitle("title");
-        p2.setText("texttext");
-        p2.setCreated(new Date());
+        Post p2 = testFactory.getNewPost("title", "texttext", new Date());
         b.getPosts().add(p2);
-        Post p3 = new Post();
-        p3.setTitle("title");
-        p3.setText("texttext");
-        p3.setCreated(new Date());
+        Post p3 = testFactory.getNewPost("title", "texttext", new Date());
         d.getPosts().add(p3);
-        Post p4 = new Post();
-        p4.setTitle("title");
-        p4.setText("texttext");
-        p4.setCreated(new Date());
+        Post p4 = testFactory.getNewPost("title", "texttext", new Date());
         d.getPosts().add(p4);
-        Post p5 = new Post();
-        p5.setTitle("title");
-        p5.setText("texttext");
-        p5.setCreated(new Date());
+        Post p5 = testFactory.getNewPost("title", "texttext", new Date());
         d.getPosts().add(p5);
-        Post p6 = new Post();
-        p6.setTitle("title");
-        p6.setText("texttext");
-        p6.setCreated(new Date());
+        Post p6 = testFactory.getNewPost("title", "texttext", new Date());
         f.getPosts().add(p6);
-        Post p7 = new Post();
-        p7.setTitle("title");
-        p7.setText("texttext");
-        p7.setCreated(new Date());
+        Post p7 = testFactory.getNewPost("title", "texttext", new Date());
         f.getPosts().add(p7);
         assertTrue(persistInATransaction(p1,p2,p3,p4,p5,p6,p7));
 
         //Comments
-        Comment c1 = new Comment();
-        c1.setText("text");
-        c1.setCreated(new Date());
-        c1.setUpdated(new Date());
+        Comment c1 = testFactory.getNewComment("test", new Date(), new Date());
         p1.getComments().add(c1);
         d.getComments().add(c1);
-        Comment c2 = new Comment();
-        c2.setText("text");
-        c2.setCreated(new Date());
-        c2.setUpdated(new Date());
+        Comment c2 = testFactory.getNewComment("test", new Date(), new Date());
         p4.getComments().add(c2);
         c.getComments().add(c2);
-        Comment c3 = new Comment();
-        c3.setText("text");
-        c3.setCreated(new Date());
-        c3.setUpdated(new Date());
+        Comment c3 = testFactory.getNewComment("test", new Date(), new Date());
         p3.getComments().add(c3);
         b.getComments().add(c3);
         assertTrue(persistInATransaction(c1,c2,c3));
