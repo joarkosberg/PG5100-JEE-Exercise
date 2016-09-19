@@ -7,17 +7,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 public class UserTest {
     private EntityManagerFactory factory;
     private EntityManager em;
+    private TestFactory testFactory;
 
     @Before
     public void init() {
         factory = Persistence.createEntityManagerFactory("DB");
         em = factory.createEntityManager();
+        testFactory = new TestFactory();
     }
 
     @After
@@ -135,19 +136,16 @@ public class UserTest {
 
     @Test
     public void testUserIsPersisted(){
-        User user = new User();
-        user.setEmail("abc@abc.com");
-        user.setName("Hei");
+        User user = testFactory.getNewUser("name", "email@em.em");
         assertTrue(persistInATransaction(user));
     }
 
     @Test
     public void testUserWithPost(){
-        Post post = new Post();
-
+        Post post = testFactory.getNewPost("title", "text", new Date());
         assertTrue(persistInATransaction(post));
 
-        User user = new User();
+        User user = testFactory.getNewUser("Name", "abc@abc.com");
         assertEquals(0, user.getPosts().size());
 
         user.setPosts(new ArrayList<>());
@@ -159,10 +157,10 @@ public class UserTest {
 
     @Test
     public void testUserWithComment(){
-        Post post = new Post();
+        Post post = testFactory.getNewPost("Text", "text", new Date());
         assertTrue(persistInATransaction(post));
 
-        User user = new User();
+        User user = testFactory.getNewUser("Name", "em@em.em");
         assertEquals(0, user.getPosts().size());
         user.setPosts(new ArrayList<>());
         user.getPosts().add(post);
@@ -170,7 +168,7 @@ public class UserTest {
         assertTrue(persistInATransaction(user));
         assertEquals(1, user.getPosts().stream().count());
 
-        Comment comment = new Comment();
+        Comment comment = testFactory.getNewComment("text", new Date(), new Date());
         post.setComments(new ArrayList<>());
         post.getComments().add(comment);
 

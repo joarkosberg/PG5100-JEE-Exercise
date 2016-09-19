@@ -32,8 +32,6 @@ public class Post {
 
     @OneToMany(fetch = FetchType.LAZY)
     private List<Comment> comments;
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "commenter", cascade = CascadeType.ALL)
-    private List<CommentWithPostLink> commentsWithPostLink;
 
     public long getId() {
         return id;
@@ -92,13 +90,5 @@ public class Post {
 
     public void setComments(List<Comment> comments) {
         this.comments = comments;
-    }
-
-    public List<CommentWithPostLink> getCommentsWithPostLink() {
-        return commentsWithPostLink;
-    }
-
-    public void setCommentsWithPostLink(List<CommentWithPostLink> commentsWithPostLink) {
-        this.commentsWithPostLink = commentsWithPostLink;
     }
 }

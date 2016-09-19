@@ -16,11 +16,13 @@ import static org.junit.Assert.assertTrue;
 public class CommentTest {
     private EntityManagerFactory factory;
     private EntityManager em;
+    private TestFactory testFactory;
 
     @Before
     public void init() {
         factory = Persistence.createEntityManagerFactory("DB");
         em = factory.createEntityManager();
+        testFactory = new TestFactory();
     }
 
     @After
@@ -49,10 +51,7 @@ public class CommentTest {
 
     @Test
     public void testCommentIsPersisted(){
-        Comment comment = new Comment();
-        comment.setText("comment");
-        comment.setCreated(new Date());
-        comment.setUpdated(new Date());
+        Comment comment = testFactory.getNewComment("text", new Date(), new Date());
         assertTrue(persistInATransaction(comment));
     }
 }

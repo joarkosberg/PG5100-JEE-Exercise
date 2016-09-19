@@ -14,7 +14,7 @@ public class UserBean {
 
     public UserBean(){}
 
-    public void registerNewUser(@NotNull String name, @NotNull String surname,
+    public void createNewUser(@NotNull String name, @NotNull String surname,
                                 CountryName countryName, @NotNull String email){
         User user = new User();
         user.setName(name);
@@ -52,7 +52,15 @@ public class UserBean {
         em.persist(comment);
     }
 
-    public List<String> representedCountries(){
+    public List<String> getRepresentedCountries(){
         return null;
+    }
+
+    public int countRegisteredUsers(){
+        return 0;
+    }
+
+    public int countPosts(){
+        return 0;
     }
 }
