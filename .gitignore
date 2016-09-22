@@ -14,4 +14,4 @@
 *.iml
 
 # Target folder
-target/
+/target
