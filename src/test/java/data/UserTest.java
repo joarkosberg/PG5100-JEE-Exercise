@@ -13,6 +13,7 @@ public class UserTest {
     private EntityManagerFactory factory;
     private EntityManager em;
     private TestFactory testFactory;
+    private UserBean userBean;
 
     @Before
     public void init() {

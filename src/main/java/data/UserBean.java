@@ -15,7 +15,7 @@ public class UserBean {
 
     public UserBean(){}
 
-    public synchronized void createNewUser(@NotNull String name, @NotNull String surname,
+    public synchronized void createNewUser(@NotNull String name, String surname,
                                 CountryName countryName, @NotNull String email){
         User user = new User();
         user.setName(name);
