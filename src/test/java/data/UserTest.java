@@ -48,30 +48,12 @@ public class UserTest {
 
     private void addTestData(){
         //Users
-        User a = new User();
-        a.setName("A");
-        a.setEmail("abc@abc.com");
-        a.setCountry(CountryName.China);
-        User b = new User();
-        b.setName("B");
-        b.setEmail("abc@abc.com");
-        b.setCountry(CountryName.Albania);
-        User c = new User();
-        c.setName("C");
-        c.setEmail("abc@abc.com");
-        c.setCountry(CountryName.Norway);
-        User d = new User();
-        d.setName("D");
-        d.setEmail("abc@abc.com");
-        d.setCountry(CountryName.Norway);
-        User e = new User();
-        e.setName("E");
-        e.setEmail("abc@abc.com");
-        e.setCountry(CountryName.Norway);
-        User f = new User();
-        f.setName("F");
-        f.setEmail("abc@abc.com");
-        f.setCountry(CountryName.Albania);
+        User a = testFactory.getNewUser("A", "abc@abc.com", User.CountryName.China);
+        User b = testFactory.getNewUser("B", "abc@abc.com", User.CountryName.Albania);
+        User c = testFactory.getNewUser("C", "abc@abc.com", User.CountryName.Norway);
+        User d = testFactory.getNewUser("D", "abc@abc.com", User.CountryName.Norway);
+        User e = testFactory.getNewUser("E", "abc@abc.com", User.CountryName.Norway);
+        User f = testFactory.getNewUser("F", "abc@abc.com", User.CountryName.Albania);
         assertTrue(persistInATransaction(a,b,c,d,e,f));
 
         //Posts
@@ -106,7 +88,7 @@ public class UserTest {
 
     @Test
     public void testUserIsPersisted(){
-        User user = testFactory.getNewUser("name", "email@em.em");
+        User user = testFactory.getNewUser("name", "email@em.em", User.CountryName.China);
         assertTrue(persistInATransaction(user));
     }
 
@@ -115,7 +97,7 @@ public class UserTest {
         Post post = testFactory.getNewPost("title", "text", new Date());
         assertTrue(persistInATransaction(post));
 
-        User user = testFactory.getNewUser("Name", "abc@abc.com");
+        User user = testFactory.getNewUser("Name", "abc@abc.com", User.CountryName.China);
         assertEquals(0, user.getPosts().size());
 
         user.setPosts(new ArrayList<>());
@@ -130,7 +112,7 @@ public class UserTest {
         Post post = testFactory.getNewPost("Text", "text", new Date());
         assertTrue(persistInATransaction(post));
 
-        User user = testFactory.getNewUser("Name", "em@em.em");
+        User user = testFactory.getNewUser("Name", "em@em.em", User.CountryName.China);
         assertEquals(0, user.getPosts().size());
         user.setPosts(new ArrayList<>());
         user.getPosts().add(post);
@@ -151,10 +133,10 @@ public class UserTest {
         addTestData();
         Query query = em.createNamedQuery(User.GET_COUNTRIES);
 
-        List<CountryName> countries = query.getResultList();
+        List<User.CountryName> countries = query.getResultList();
 
         assertEquals(3, countries.size());
-        assertTrue(countries.stream().anyMatch(c -> c.equals(CountryName.Norway)));
+        assertTrue(countries.stream().anyMatch(c -> c.equals(User.CountryName.Norway)));
     }
 
     @Test
@@ -171,7 +153,7 @@ public class UserTest {
     public void testJPQLNumberOfPostsByCountry(){
         addTestData();
         Query query = em.createNamedQuery(User.GET_COUNT_OF_POSTS_BY_COUNTRY);
-        query.setParameter("country", CountryName.Albania);
+        query.setParameter("country", User.CountryName.Albania);
 
         List<Long> postsPerCountry = query.getResultList();
 
@@ -192,7 +174,7 @@ public class UserTest {
     public void testJPQLNumberOfUsersByCountry(){
         addTestData();
         Query query = em.createNamedQuery(User.GET_COUNT_OF_USERS_BY_COUNTRY);
-        query.setParameter("country", CountryName.Albania);
+        query.setParameter("country", User.CountryName.Albania);
 
         List<Long> usersByCountry = query.getResultList();
 

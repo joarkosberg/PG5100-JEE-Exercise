@@ -34,6 +34,11 @@ import java.util.List;
 
 @Entity
 public class User {
+    //Enum for countries
+    public enum CountryName {
+        Albania, Sweden, Norway, Denmark, Germany, France,
+        Hungary, China, Brasil, Poland, Spain, Japan}
+
     //Queries
     public static final String GET_COUNTRIES = "GET_COUNTRIES";
     public static final String GET_COUNT_OF_ALL_POSTS = "GET_COUNT_OF_ALL_POSTS";

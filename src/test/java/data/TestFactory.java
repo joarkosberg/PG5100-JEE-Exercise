@@ -3,10 +3,11 @@ package data;
 import java.util.Date;
 
 public class TestFactory {
-    protected User getNewUser(String name, String email){
+    protected User getNewUser(String name, String email, User.CountryName country){
         User user = new User();
         user.setName(name);
         user.setEmail(email);
+        user.setCountry(country);
         return user;
     }
 
