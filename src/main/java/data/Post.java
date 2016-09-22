@@ -30,7 +30,7 @@ public class Post {
     private int upVotes;
     private int downVotes;
 
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.EAGER)
     private List<Comment> comments;
 
     public long getId() {

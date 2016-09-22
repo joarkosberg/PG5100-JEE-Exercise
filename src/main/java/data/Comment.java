@@ -1,5 +1,8 @@
 package data;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
@@ -31,7 +34,8 @@ public class Comment {
     private int upVotes;
     private int downVotes;
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
+    @Fetch(value = FetchMode.SUBSELECT)
     private List<Comment> comments;
 
     public List<Comment> getComments() {
