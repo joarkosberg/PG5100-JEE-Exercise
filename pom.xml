@@ -45,6 +45,7 @@
         <dependency>
             <groupId>org.wildfly.arquillian</groupId>
             <artifactId>wildfly-arquillian-container-managed</artifactId>
+            <version>1.1.0.Final</version>
         </dependency>
 
         <!-- test -->
@@ -69,7 +70,9 @@
         <dependency>
             <groupId>org.jboss.arquillian.junit</groupId>
             <artifactId>arquillian-junit-container</artifactId>
+            <version>1.1.11.Final</version>
             <scope>test</scope>
+            <type>pom</type>
         </dependency>
     </dependencies>
 

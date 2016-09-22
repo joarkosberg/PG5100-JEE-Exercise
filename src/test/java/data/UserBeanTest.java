@@ -1,5 +1,9 @@
 package data;
 
+import org.jboss.arquillian.container.test.api.Deployment;
+import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.shrinkwrap.api.ShrinkWrap;
+import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.runner.RunWith;
@@ -11,7 +15,7 @@ public class UserBeanTest {
     public static JavaArchive createDeployment() {
 
         return ShrinkWrap.create(JavaArchive.class)
-                .addClasses(A.class, Data.class)
+                .addClasses(User.class, Post.class, Comment.class)
                 .addAsResource("META-INF/persistence.xml");
     }
 
