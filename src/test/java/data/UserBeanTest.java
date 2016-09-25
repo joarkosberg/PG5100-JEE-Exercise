@@ -105,13 +105,26 @@ public class UserBeanTest {
         assertEquals(0, userBean.countOfPostsByCountry(User.CountryName.Brasil));
     }
 
+    @Test
+    public void testGetMostActiveUsers(){
+        User user1 = userBean.createNewUser("A", null, User.CountryName.Albania, "abc@abc.com");
+        User user2 = userBean.createNewUser("B", null, User.CountryName.Albania, "abc@abc.com");
+        User user3 = userBean.createNewUser("C", null, User.CountryName.China, "abc@abc.com");
+        User user4 = userBean.createNewUser("D", null, User.CountryName.Norway, "abc@abc.com");
 
+        Post post = userBean.createNewPost(user1, "Title", "Text text");
+        userBean.createNewPost(user2, "Title", "Text text");
+        userBean.createNewPost(user3, "Title", "Text text");
+        userBean.createNewPost(user4, "Title", "Text text");
+        userBean.createNewPost(user4, "Title", "Text text");
+        userBean.createNewPost(user1, "Title", "Text text");
 
-/*
+        userBean.createNewCommentOnPost(user1, post, "Comment!");
+        userBean.createNewCommentOnPost(user1, post, "Comment!");
+        userBean.createNewCommentOnPost(user3, post, "Comment!");
 
-    public List<User> getMostActiveUsers()
-    */
-
-
-
+        List<User> users = userBean.getMostActiveUsers();
+        assertTrue(users.get(0).getId() == user1.getId());
+        assertTrue(users.get(3).getId() == user2.getId());
+    }
 }
