@@ -62,9 +62,29 @@ public class UserBean {
         em.persist(comment);
     }
 
-    public List<String> getRepresentedCountries(){
+    public List<User.CountryName> getRepresentedCountries(){
         Query query = em.createNamedQuery(User.GET_COUNTRIES);
         return query.getResultList();
+    }
+
+    public long getCountOfPostsByCountry(User.CountryName country){
+        Query query = em.createNamedQuery(User.GET_COUNT_OF_POSTS_BY_COUNTRY);
+        query.setParameter("country", country);
+        List<Long> result =  query.getResultList();
+        return result.get(0);
+    }
+
+    public long getCountOfUsersByCountry(User.CountryName country){
+        Query query = em.createNamedQuery(User.GET_COUNT_OF_USERS_BY_COUNTRY);
+        query.setParameter("country", country);
+        List<Long> result =  query.getResultList();
+        return result.get(0);
+    }
+
+    public List<User> getMostActiveUsers(){
+        Query query = em.createNamedQuery(User.GET_MOST_ACTIVE_USERS);
+        List<User> result =  query.getResultList();
+        return result;
     }
 
     public long countUsers(){
@@ -80,7 +100,7 @@ public class UserBean {
     }
 
     public long countComments(){
-        Query query = em.createQuery("select count(*) from Comment c");
+        Query query = em.createNamedQuery(User.GET_COUNT_OF_ALL_COMMENTS);
         List <Long> r = query.getResultList();
         return r.get(0);
     }

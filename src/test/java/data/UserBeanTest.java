@@ -11,7 +11,10 @@ import org.junit.runner.RunWith;
 
 import javax.ejb.EJB;
 
+import java.util.List;
+
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 @RunWith(Arquillian.class)
 public class UserBeanTest {
@@ -70,4 +73,17 @@ public class UserBeanTest {
         long commentCount = userBean.countComments();
         assertEquals(2, commentCount);
     }
+
+    @Test
+    public void testGetRepresentedCountries(){
+        userBean.createNewUser("A", null, User.CountryName.Albania, "abc@abc.com");
+        userBean.createNewUser("B", null, User.CountryName.Albania, "abc@abc.com");
+        userBean.createNewUser("C", null, User.CountryName.China, "abc@abc.com");
+        userBean.createNewUser("D", null, User.CountryName.Norway, "abc@abc.com");
+        List<User.CountryName> countries= userBean.getRepresentedCountries();
+
+        assertEquals(3, countries.size());
+        assertNotNull(countries.stream().anyMatch(c -> c.equals(User.CountryName.Albania)));
+    }
+
 }

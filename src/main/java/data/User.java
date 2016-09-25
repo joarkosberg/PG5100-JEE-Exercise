@@ -32,7 +32,10 @@ import java.util.List;
         @NamedQuery(name = User.GET_MOST_ACTIVE_USERS, query =
                 "select u " +
                         "from User u " +
-                        "order by (u.posts.size+u.comments.size) desc")
+                        "order by (u.posts.size+u.comments.size) desc"),
+        @NamedQuery(name = User.GET_COUNT_OF_ALL_COMMENTS, query =
+                "select count(*)" +
+                        "from Comment c")
 })
 
 @Entity
@@ -49,6 +52,7 @@ public class User {
     public static final String GET_COUNT_OF_ALL_USERS = "GET_COUNT_OF_ALL_USERS";
     public static final String GET_COUNT_OF_USERS_BY_COUNTRY = "GET_COUNT_OF_USERS_BY_COUNTRY";
     public static final String GET_MOST_ACTIVE_USERS = "GET_MOST_ACTIVE_USERS";
+    public static final String GET_COUNT_OF_ALL_COMMENTS = "GET_COUNT_OF_ALL_COMMENTS";
 
     @Id @GeneratedValue
     private long id;
