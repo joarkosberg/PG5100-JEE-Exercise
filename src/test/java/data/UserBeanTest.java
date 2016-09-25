@@ -11,6 +11,7 @@ import org.junit.runner.RunWith;
 
 import javax.ejb.EJB;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -71,6 +72,21 @@ public class UserBeanTest {
     }
 
     @Test
+    public void testUserConstraints(){
+        //TODO
+    }
+
+    @Test
+    public void testPostConstraints(){
+        //TODO
+    }
+
+    @Test
+    public void testCommentConstraints(){
+        //TODO
+    }
+
+    @Test
     public void testGetRepresentedCountries(){
         userBean.createNewUser("A", null, User.CountryName.Albania, "abc@abc.com");
         userBean.createNewUser("B", null, User.CountryName.Albania, "abc@abc.com");
@@ -126,5 +142,32 @@ public class UserBeanTest {
         List<User> users = userBean.getMostActiveUsers();
         assertTrue(users.get(0).getId() == user1.getId());
         assertTrue(users.get(3).getId() == user2.getId());
+    }
+
+    @Test
+    public void testConcurrency(){
+        final int numberOfThreads = 4;
+        final int rounds = 1_000;
+        List<Thread> threads = new ArrayList<>();
+
+        for(int i = 0; i < numberOfThreads; i++){
+            Runnable r = () -> {
+                for(int j = 0; j < rounds; j++)
+                    userBean.createNewUser("Name", null, User.CountryName.Albania, "email@email.com");
+            };
+            Thread t = new Thread(r);
+            t.start();
+            threads.add(t);
+        }
+
+        threads.stream().forEach(t -> {
+            try {
+                t.join();
+            } catch (InterruptedException e) {
+            }
+        });
+
+        int expected = numberOfThreads * rounds;
+        assertEquals(expected, userBean.countUsers());
     }
 }
