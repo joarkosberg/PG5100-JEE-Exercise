@@ -21,7 +21,7 @@ public class PostTest {
 
     @Before
     public void init() {
-        factory = Persistence.createEntityManagerFactory("DB");
+        factory = Persistence.createEntityManagerFactory("TestDB-Normal");
         em = factory.createEntityManager();
         testFactory = new TestFactory();
     }
