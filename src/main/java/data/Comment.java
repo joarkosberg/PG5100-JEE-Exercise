@@ -40,7 +40,7 @@ public class Comment {
 
     public List<Comment> getComments() {
         if(comments == null){
-            comments = new ArrayList<Comment>();
+            comments = new ArrayList<>();
         }
         return comments;
     }

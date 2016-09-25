@@ -19,7 +19,7 @@ import java.util.List;
                 "select count(*) " +
                         "from Post p"),
         @NamedQuery(name = User.GET_COUNT_OF_POSTS_BY_COUNTRY, query =
-                "select sum(u.posts.size) " +
+                "select coalesce(sum(u.posts.size),0) " +
                         "from User u " +
                         "where u.country = :country"),
         @NamedQuery(name = User.GET_COUNT_OF_ALL_USERS, query =

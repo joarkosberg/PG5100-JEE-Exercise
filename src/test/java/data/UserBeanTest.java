@@ -15,6 +15,7 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 @RunWith(Arquillian.class)
 public class UserBeanTest {
@@ -35,9 +36,9 @@ public class UserBeanTest {
     @Before
     @After
     public void clearDatabase(){
-        deleterEJB.deleteEntities(Comment.class);
-        deleterEJB.deleteEntities(Post.class);
         deleterEJB.deleteEntities(User.class);
+        deleterEJB.deleteEntities(Post.class);
+        deleterEJB.deleteEntities(Comment.class);
     }
 
     @Test
@@ -50,8 +51,7 @@ public class UserBeanTest {
 
     @Test
     public void testCreatingNewPost(){
-        userBean.createNewUser("B", null, User.CountryName.Albania, "abc@abc.com");
-        User user = userBean.getAllUsers().get(0);
+        User user = userBean.createNewUser("B", null, User.CountryName.Albania, "abc@abc.com");
         userBean.createNewPost(user, "Title", "Text text");
         long postCount = userBean.countPosts();
         assertEquals(1, postCount);
@@ -59,18 +59,14 @@ public class UserBeanTest {
 
     @Test
     public void testCreatingNewComments(){
-        userBean.createNewUser("B", null, User.CountryName.Albania, "abc@abc.com");
-        User user = userBean.getAllUsers().get(0);
+        User user = userBean.createNewUser("B", null, User.CountryName.Albania, "abc@abc.com");
+        Post post = userBean.createNewPost(user, "Title", "Text text");
 
-        userBean.createNewPost(user, "Title", "Text text");
-        Post post = userBean.getAllPosts().get(0);
-
-        userBean.createNewCommentOnPost(user, post, "Comment!");
-        Comment comment = userBean.getAllComments().get(0);
-
+        Comment comment = userBean.createNewCommentOnPost(user, post, "Comment!");
         userBean.createNewCommentOnComment(user, comment, "comment 2");
 
         long commentCount = userBean.countComments();
+        assertEquals(2, userBean.getAllUsers().get(0).getComments().size());
         assertEquals(2, commentCount);
     }
 
@@ -85,5 +81,37 @@ public class UserBeanTest {
         assertEquals(3, countries.size());
         assertNotNull(countries.stream().anyMatch(c -> c.equals(User.CountryName.Albania)));
     }
+
+    @Test
+    public void testCountingByCountry(){
+        User user1 = userBean.createNewUser("A", null, User.CountryName.Albania, "abc@abc.com");
+        User user2 = userBean.createNewUser("B", null, User.CountryName.Albania, "abc@abc.com");
+        User user3 = userBean.createNewUser("C", null, User.CountryName.China, "abc@abc.com");
+        User user4 = userBean.createNewUser("D", null, User.CountryName.Norway, "abc@abc.com");
+
+        assertEquals(2, userBean.countOfUsersByCountry(User.CountryName.Albania));
+        assertEquals(1, userBean.countOfUsersByCountry(User.CountryName.Norway));
+        assertEquals(0, userBean.countOfUsersByCountry(User.CountryName.Brasil));
+
+        userBean.createNewPost(user1, "Title", "Text text");
+        userBean.createNewPost(user2, "Title", "Text text");
+        userBean.createNewPost(user3, "Title", "Text text");
+        userBean.createNewPost(user4, "Title", "Text text");
+        userBean.createNewPost(user4, "Title", "Text text");
+        userBean.createNewPost(user1, "Title", "Text text");
+
+        assertEquals(3, userBean.countOfPostsByCountry(User.CountryName.Albania));
+        assertEquals(2, userBean.countOfPostsByCountry(User.CountryName.Norway));
+        assertEquals(0, userBean.countOfPostsByCountry(User.CountryName.Brasil));
+    }
+
+
+
+/*
+
+    public List<User> getMostActiveUsers()
+    */
+
+
 
 }

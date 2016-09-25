@@ -16,7 +16,7 @@ public class UserBean {
 
     public UserBean(){}
 
-    public synchronized void createNewUser(@NotNull String name, String surname,
+    public synchronized User createNewUser(@NotNull String name, String surname,
                                 User.CountryName countryName, @NotNull String email){
         User user = new User();
         user.setName(name);
@@ -25,41 +25,60 @@ public class UserBean {
         user.setEmail(email);
 
         em.persist(user);
+
+        return user;
     }
 
-    public synchronized void createNewPost(@NotNull User user, @NotNull String title,
+    public synchronized Post createNewPost(@NotNull User user, @NotNull String title,
                                            @NotNull String text){
         Post post = new Post();
         post.setTitle(title);
         post.setText(text);
         post.setCreated(new Date());
-        user.getPosts().add(post);
 
         em.persist(post);
+
+        //Making sure the post gets linked in db and not in cache
+        User u = em.find(User.class, user.getId());
+        u.getPosts().add(post);
+
+        return post;
     }
 
-    public synchronized void createNewCommentOnPost(@NotNull User user, @NotNull Post post,
+    public synchronized Comment createNewCommentOnPost(@NotNull User user, @NotNull Post post,
                                                     @NotNull String text){
         Comment comment = new Comment();
         comment.setText(text);
         comment.setCreated(new Date());
         comment.setUpdated(new Date());
-        post.getComments().add(comment);
-        user.getComments().add(comment);
 
         em.persist(comment);
+
+        //Making sure the post gets linked in db and not in cache
+        User u = em.find(User.class, user.getId());
+        Post p = em.find(Post.class, post.getId());
+        u.getComments().add(comment);
+        p.getComments().add(comment);
+
+        return comment;
     }
 
-    public synchronized void createNewCommentOnComment(@NotNull User user, @NotNull Comment orgComment,
+    public synchronized Comment createNewCommentOnComment(@NotNull User user, @NotNull Comment orgComment,
                                           @NotNull String text){
         Comment comment = new Comment();
         comment.setText(text);
         comment.setCreated(new Date());
         comment.setUpdated(new Date());
-        orgComment.getComments().add(comment);
-        user.getComments().add(comment);
 
         em.persist(comment);
+
+        //Making sure the post gets linked in db and not in cache
+        User u = em.find(User.class, user.getId());
+        Comment c = em.find(Comment.class, orgComment.getId());
+        u.getComments().add(comment);
+        c.getComments().add(comment);
+
+        return comment;
     }
 
     public List<User.CountryName> getRepresentedCountries(){
@@ -67,14 +86,14 @@ public class UserBean {
         return query.getResultList();
     }
 
-    public long getCountOfPostsByCountry(User.CountryName country){
+    public long countOfPostsByCountry(User.CountryName country){
         Query query = em.createNamedQuery(User.GET_COUNT_OF_POSTS_BY_COUNTRY);
         query.setParameter("country", country);
         List<Long> result =  query.getResultList();
         return result.get(0);
     }
 
-    public long getCountOfUsersByCountry(User.CountryName country){
+    public long countOfUsersByCountry(User.CountryName country){
         Query query = em.createNamedQuery(User.GET_COUNT_OF_USERS_BY_COUNTRY);
         query.setParameter("country", country);
         List<Long> result =  query.getResultList();
