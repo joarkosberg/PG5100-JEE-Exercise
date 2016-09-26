@@ -141,4 +141,24 @@ public class UserBean {
         List<Comment> comments = query.getResultList();
         return comments;
     }
+
+    public void upVotePost(Post post){
+        Post p = em.find(Post.class, post.getId());
+        p.setUpVotes(p.getUpVotes() + 1);
+    }
+
+    public void downVotePost(Post post){
+        Post p = em.find(Post.class, post.getId());
+        p.setDownVotes(p.getDownVotes() + 1);
+    }
+
+    public void upVoteComment(Comment comment){
+        Comment c = em.find(Comment.class, comment.getId());
+        c.setUpVotes(c.getUpVotes() + 1);
+    }
+
+    public void downVoteComment(Comment comment){
+        Comment c = em.find(Comment.class, comment.getId());
+        c.setDownVotes(c.getDownVotes() + 1);
+    }
 }

@@ -170,4 +170,14 @@ public class UserBeanTest {
         int expected = numberOfThreads * rounds;
         assertEquals(expected, userBean.countUsers());
     }
+
+    @Test
+    public void testVotingOnPost(){
+        //TODO
+    }
+
+    @Test
+    public void testVotingOnComment(){
+        //TODO
+    }
 }
