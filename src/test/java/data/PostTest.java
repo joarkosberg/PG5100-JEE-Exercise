@@ -2,6 +2,7 @@ package data;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import javax.persistence.EntityManager;
@@ -14,6 +15,7 @@ import java.util.Date;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+@Ignore
 public class PostTest {
     private EntityManagerFactory factory;
     private EntityManager em;
