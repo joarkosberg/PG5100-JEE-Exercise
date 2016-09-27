@@ -6,7 +6,7 @@
              version="2.1">
 
     <!--JTA = JAVA EE container managed, RESOURCE_LOCAL = JAVA SE eksplisitt deklarering-->
-    <persistence-unit name="TestDB-EJB" transaction-type="JTA">
+    <persistence-unit name="DB" transaction-type="JTA">
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
 
         <properties>
