@@ -173,11 +173,30 @@ public class UserBeanTest {
 
     @Test
     public void testVotingOnPost(){
-        //TODO
+        User user = userBean.createNewUser("A", null, User.CountryName.Albania, "abc@abc.com");
+        Post post = userBean.createNewPost(user, "Title", "Text text");
+
+        assertEquals(0, post.getUpVotes());
+        userBean.upVotePost(post);
+        assertEquals(1, userBean.findPost(post.getId()).getUpVotes());
+
+        assertEquals(0, post.getDownVotes());
+        userBean.downVotePost(post);
+        assertEquals(1, userBean.findPost(post.getId()).getDownVotes());
     }
 
     @Test
     public void testVotingOnComment(){
-        //TODO
+        User user = userBean.createNewUser("A", null, User.CountryName.Albania, "abc@abc.com");
+        Post post = userBean.createNewPost(user, "Title", "Text text");
+        Comment comment = userBean.createNewCommentOnPost(user, post, "hei");
+
+        assertEquals(0, comment.getUpVotes());
+        userBean.upVoteComment(comment);
+        assertEquals(1, userBean.findComment(comment.getId()).getUpVotes());
+
+        assertEquals(0, comment.getDownVotes());
+        userBean.downVoteComment(comment);
+        assertEquals(1, userBean.findComment(comment.getId()).getDownVotes());
     }
 }

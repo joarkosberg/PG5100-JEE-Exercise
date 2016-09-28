@@ -39,7 +39,7 @@ public class UserBean {
         em.persist(post);
 
         //Making sure the post gets linked in db and not in cache
-        User u = em.find(User.class, user.getId());
+        User u = findUser(user.getId());
         u.getPosts().add(post);
 
         return post;
@@ -55,8 +55,8 @@ public class UserBean {
         em.persist(comment);
 
         //Making sure the post gets linked in db and not in cache
-        User u = em.find(User.class, user.getId());
-        Post p = em.find(Post.class, post.getId());
+        User u = findUser(user.getId());
+        Post p = findPost(post.getId());
         u.getComments().add(comment);
         p.getComments().add(comment);
 
@@ -73,8 +73,8 @@ public class UserBean {
         em.persist(comment);
 
         //Making sure the post gets linked in db and not in cache
-        User u = em.find(User.class, user.getId());
-        Comment c = em.find(Comment.class, orgComment.getId());
+        User u = findUser(user.getId());
+        Comment c = findComment(comment.getId());
         u.getComments().add(comment);
         c.getComments().add(comment);
 
@@ -143,22 +143,37 @@ public class UserBean {
     }
 
     public void upVotePost(Post post){
-        Post p = em.find(Post.class, post.getId());
+        Post p = findPost(post.getId());
         p.setUpVotes(p.getUpVotes() + 1);
     }
 
     public void downVotePost(Post post){
-        Post p = em.find(Post.class, post.getId());
+        Post p = findPost(post.getId());
         p.setDownVotes(p.getDownVotes() + 1);
     }
 
     public void upVoteComment(Comment comment){
-        Comment c = em.find(Comment.class, comment.getId());
+        Comment c = findComment(comment.getId());
         c.setUpVotes(c.getUpVotes() + 1);
     }
 
     public void downVoteComment(Comment comment){
-        Comment c = em.find(Comment.class, comment.getId());
+        Comment c = findComment(comment.getId());
         c.setDownVotes(c.getDownVotes() + 1);
+    }
+
+    public User findUser(long id){
+        User user = em.find(User.class, id);
+        return user;
+    }
+
+    public Post findPost(long id){
+        Post post = em.find(Post.class, id);
+        return post;
+    }
+
+    public Comment findComment(long id){
+        Comment comment = em.find(Comment.class, id);
+        return comment;
     }
 }
