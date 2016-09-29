@@ -1,5 +1,6 @@
-package data;
+package resource_local;
 
+import entity.Post;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -12,10 +13,11 @@ import javax.persistence.Persistence;
 
 import java.util.Date;
 
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 @Ignore
-public class CommentTest {
+public class PostTest {
     private EntityManagerFactory factory;
     private EntityManager em;
     private TestFactory testFactory;
@@ -52,8 +54,8 @@ public class CommentTest {
     }
 
     @Test
-    public void testCommentIsPersisted(){
-        Comment comment = testFactory.getNewComment("text", new Date(), new Date());
-        assertTrue(persistInATransaction(comment));
+    public void testPostIsPersisted(){
+        Post post = testFactory.getNewPost("title", "text", new Date());
+        assertTrue(persistInATransaction(post));
     }
 }

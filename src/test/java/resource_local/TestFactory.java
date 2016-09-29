@@ -1,4 +1,8 @@
-package data;
+package resource_local;
+
+import entity.Comment;
+import entity.Post;
+import entity.User;
 
 import java.util.Date;
 

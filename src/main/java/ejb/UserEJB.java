@@ -1,4 +1,8 @@
-package data;
+package ejb;
+
+import entity.Comment;
+import entity.Post;
+import entity.User;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -9,15 +13,15 @@ import java.util.Date;
 import java.util.List;
 
 @Stateless
-public class UserBean {
+public class UserEJB {
 
     @PersistenceContext
     private EntityManager em;
 
-    public UserBean(){}
+    public UserEJB(){}
 
     public synchronized User createNewUser(@NotNull String name, String surname,
-                                User.CountryName countryName, @NotNull String email){
+                                           User.CountryName countryName, @NotNull String email){
         User user = new User();
         user.setName(name);
         user.setSurname(surname);
@@ -46,7 +50,7 @@ public class UserBean {
     }
 
     public synchronized Comment createNewCommentOnPost(@NotNull User user, @NotNull Post post,
-                                                    @NotNull String text){
+                                                       @NotNull String text){
         Comment comment = new Comment();
         comment.setText(text);
         comment.setCreated(new Date());

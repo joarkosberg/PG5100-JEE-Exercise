@@ -1,5 +1,9 @@
-package data;
+package resource_local;
 
+import ejb.UserEJB;
+import entity.Comment;
+import entity.Post;
+import entity.User;
 import org.junit.*;
 import javax.persistence.*;
 import java.util.Date;
@@ -14,7 +18,7 @@ public class UserTest {
     private EntityManagerFactory factory;
     private EntityManager em;
     private TestFactory testFactory;
-    private UserBean userBean;
+    private UserEJB userEJB;
 
     @Before
     public void init() {

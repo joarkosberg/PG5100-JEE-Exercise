@@ -1,4 +1,6 @@
-package data;
+package other;
+
+import ejb.UserEJB;
 
 import javax.ejb.EJB;
 import javax.ejb.Schedule;
@@ -12,7 +14,7 @@ public class Statistics {
     private final AtomicInteger counter = new AtomicInteger(0);
 
     @EJB
-    private UserBean userBean;
+    private UserEJB userEJB;
 
     @Schedule(second = "10", minute="*", hour="*", persistent=false)
     public void doSomeComputation(){
