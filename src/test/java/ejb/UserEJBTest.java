@@ -1,5 +1,7 @@
 package ejb;
 
+import controller.PostController;
+import controller.UserController;
 import helpers.DeleterEJB;
 import entity.Comment;
 import entity.Post;
@@ -22,15 +24,17 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+
 @RunWith(Arquillian.class)
 public class UserEJBTest {
-
     @Deployment
     public static JavaArchive createDeployment() {
 
         return ShrinkWrap.create(JavaArchive.class)
                 .addClasses(User.class, Post.class, Comment.class,
-                        UserEJB.class, DeleterEJB.class)
+                        UserEJB.class, DeleterEJB.class, UserController.class,
+                        PostController.class)
+                .addPackages(true, "org.apache.commons.codec")
                 .addAsResource("META-INF/persistence.xml");
     }
 
@@ -49,15 +53,15 @@ public class UserEJBTest {
 
     @Test
     public void testCreatingNewUsers(){
-        userEJB.createNewUser("A", null, User.CountryName.Albania, "abc@abc.com");
-        userEJB.createNewUser("B", null, User.CountryName.Albania, "abc@abc.com");
+        userEJB.createNewUser("AA", "A", "A", null, User.CountryName.Albania, "abc@abc.com");
+        userEJB.createNewUser("BB", "B", "B", null, User.CountryName.Albania, "abc@abc.com");
         long usersCount = userEJB.countUsers();
         assertEquals(2, usersCount);
     }
 
     @Test
     public void testCreatingNewPost(){
-        User user = userEJB.createNewUser("B", null, User.CountryName.Albania, "abc@abc.com");
+        User user = userEJB.createNewUser("AA", "A", "A", null, User.CountryName.Albania, "abc@abc.com");
         userEJB.createNewPost(user, "Title", "Text text");
         long postCount = userEJB.countPosts();
         assertEquals(1, postCount);
@@ -65,7 +69,7 @@ public class UserEJBTest {
 
     @Test
     public void testCreatingNewComments(){
-        User user = userEJB.createNewUser("B", null, User.CountryName.Albania, "abc@abc.com");
+        User user = userEJB.createNewUser("AA", "A", "B", null, User.CountryName.Albania, "abc@abc.com");
         Post post = userEJB.createNewPost(user, "Title", "Text text");
 
         Comment comment = userEJB.createNewCommentOnPost(user, post, "Comment!");
@@ -93,10 +97,10 @@ public class UserEJBTest {
 
     @Test
     public void testGetRepresentedCountries(){
-        userEJB.createNewUser("A", null, User.CountryName.Albania, "abc@abc.com");
-        userEJB.createNewUser("B", null, User.CountryName.Albania, "abc@abc.com");
-        userEJB.createNewUser("C", null, User.CountryName.China, "abc@abc.com");
-        userEJB.createNewUser("D", null, User.CountryName.Norway, "abc@abc.com");
+        userEJB.createNewUser("AA", "A", "A", null, User.CountryName.Albania, "abc@abc.com");
+        userEJB.createNewUser("BB", "B", "B", null, User.CountryName.Albania, "abc@abc.com");
+        userEJB.createNewUser("CC", "C", "C", null, User.CountryName.China, "abc@abc.com");
+        userEJB.createNewUser("DD", "D", "D", null, User.CountryName.Norway, "abc@abc.com");
         List<User.CountryName> countries= userEJB.getRepresentedCountries();
 
         assertEquals(3, countries.size());
@@ -105,10 +109,10 @@ public class UserEJBTest {
 
     @Test
     public void testCountingByCountry(){
-        User user1 = userEJB.createNewUser("A", null, User.CountryName.Albania, "abc@abc.com");
-        User user2 = userEJB.createNewUser("B", null, User.CountryName.Albania, "abc@abc.com");
-        User user3 = userEJB.createNewUser("C", null, User.CountryName.China, "abc@abc.com");
-        User user4 = userEJB.createNewUser("D", null, User.CountryName.Norway, "abc@abc.com");
+        User user1 = userEJB.createNewUser("AA", "A", "A", null, User.CountryName.Albania, "abc@abc.com");
+        User user2 = userEJB.createNewUser("BB", "B", "B", null, User.CountryName.Albania, "abc@abc.com");
+        User user3 = userEJB.createNewUser("CC", "C", "C", null, User.CountryName.China, "abc@abc.com");
+        User user4 = userEJB.createNewUser("DD", "D", "D", null, User.CountryName.Norway, "abc@abc.com");
 
         assertEquals(2, userEJB.countOfUsersByCountry(User.CountryName.Albania));
         assertEquals(1, userEJB.countOfUsersByCountry(User.CountryName.Norway));
@@ -128,10 +132,10 @@ public class UserEJBTest {
 
     @Test
     public void testGetMostActiveUsers(){
-        User user1 = userEJB.createNewUser("A", null, User.CountryName.Albania, "abc@abc.com");
-        User user2 = userEJB.createNewUser("B", null, User.CountryName.Albania, "abc@abc.com");
-        User user3 = userEJB.createNewUser("C", null, User.CountryName.China, "abc@abc.com");
-        User user4 = userEJB.createNewUser("D", null, User.CountryName.Norway, "abc@abc.com");
+        User user1 = userEJB.createNewUser("AA", "A", "A", null, User.CountryName.Albania, "abc@abc.com");
+        User user2 = userEJB.createNewUser("BB", "B", "B", null, User.CountryName.Albania, "abc@abc.com");
+        User user3 = userEJB.createNewUser("CC", "C", "C", null, User.CountryName.China, "abc@abc.com");
+        User user4 = userEJB.createNewUser("DD", "D", "D", null, User.CountryName.Norway, "abc@abc.com");
 
         Post post = userEJB.createNewPost(user1, "Title", "Text text");
         userEJB.createNewPost(user2, "Title", "Text text");
@@ -156,9 +160,11 @@ public class UserEJBTest {
         List<Thread> threads = new ArrayList<>();
 
         for(int i = 0; i < numberOfThreads; i++){
+            int threadNumber = i;
             Runnable r = () -> {
                 for(int j = 0; j < rounds; j++)
-                    userEJB.createNewUser("Name", null, User.CountryName.Albania, "email@email.com");
+                    userEJB.createNewUser(("A" + threadNumber + "b" + j), "A", "Name",
+                            null, User.CountryName.Albania, "email@email.com");
             };
             Thread t = new Thread(r);
             t.start();
@@ -178,7 +184,7 @@ public class UserEJBTest {
 
     @Test
     public void testVotingOnPost(){
-        User user = userEJB.createNewUser("A", null, User.CountryName.Albania, "abc@abc.com");
+        User user = userEJB.createNewUser("AA", "A", "A", null, User.CountryName.Albania, "abc@abc.com");
         Post post = userEJB.createNewPost(user, "Title", "Text text");
 
         assertEquals(0, post.getUpVotes());
@@ -192,7 +198,7 @@ public class UserEJBTest {
 
     @Test
     public void testVotingOnComment(){
-        User user = userEJB.createNewUser("A", null, User.CountryName.Albania, "abc@abc.com");
+        User user = userEJB.createNewUser("AA", "A", "A", null, User.CountryName.Albania, "abc@abc.com");
         Post post = userEJB.createNewPost(user, "Title", "Text text");
         Comment comment = userEJB.createNewCommentOnPost(user, post, "hei");
 

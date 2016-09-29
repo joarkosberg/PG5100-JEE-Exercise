@@ -58,6 +58,11 @@ public class User {
     private long id;
 
     @NotNull
+    @Size(min = 2, max = 24)
+    @Column(unique=true)
+    private String userName;
+
+    @NotNull
     @Size(min = 1, max = 64)
     private String name;
 
@@ -74,6 +79,13 @@ public class User {
 
     @Enumerated(EnumType.STRING)
     private CountryName country;
+
+    @NotNull
+    private String hash;
+
+    @NotNull
+    @Size(max = 26)
+    private String salt;
 
     @OneToMany(fetch = FetchType.EAGER)
     @Fetch(value = FetchMode.SUBSELECT)
@@ -146,6 +158,30 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getHash() {
+        return hash;
+    }
+
+    public void setHash(String hash) {
+        this.hash = hash;
+    }
+
+    public String getSalt() {
+        return salt;
+    }
+
+    public void setSalt(String salt) {
+        this.salt = salt;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     public CountryName getCountry() {

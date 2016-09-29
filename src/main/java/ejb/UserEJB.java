@@ -3,12 +3,16 @@ package ejb;
 import entity.Comment;
 import entity.Post;
 import entity.User;
+import org.apache.commons.codec.digest.DigestUtils;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 import javax.validation.constraints.NotNull;
+import java.math.BigInteger;
+import java.security.SecureRandom;
 import java.util.Date;
 import java.util.List;
 
@@ -20,17 +24,35 @@ public class UserEJB {
 
     public UserEJB(){}
 
-    public synchronized User createNewUser(@NotNull String name, String surname,
+    public synchronized User createNewUser(@NotNull String userName, @NotNull String password,
+                                           @NotNull String name, String surname,
                                            User.CountryName countryName, @NotNull String email){
         User user = new User();
+        user.setUserName(userName);
         user.setName(name);
         user.setSurname(surname);
         user.setCountry(countryName);
         user.setEmail(email);
 
-        em.persist(user);
+        //Hash Password
+        String salt = getSalt();
+        user.setSalt(salt);
+        String hash = computeHash(password, salt);
+        user.setHash(hash);
 
+        em.persist(user);
         return user;
+    }
+
+    public boolean login(String userName, String password) {
+        User user = findUserByUserName(userName);
+        if (user == null) {
+            computeHash(password, getSalt());
+            return false;
+        }
+
+        String hash = computeHash(password, user.getSalt());
+        return  hash.equals(user.getHash());
     }
 
     public synchronized Post createNewPost(@NotNull User user, @NotNull String title,
@@ -135,7 +157,7 @@ public class UserEJB {
     }
 
     public List<Post> getAllPosts(){
-        Query query = em.createQuery("select p from Post p");
+        Query query = em.createQuery("select p.comments from Post p");
         List<Post> posts = query.getResultList();
         return posts;
     }
@@ -144,6 +166,12 @@ public class UserEJB {
         Query query = em.createQuery("select c from Comment c");
         List<Comment> comments = query.getResultList();
         return comments;
+    }
+
+    public void deletePost(long id){
+        Query query = em.createQuery("delete from Post p where p.id = :id");
+        query.setParameter("id", id);
+        query.executeUpdate();
     }
 
     public void upVotePost(Post post){
@@ -171,6 +199,12 @@ public class UserEJB {
         return user;
     }
 
+    public User findUserByUserName(String userName){
+        TypedQuery<User> q = em.createQuery("select u from User u  WHERE userName = :userName", User.class);
+        User user = q.setParameter("userName", userName).getSingleResult();
+        return user;
+    }
+
     public Post findPost(long id){
         Post post = em.find(Post.class, id);
         return post;
@@ -179,5 +213,24 @@ public class UserEJB {
     public Comment findComment(long id){
         Comment comment = em.find(Comment.class, id);
         return comment;
+    }
+
+    @NotNull
+    protected String getSalt(){
+        SecureRandom random = new SecureRandom();
+        int bitsPerChar = 5;
+        int twoPowerOfBits = 32; // 2^5
+        int n = 26;
+        assert n * bitsPerChar >= 128;
+
+        String salt = new BigInteger(n * bitsPerChar, random).toString(twoPowerOfBits);
+        return salt;
+    }
+
+    @NotNull
+    protected String computeHash(String password, String salt){
+        String combined = password + salt;
+        String hash = DigestUtils.sha256Hex(combined);
+        return hash;
     }
 }
