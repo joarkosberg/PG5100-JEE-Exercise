@@ -1,5 +1,6 @@
 package ejb;
 
+import controller.CommentController;
 import controller.PostController;
 import controller.UserController;
 import helpers.DeleterEJB;
@@ -32,14 +33,19 @@ public class UserEJBTest {
 
         return ShrinkWrap.create(JavaArchive.class)
                 .addClasses(User.class, Post.class, Comment.class,
-                        UserEJB.class, DeleterEJB.class, UserController.class,
-                        PostController.class)
+                        UserEJB.class, PostEJB.class, CommentEJB.class,
+                        DeleterEJB.class, UserController.class, PostController.class,
+                        CommentController.class)
                 .addPackages(true, "org.apache.commons.codec")
                 .addAsResource("META-INF/persistence.xml");
     }
 
     @EJB
     private UserEJB userEJB;
+    @EJB
+    private PostEJB postEJB;
+    @EJB
+    private CommentEJB commentEJB;
     @EJB
     private DeleterEJB deleterEJB;
 
@@ -62,20 +68,20 @@ public class UserEJBTest {
     @Test
     public void testCreatingNewPost(){
         User user = userEJB.createNewUser("AA", "A", "A", null, User.CountryName.Albania, "abc@abc.com");
-        userEJB.createNewPost(user, "Title", "Text text");
-        long postCount = userEJB.countPosts();
+        postEJB.createNewPost(user, "Title", "Text text");
+        long postCount = postEJB.countPosts();
         assertEquals(1, postCount);
     }
 
     @Test
     public void testCreatingNewComments(){
         User user = userEJB.createNewUser("AA", "A", "B", null, User.CountryName.Albania, "abc@abc.com");
-        Post post = userEJB.createNewPost(user, "Title", "Text text");
+        Post post = postEJB.createNewPost(user, "Title", "Text text");
 
-        Comment comment = userEJB.createNewCommentOnPost(user, post, "Comment!");
-        userEJB.createNewCommentOnComment(user, comment, "comment 2");
+        Comment comment = commentEJB.createNewCommentOnPost(user, post, "Comment!");
+        commentEJB.createNewCommentOnComment(user, comment, "comment 2");
 
-        long commentCount = userEJB.countComments();
+        long commentCount = commentEJB.countComments();
         assertEquals(2, userEJB.getAllUsers().get(0).getComments().size());
         assertEquals(2, commentCount);
     }
@@ -118,12 +124,12 @@ public class UserEJBTest {
         assertEquals(1, userEJB.countOfUsersByCountry(User.CountryName.Norway));
         assertEquals(0, userEJB.countOfUsersByCountry(User.CountryName.Brasil));
 
-        userEJB.createNewPost(user1, "Title", "Text text");
-        userEJB.createNewPost(user2, "Title", "Text text");
-        userEJB.createNewPost(user3, "Title", "Text text");
-        userEJB.createNewPost(user4, "Title", "Text text");
-        userEJB.createNewPost(user4, "Title", "Text text");
-        userEJB.createNewPost(user1, "Title", "Text text");
+        postEJB.createNewPost(user1, "Title", "Text text");
+        postEJB.createNewPost(user2, "Title", "Text text");
+        postEJB.createNewPost(user3, "Title", "Text text");
+        postEJB.createNewPost(user4, "Title", "Text text");
+        postEJB.createNewPost(user4, "Title", "Text text");
+        postEJB.createNewPost(user1, "Title", "Text text");
 
         assertEquals(3, userEJB.countOfPostsByCountry(User.CountryName.Albania));
         assertEquals(2, userEJB.countOfPostsByCountry(User.CountryName.Norway));
@@ -137,16 +143,16 @@ public class UserEJBTest {
         User user3 = userEJB.createNewUser("CC", "C", "C", null, User.CountryName.China, "abc@abc.com");
         User user4 = userEJB.createNewUser("DD", "D", "D", null, User.CountryName.Norway, "abc@abc.com");
 
-        Post post = userEJB.createNewPost(user1, "Title", "Text text");
-        userEJB.createNewPost(user2, "Title", "Text text");
-        userEJB.createNewPost(user3, "Title", "Text text");
-        userEJB.createNewPost(user4, "Title", "Text text");
-        userEJB.createNewPost(user4, "Title", "Text text");
-        userEJB.createNewPost(user1, "Title", "Text text");
+        Post post = postEJB.createNewPost(user1, "Title", "Text text");
+        postEJB.createNewPost(user2, "Title", "Text text");
+        postEJB.createNewPost(user3, "Title", "Text text");
+        postEJB.createNewPost(user4, "Title", "Text text");
+        postEJB.createNewPost(user4, "Title", "Text text");
+        postEJB.createNewPost(user1, "Title", "Text text");
 
-        userEJB.createNewCommentOnPost(user1, post, "Comment!");
-        userEJB.createNewCommentOnPost(user1, post, "Comment!");
-        userEJB.createNewCommentOnPost(user3, post, "Comment!");
+        commentEJB.createNewCommentOnPost(user1, post, "Comment!");
+        commentEJB.createNewCommentOnPost(user1, post, "Comment!");
+        commentEJB.createNewCommentOnPost(user3, post, "Comment!");
 
         List<User> users = userEJB.getMostActiveUsers();
         assertTrue(users.get(0).getId() == user1.getId());
@@ -185,29 +191,29 @@ public class UserEJBTest {
     @Test
     public void testVotingOnPost(){
         User user = userEJB.createNewUser("AA", "A", "A", null, User.CountryName.Albania, "abc@abc.com");
-        Post post = userEJB.createNewPost(user, "Title", "Text text");
+        Post post = postEJB.createNewPost(user, "Title", "Text text");
 
         assertEquals(0, post.getUpVotes());
-        userEJB.upVotePost(post);
-        assertEquals(1, userEJB.findPost(post.getId()).getUpVotes());
+        postEJB.upVotePost(post);
+        assertEquals(1, postEJB.findPost(post.getId()).getUpVotes());
 
         assertEquals(0, post.getDownVotes());
-        userEJB.downVotePost(post);
-        assertEquals(1, userEJB.findPost(post.getId()).getDownVotes());
+        postEJB.downVotePost(post);
+        assertEquals(1, postEJB.findPost(post.getId()).getDownVotes());
     }
 
     @Test
     public void testVotingOnComment(){
         User user = userEJB.createNewUser("AA", "A", "A", null, User.CountryName.Albania, "abc@abc.com");
-        Post post = userEJB.createNewPost(user, "Title", "Text text");
-        Comment comment = userEJB.createNewCommentOnPost(user, post, "hei");
+        Post post = postEJB.createNewPost(user, "Title", "Text text");
+        Comment comment = commentEJB.createNewCommentOnPost(user, post, "hei");
 
         assertEquals(0, comment.getUpVotes());
-        userEJB.upVoteComment(comment);
-        assertEquals(1, userEJB.findComment(comment.getId()).getUpVotes());
+        commentEJB.upVoteComment(comment);
+        assertEquals(1, commentEJB.findComment(comment.getId()).getUpVotes());
 
         assertEquals(0, comment.getDownVotes());
-        userEJB.downVoteComment(comment);
-        assertEquals(1, userEJB.findComment(comment.getId()).getDownVotes());
+        commentEJB.downVoteComment(comment);
+        assertEquals(1, commentEJB.findComment(comment.getId()).getDownVotes());
     }
 }

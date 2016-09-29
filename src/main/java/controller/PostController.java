@@ -1,5 +1,6 @@
 package controller;
 
+import ejb.PostEJB;
 import ejb.UserEJB;
 import entity.Post;
 import entity.User;
@@ -15,19 +16,16 @@ import java.util.List;
 public class PostController implements Serializable{
 
     @Inject
-    private UserEJB userEJB;
+    private PostEJB postEJB;
 
     private String formText;
 
 
     public String doPostText(User user){
-
-        Post posted = userEJB.createNewPost(user, "Title", formText);
-
+        Post posted = postEJB.createNewPost(user, "Title", formText);
         if(posted != null){
             formText = "";
         }
-
         return "landingPage.jsf";
     }
 
@@ -40,11 +38,11 @@ public class PostController implements Serializable{
     }
 
     public String deletePost(long id){
-        userEJB.deletePost(id);
+        postEJB.deletePost(id);
         return "landingPage.jsf";
     }
 
     public List<Post> getAllPosts(){
-        return userEJB.getAllPosts();
+        return postEJB.getAllPosts();
     }
 }
