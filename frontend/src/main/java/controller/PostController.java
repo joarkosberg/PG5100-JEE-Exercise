@@ -1,7 +1,6 @@
 package controller;
 
 import ejb.PostEJB;
-import ejb.UserEJB;
 import entity.Post;
 import entity.User;
 
