@@ -5,10 +5,7 @@ import org.apache.commons.codec.digest.DigestUtils;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
-import javax.persistence.TypedQuery;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.math.BigInteger;
 import java.security.SecureRandom;
@@ -100,9 +97,13 @@ public class UserEJB {
     }
 
     public User findUserByUserName(String userName){
-        TypedQuery<User> q = em.createQuery("select u from User u  WHERE userName = :userName", User.class);
-        User user = q.setParameter("userName", userName).getSingleResult();
-        return user;
+        try {
+            TypedQuery<User> q = em.createQuery("select u from User u  WHERE userName = :userName", User.class);
+            User user = q.setParameter("userName", userName).getSingleResult();
+            return user;
+        } catch (NoResultException ex){
+            return null;
+        }
     }
 
     @NotNull

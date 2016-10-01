@@ -18,9 +18,7 @@ import javax.ejb.EJB;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 
 @RunWith(Arquillian.class)
@@ -151,5 +149,11 @@ public class UserEJBTest {
 
         int expected = numberOfThreads * rounds;
         assertEquals(expected, userEJB.countUsers());
+    }
+
+    @Test
+    public void getNullWhenAskingForNonExistUser(){
+        User user = userEJB.findUserByUserName("heihei");
+        assertNull(user);
     }
 }

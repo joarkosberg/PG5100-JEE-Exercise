@@ -50,7 +50,7 @@ public class UserController implements Serializable{
         User user = userEJB.createNewUser(formUserName, formPassword, "Name", null,
                 User.CountryName.France, "Email@mail.com");
         if(user != null){
-            registeredUser = userEJB.findUserByUserName(formUserName);
+            registeredUser = user;
             return "landingpage.jsf";
         } else {
             return "login.jsf";
