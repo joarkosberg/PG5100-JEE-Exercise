@@ -51,7 +51,7 @@ public class UserController implements Serializable{
                 User.CountryName.France, "Email@mail.com");
         if(user != null){
             registeredUser = user;
-            return "landingpage.jsf";
+            return "landingPage.jsf";
         } else {
             return "login.jsf";
         }
