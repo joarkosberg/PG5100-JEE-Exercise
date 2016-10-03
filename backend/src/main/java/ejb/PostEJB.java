@@ -26,6 +26,7 @@ public class PostEJB {
     public synchronized Post createNewPost(@NotNull User user, @NotNull String title,
                                            @NotNull String text){
         Post post = new Post();
+        post.setPoster(user);
         post.setTitle(title);
         post.setText(text);
         post.setCreated(new Date());
@@ -70,5 +71,9 @@ public class PostEJB {
     public Post findPost(long id){
         Post post = em.find(Post.class, id);
         return post;
+    }
+
+    public User getPoster(Post post){
+        return post.getPoster();
     }
 }

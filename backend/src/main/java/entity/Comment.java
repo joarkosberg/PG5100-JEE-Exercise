@@ -1,11 +1,7 @@
 package entity;
 
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Past;
 import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.Date;
@@ -17,12 +13,10 @@ public class Comment {
     @Id @GeneratedValue
     private long id;
 
-    @Past
     @NotNull
     @Temporal(TemporalType.DATE)
     private Date created;
 
-    @Past
     @NotNull
     @Temporal(TemporalType.DATE)
     private Date updated;
@@ -34,8 +28,10 @@ public class Comment {
     private int upVotes;
     private int downVotes;
 
-    @OneToMany(fetch = FetchType.EAGER)
-    @Fetch(value = FetchMode.SUBSELECT)
+    @ManyToOne
+    private User commenter;
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Comment> comments;
 
     public List<Comment> getComments() {
@@ -95,5 +91,17 @@ public class Comment {
 
     public void setDownVotes(int downVotes) {
         this.downVotes = downVotes;
+    }
+
+    public User getCommenter() {
+        return commenter;
+    }
+
+    public void setCommenter(User user) {
+        this.commenter = user;
+    }
+
+    public User getCommenter(Comment comment){
+        return comment.getCommenter();
     }
 }

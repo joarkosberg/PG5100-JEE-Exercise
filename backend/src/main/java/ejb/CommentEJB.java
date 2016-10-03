@@ -30,6 +30,7 @@ public class CommentEJB {
     public synchronized Comment createNewCommentOnPost(@NotNull User user, @NotNull Post post,
                                                        @NotNull String text){
         Comment comment = new Comment();
+        comment.setCommenter(user);
         comment.setText(text);
         comment.setCreated(new Date());
         comment.setUpdated(new Date());
@@ -48,6 +49,7 @@ public class CommentEJB {
     public synchronized Comment createNewCommentOnComment(@NotNull User user, @NotNull Comment orgComment,
                                                           @NotNull String text){
         Comment comment = new Comment();
+        comment.setCommenter(user);
         comment.setText(text);
         comment.setCreated(new Date());
         comment.setUpdated(new Date());

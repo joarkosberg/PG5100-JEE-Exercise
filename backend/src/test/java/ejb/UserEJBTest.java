@@ -46,9 +46,9 @@ public class UserEJBTest {
     @Before
     @After
     public void clearDatabase(){
-        deleterEJB.deleteEntities(User.class);
         deleterEJB.deleteEntities(Post.class);
         deleterEJB.deleteEntities(Comment.class);
+        deleterEJB.deleteEntities(User.class);
     }
 
     @Test

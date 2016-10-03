@@ -35,8 +35,9 @@ public class PostEJBTest {
     public void testCreatingNewPost(){
         User user = userEJB.createNewUser("AA", "A", "A", null, User.CountryName.Albania, "abc@abc.com");
         long orgPostCount = postEJB.countPosts();
-        postEJB.createNewPost(user, "Title", "Text text");
+        Post post = postEJB.createNewPost(user, "Title", "Text text");
         long postCount = postEJB.countPosts();
+        assertEquals(postEJB.getPoster(post).getId(), user.getId());
         assertEquals(orgPostCount + 1, postCount);
     }
 

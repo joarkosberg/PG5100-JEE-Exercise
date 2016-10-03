@@ -49,12 +49,12 @@
         <div id="posts">
             <c:forEach var="post" items="#{postController.allPosts}">
                 <div class="post">
-                    <h:outputText value="Lars wrote on #{post.created}: #{post.text}">
+                    <h:outputText value="#{post.poster.userName} wrote on #{post.created}: #{post.text}">
                         <f:convertDateTime pattern="MM/dd/yy - hh:mm"/>
                     </h:outputText>
 
                     <!--Only the author of a post can delete it.-->
-                    <c:if test="#{post.id == 4}">
+                    <c:if test="#{post.poster.id == userController.registeredUser.id}">
                         <div class="deleteButton">
                             <h:form>
                                 <h:commandButton value="Delete" action="#{postController.deletePost(post.id)}"/>

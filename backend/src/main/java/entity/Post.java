@@ -1,8 +1,9 @@
 package entity;
 
+import org.hibernate.annotations.Cascade;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Past;
 import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.Date;
@@ -14,7 +15,6 @@ public class Post {
     @Id @GeneratedValue
     private long id;
 
-    @Past
     @NotNull
     @Temporal(TemporalType.TIMESTAMP)
     private Date created;
@@ -27,11 +27,17 @@ public class Post {
     @Size(min = 2, max = 2048)
     private String text;
 
+    @ManyToOne
+    private User poster;
+
     private int upVotes;
     private int downVotes;
 
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Comment> comments;
+
+    public Post() {
+    }
 
     public long getId() {
         return id;
@@ -90,5 +96,13 @@ public class Post {
 
     public void setComments(List<Comment> comments) {
         this.comments = comments;
+    }
+
+    public User getPoster() {
+        return poster;
+    }
+
+    public void setPoster(User user) {
+        this.poster = user;
     }
 }

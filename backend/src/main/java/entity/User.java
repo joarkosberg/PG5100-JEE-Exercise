@@ -87,11 +87,13 @@ public class User {
     @Size(max = 26)
     private String salt;
 
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER,
+            mappedBy = "poster")
     @Fetch(value = FetchMode.SUBSELECT)
     private List<Post> posts;
 
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER,
+            mappedBy = "commenter")
     @Fetch(value = FetchMode.SUBSELECT)
     private List<Comment> comments;
 
