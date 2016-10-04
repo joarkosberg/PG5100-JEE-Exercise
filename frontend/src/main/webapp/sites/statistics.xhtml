@@ -1,0 +1,20 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+>
+
+
+<ui:composition template="../layout.xhtml">
+    <ui:define name="title">Statistics!</ui:define>
+
+
+    <ui:define name="content">
+        <h4>Number of users: #{statisticsController.numberOfUsers}</h4>
+        <h4>Number of posts: #{statisticsController.numberOfPosts}</h4>
+        <h4>Number of comments: #{statisticsController.numberOfComments}</h4>
+        <h4>Number of users by country:</h4>
+    </ui:define>
+</ui:composition>
+</html>

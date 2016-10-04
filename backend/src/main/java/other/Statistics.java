@@ -1,31 +1,61 @@
 package other;
 
+import ejb.CommentEJB;
+import ejb.PostEJB;
 import ejb.UserEJB;
+import entity.User;
 
 import javax.ejb.EJB;
 import javax.ejb.Schedule;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.HashMap;
+import java.util.List;
+import java.util.TreeMap;
 
 @Singleton
 @Startup
 public class Statistics {
-    private final AtomicInteger counter = new AtomicInteger(0);
+    private Long numberOfUsers;
+    private Long numberOfPosts;
+    private Long numberOfComments;
+    private TreeMap<User.CountryName, Long> countriesByUsers = new TreeMap<>();
 
     @EJB
     private UserEJB userEJB;
+    @EJB
+    private PostEJB postEJB;
+    @EJB
+    private CommentEJB commentEJB;
 
-    @Schedule(second = "10", minute="*", hour="*", persistent=false)
+    @Schedule(second = "*/10", minute="*", hour="*", persistent=false)
     public void doSomeComputation(){
-        //TODO computation here
+        //Get count of all tables
+        numberOfUsers = userEJB.countUsers();
+        numberOfPosts = postEJB.countPosts();
+        numberOfComments = commentEJB.countComments();
 
-        /*
-            Create a @Singleton with a time service that does query the database (eg every 10 seconds)
-            for overall statistics, and save them internally in the bean. (This is done to avoid having
-            100k users doing such expensive operation at the same time, ie we can consider this
-            singleton as a type of cache.)
-         */
+        //Get number of users based on country
+        List<User.CountryName> countries = userEJB.getRepresentedCountries();
+        for(User.CountryName country : countries) {
+            countriesByUsers.put(country, userEJB.countOfUsersByCountry(country));
+        }
+    }
 
+
+    public Long getNumberOfUsers() {
+        return numberOfUsers;
+    }
+
+    public Long getNumberOfPosts() {
+        return numberOfPosts;
+    }
+
+    public Long getNumberOfComments() {
+        return numberOfComments;
+    }
+
+    public TreeMap<User.CountryName, Long> getCountriesByUsers() {
+        return countriesByUsers;
     }
 }
