@@ -18,14 +18,24 @@ public class PostController implements Serializable{
     private PostEJB postEJB;
 
     private String formText;
+    private String formTitle;
 
 
     public String doPostText(User user){
-        Post posted = postEJB.createNewPost(user, "Title", formText);
+        Post posted = postEJB.createNewPost(user, formTitle, formText);
         if(posted != null){
             formText = "";
+            formTitle = "";
         }
         return "landingPage.jsf";
+    }
+
+    public String getFormTitle() {
+        return formTitle;
+    }
+
+    public void setFormTitle(String formTitle) {
+        this.formTitle = formTitle;
     }
 
     public String getFormText() {

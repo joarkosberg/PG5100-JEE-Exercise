@@ -77,6 +77,12 @@ public class CommentEJB {
         return comments;
     }
 
+    public void deleteComment(long id){
+        Query query = em.createQuery("delete from Comment c where c.id = :id");
+        query.setParameter("id", id);
+        query.executeUpdate();
+    }
+
     public void upVoteComment(Comment comment){
         Comment c = findComment(comment.getId());
         c.setUpVotes(c.getUpVotes() + 1);

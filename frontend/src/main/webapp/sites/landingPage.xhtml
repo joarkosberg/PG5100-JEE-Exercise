@@ -6,16 +6,21 @@
       xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
 >
 
 
 <ui:composition template="../layout.xhtml">
+    <!-- Title -->
     <ui:define name="title">
-        Welcome in!
+        Welcome in #{userController.registeredUser.userName}!
     </ui:define>
     <hr/>
 
+
+    <!-- Content -->
     <ui:define name="content">
+        <!-- Top data and logout -->
         <c:choose>
             <c:when test="#{userController.loggedIn}">
                 <h:form id="logoutForm">
@@ -30,30 +35,40 @@
         </c:choose>
 
 
-        <!-- Add possibility of creating new post only if user is logged in -->
+
+        <!-- Creating new post only if user is logged in -->
         <c:if test="#{userController.loggedIn}">
             <h:form id="postForm">
                 <h:outputLabel value="New post:"/>
-                <h:inputTextarea value="#{postController.formText}" cols="50" rows="5" id="postText"/>
+                <br/>
+                <h:inputText value="#{postController.formTitle}" pt:placeholder="Title" id="postTitle"/>
+                <br/>
+                <h:inputTextarea value="#{postController.formText}" pt:placeholder="Text" cols="50" rows="5" id="postText"/>
                 <h:commandButton value="Post" action="#{postController.doPostText(userController.registeredUser)}"
                                  id="createPost"/>
             </h:form>
         </c:if>
 
 
+
         <!-- Show list of posts and comments-->
-        <h2>Latest News</h2>
+        <h2>Latest Post:</h2>
         <c:if test="#{postController.allPosts.size() == 0}">
-            <h:outputText value="No news yet :( "/>
+            <h:outputText value="No posts yet :( "/>
         </c:if>
         <div id="posts">
             <c:forEach var="post" items="#{postController.allPosts}">
+
+
+                <!-- Post -->
                 <div class="post">
-                    <h:outputText value="#{post.poster.userName} wrote on #{post.created}: #{post.text}">
-                        <f:convertDateTime pattern="MM/dd/yy - hh:mm"/>
+                    <!-- Post data -->
+                    <h2>#{post.title}</h2>
+                    <h:outputText value="#{post.poster.userName} posted on #{post.created}: #{post.text}">
+                        <f:convertDateTime pattern="dd:NN:yy - hh:mm"/>
                     </h:outputText>
 
-                    <!--Only the author of a post can delete it.-->
+                    <!-- Delete button -->
                     <c:if test="#{post.poster.id == userController.registeredUser.id}">
                         <div class="deleteButton">
                             <h:form>
@@ -61,7 +76,31 @@
                             </h:form>
                         </div>
                     </c:if>
+
+                    <!-- Comment field -->
+                    <c:if test="#{userController.loggedIn}">
+                        <h:form id="commentOnPostForm">
+                            <h:outputLabel value="New comment on post:"/>
+                            <br/>
+                            <h:inputTextarea value="#{commentController.formText}" pt:placeholder="Comment"
+                                             cols="30" rows="2" id="commentOnPostText"/>
+                            <h:commandButton value="Comment" action="#{
+                            commentController.commentOnPost(userController.registeredUser, post)}"
+                                             id="createCommentOnPost"/>
+                        </h:form>
+                    </c:if>
                 </div>
+
+
+                <!-- Comments -->
+                <h4>Comments:</h4>
+                <c:forEach var="comment" items="#{post.comments}">
+                    <div class="comment">
+                        <h:outputText value="#{comment.commenter.userName} commented on #{comment.created}: #{comment.text}">
+                            <f:convertDateTime pattern="dd:NN:yy - hh:mm"/>
+                        </h:outputText>
+                    </div>
+                </c:forEach>
                 <hr/>
             </c:forEach>
         </div>

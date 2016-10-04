@@ -1,5 +1,6 @@
 package ejb;
 
+import entity.Comment;
 import entity.Post;
 import entity.User;
 
