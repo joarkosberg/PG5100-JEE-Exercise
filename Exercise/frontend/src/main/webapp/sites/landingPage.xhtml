@@ -12,9 +12,18 @@
 
 <ui:composition template="../layout.xhtml">
     <!-- Title -->
-    <ui:define name="title">
-        Welcome in #{userController.registeredUser.userName}!
-    </ui:define>
+    <c:choose>
+        <c:when test="#{userController.loggedIn}">
+            <ui:define name="title">
+                Welcome in #{userController.registeredUser.userName}!
+            </ui:define>
+        </c:when>
+        <c:otherwise>
+            <ui:define name="title">
+                Please login to participate in the community!
+            </ui:define>
+        </c:otherwise>
+    </c:choose>
     <hr/>
 
 
