@@ -48,7 +48,7 @@ public class User {
     @Enumerated(EnumType.STRING)
     private CountryName country;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "poster")
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "poster")
     private List<Event> events;
 
     public String getUsername() {
