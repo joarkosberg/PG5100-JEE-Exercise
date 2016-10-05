@@ -36,6 +36,11 @@
                 <version>7.0</version>
                 <scope>provided</scope>
             </dependency>
+            <dependency>
+                <groupId>commons-codec</groupId>
+                <artifactId>commons-codec</artifactId>
+                <version>1.6</version>
+            </dependency>
 
             <!-- JPA / Hibernate / Database -->
             <dependency>

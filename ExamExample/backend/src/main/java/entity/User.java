@@ -5,10 +5,22 @@ import enums.CountryName;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.ArrayList;
 import java.util.List;
+
+@NamedQueries({
+        @NamedQuery(name = User.GET_ALL_USERS, query =
+                "select u " +
+                        "from User u"),
+        @NamedQuery(name = User.COUNT_ALL_USERS, query =
+                "select count(*) " +
+                        "from User u")
+})
 
 @Entity
 public class User {
+    public static final String GET_ALL_USERS = "GET_ALL_USERS";
+    public static final String COUNT_ALL_USERS = "COUNT_ALL_USERS";
 
     @Id
     @Size(min = 2, max = 30)
@@ -33,6 +45,7 @@ public class User {
     private String salt;
 
     @NotNull
+    @Enumerated(EnumType.STRING)
     private CountryName country;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "poster")
@@ -95,6 +108,9 @@ public class User {
     }
 
     public List<Event> getEvents() {
+        if (events == null){
+            events = new ArrayList<>();
+        }
         return events;
     }
 

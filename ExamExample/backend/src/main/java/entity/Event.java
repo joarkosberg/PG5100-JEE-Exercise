@@ -2,15 +2,29 @@ package entity;
 
 import enums.CountryName;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+@NamedQueries({
+        @NamedQuery(name = Event.GET_ALL_EVENTS, query =
+                "select e " +
+                        "from Event e"),
+        @NamedQuery(name = Event.COUNT_ALL_EVENTS, query =
+                "select count(*) " +
+                        "from Event e"),
+        @NamedQuery(name = Event.DELETE_EVENT, query =
+                "delete " +
+                        "from Event e " +
+                        "where e.id = :id")
+})
+
 @Entity
 public class Event {
+    public static final String GET_ALL_EVENTS = "GET_ALL_EVENTS";
+    public static final String COUNT_ALL_EVENTS = "COUNT_ALL_EVENTS";
+    public static final String DELETE_EVENT = "DELETE_EVENT";
+
 
     @Id @GeneratedValue
     private long id;
@@ -27,6 +41,7 @@ public class Event {
     @Size(min = 0, max = 256)
     private String description;
 
+    @NotNull
     @ManyToOne
     private User poster;
 
