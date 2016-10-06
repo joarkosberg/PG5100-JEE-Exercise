@@ -34,7 +34,4 @@ public class UserEJBTest {
         userEJB.createNewUser("AA", "AAA", "A", null, "AA", CountryName.Denmark);
         assertEquals(orginalUserCount + 1, userEJB.countAllUsers());
     }
-
-
-
 }

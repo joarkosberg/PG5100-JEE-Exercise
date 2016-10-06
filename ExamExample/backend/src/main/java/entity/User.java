@@ -23,7 +23,8 @@ public class User {
     public static final String COUNT_ALL_USERS = "COUNT_ALL_USERS";
 
     @Id
-    @Size(min = 2, max = 30)
+    //Regex here {}
+    @Size(min = 2, max = 32)
     private String username;
 
     @NotNull
@@ -38,6 +39,7 @@ public class User {
     private String last_name;
 
     @NotNull
+    //NotEmpty
     private String hash;
 
     @NotNull
@@ -48,8 +50,11 @@ public class User {
     @Enumerated(EnumType.STRING)
     private CountryName country;
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "poster")
+    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "attendingUsers")
     private List<Event> events;
+
+    public User (){
+    }
 
     public String getUsername() {
         return username;

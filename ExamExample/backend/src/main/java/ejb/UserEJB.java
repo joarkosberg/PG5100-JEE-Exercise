@@ -1,5 +1,6 @@
 package ejb;
 
+import entity.Event;
 import entity.User;
 import enums.CountryName;
 import org.apache.commons.codec.digest.DigestUtils;
@@ -25,6 +26,15 @@ public class UserEJB {
     public synchronized User createNewUser(@NotNull String username, @NotNull String password,
                                            @NotNull String first_name, String middle_name,
                                            @NotNull String last_name, @NotNull CountryName countryName){
+        if (username == null || username.isEmpty() || password == null || password.isEmpty()) {
+            return null;
+        }
+
+        User u = findUser(username);
+        if (u != null) {
+            return null;
+        }
+
         User user = new User();
         user.setUsername(username);
         user.setFirst_name(first_name);
@@ -51,6 +61,18 @@ public class UserEJB {
 
         String hash = computeHash(password, user.getSalt());
         return  hash.equals(user.getHash());
+    }
+
+    public void addEvent(String username, Long eventId){
+        User user = em.find(User.class, username);
+        Event event = em.find(Event.class, eventId);
+
+        if(user.getEvents().stream().anyMatch(e -> e.getId() == (eventId))){
+            return;
+        }
+
+        user.getEvents().add(event);
+        event.getAttendingUsers().add(user);
     }
 
     public List<User> getAllUsers(){

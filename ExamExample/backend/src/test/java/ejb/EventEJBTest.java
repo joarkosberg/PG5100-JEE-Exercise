@@ -32,9 +32,14 @@ public class EventEJBTest {
 
     @Test
     public void testCreateNewEvent(){
+        long orgCount = eventEJB.countAllPosts();
         User user = userEJB.createNewUser("AA", "AAA", "A", null, "AA", CountryName.Denmark);
-        eventEJB.createNewEvent(null, CountryName.Denmark, null, null, user);
-        assertEquals(1, eventEJB.countAllPosts());
+        Event event = eventEJB.createNewEvent("Title", CountryName.Denmark, "Location", "Description", user);
+
+        assertEquals(orgCount + 1, eventEJB.countAllPosts());
+        assertEquals(event.getAuthor(), user.getUsername());
+
+        userEJB.addEvent(user.getUsername(), event.getId());
         assertEquals(1, userEJB.findUser(user.getUsername()).getEvents().size());
     }
 }

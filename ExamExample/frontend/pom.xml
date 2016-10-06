@@ -23,10 +23,17 @@
             <version>${project.version}</version>
         </dependency>
 
+        <!-- Test -->
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-java</artifactId>
+        </dependency>
+
+        <!-- Java EE -->
         <dependency>
             <groupId>javax</groupId>
             <artifactId>javaee-api</artifactId>

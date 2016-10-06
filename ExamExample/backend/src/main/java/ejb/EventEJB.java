@@ -26,19 +26,20 @@ public class EventEJB {
 
     public synchronized Event createNewEvent(String title, @NotNull CountryName countryName,
                                              String location, String description,
-                                             @NotNull User poster){
+                                             @NotNull User author){
+        User u = em.find(User.class, author.getUsername());
+        if(u == null){
+            throw new IllegalArgumentException("No user with username: "+u);
+        }
+
         Event event = new Event();
         event.setTitle(title);
         event.setCountry(countryName);
         event.setLocation(location);
         event.setDescription(description);
-        event.setPoster(poster);
+        event.setAuthor(author.getUsername());
 
         em.persist(event);
-
-        User user = userEJB.findUser(poster.getUsername());
-        user.getEvents().add(event);
-
         return event;
     }
 
@@ -46,6 +47,10 @@ public class EventEJB {
         Query query = em.createNamedQuery(Event.GET_ALL_EVENTS);
         List<Event> events = query.getResultList();
         return events;
+    }
+
+    public List<Event> getEventsByCountry(CountryName country){
+        return em.createNamedQuery(Event.GET_EVENTS_BY_COUNTRY).setParameter("country",country).getResultList();
     }
 
     public long countAllPosts(){

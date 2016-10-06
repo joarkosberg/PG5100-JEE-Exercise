@@ -5,11 +5,17 @@ import enums.CountryName;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.ArrayList;
+import java.util.List;
 
 @NamedQueries({
         @NamedQuery(name = Event.GET_ALL_EVENTS, query =
                 "select e " +
                         "from Event e"),
+        @NamedQuery(name = Event.GET_EVENTS_BY_COUNTRY, query =
+                "select e " +
+                        "from Event e " +
+                        "where e.country = :country"),
         @NamedQuery(name = Event.COUNT_ALL_EVENTS, query =
                 "select count(*) " +
                         "from Event e"),
@@ -22,13 +28,14 @@ import javax.validation.constraints.Size;
 @Entity
 public class Event {
     public static final String GET_ALL_EVENTS = "GET_ALL_EVENTS";
+    public static final String GET_EVENTS_BY_COUNTRY = "GET_EVENTS_BY_COUNTRY";
     public static final String COUNT_ALL_EVENTS = "COUNT_ALL_EVENTS";
     public static final String DELETE_EVENT = "DELETE_EVENT";
-
 
     @Id @GeneratedValue
     private long id;
 
+    @NotNull
     @Size(min = 0, max = 50)
     private String title;
 
@@ -42,8 +49,11 @@ public class Event {
     private String description;
 
     @NotNull
-    @ManyToOne
-    private User poster;
+    @Size(min = 1, max = 32)
+    private String author;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    private List<User> attendingUsers;
 
     public long getId() {
         return id;
@@ -85,11 +95,22 @@ public class Event {
         this.description = description;
     }
 
-    public User getPoster() {
-        return poster;
+    public String getAuthor() {
+        return author;
     }
 
-    public void setPoster(User poster) {
-        this.poster = poster;
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
+    public List<User> getAttendingUsers() {
+        if(attendingUsers == null){
+            attendingUsers = new ArrayList<>();
+        }
+        return attendingUsers;
+    }
+
+    public void setAttendingUsers(List<User> attendingUsers) {
+        this.attendingUsers = attendingUsers;
     }
 }
