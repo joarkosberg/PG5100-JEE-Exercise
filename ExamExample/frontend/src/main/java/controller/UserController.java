@@ -27,10 +27,32 @@ public class UserController implements Serializable {
         return activeUser != null;
     }
 
+    public String logOut(){
+        activeUser = null;
+        return "home.jsf";
+    }
+
+    public String getFormUsername() {
+        return formUsername;
+    }
+
+    public void setFormUsername(String formUsername) {
+        this.formUsername = formUsername;
+    }
+
+    public String getFormPassword() {
+        return formPassword;
+    }
+
+    public void setFormPassword(String formPassword) {
+        this.formPassword = formPassword;
+    }
+
     public User getActiveUser(){
         return activeUser;
     }
 
-
-
+    public void setActiveUser(User activeUser) {
+        this.activeUser = activeUser;
+    }
 }

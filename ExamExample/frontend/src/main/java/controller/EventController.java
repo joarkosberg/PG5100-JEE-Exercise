@@ -15,4 +15,7 @@ public class EventController implements Serializable {
     private EventEJB eventEJB;
 
 
+    public boolean isAnyEventsMade(){
+        return eventEJB.countAllPosts() > 0;
+    }
 }

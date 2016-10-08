@@ -3,6 +3,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
 >
 
 
@@ -23,8 +25,16 @@
     <p>PG5100 Exam Example</p>
     <hr/>
     <ui:insert name="login">
-        <p>Not logged in</p>
-        <h:commandButton value="Log In" action="#{userController.loggedIn}" id="loginButton"/>
+        <c:choose>
+            <c:when test="#{userController.loggedIn}">
+                <p>Hi #{userController.activeUser.username}!</p>
+                <h:commandButton value="Log out" action="#{userController.logOut}" id="logoutButton"/>
+            </c:when>
+            <c:otherwise>
+                <p>Not logged in</p>
+                <h:button value="Log In" outcome="login.jsp"  id="loginButton"/>
+            </c:otherwise>
+        </c:choose>
     </ui:insert>
 
 
@@ -41,5 +51,6 @@
     <p>
         Code available at: <a href="https://github.com/joarkosberg/PG5100-JEE-Exercise">GitHub</a>
     </p>
+    <hr/>
 </h:body>
 </html>
