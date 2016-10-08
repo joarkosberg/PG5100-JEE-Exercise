@@ -34,4 +34,18 @@ public class UserEJBTest {
         userEJB.createNewUser("AA", "AAA", "A", null, "AA", CountryName.Denmark);
         assertEquals(orginalUserCount + 1, userEJB.countAllUsers());
     }
+
+    @Test
+    public void testLoginWithoutUser() {
+        boolean logedIn = userEJB.login("Brukernavn", "Password");
+        assertFalse(logedIn);
+    }
+
+    @Test
+    public void testLoginWithValidUser(){
+        String password = "AAA";
+        User user = userEJB.createNewUser("AAA", password, "AAA", null, "AAA", CountryName.Albania);
+        boolean logedIn = userEJB.login(user.getUsername(), password);
+        assertTrue(logedIn);
+    }
 }

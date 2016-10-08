@@ -42,4 +42,17 @@ public class EventEJBTest {
         userEJB.addEvent(user.getUsername(), event.getId());
         assertEquals(1, userEJB.findUser(user.getUsername()).getEvents().size());
     }
+
+    @Test
+    public void testGetEventsByCountry(){
+        User user = userEJB.createNewUser("AAA", "AAA", "A", null, "AA", CountryName.Denmark);
+        eventEJB.createNewEvent("AA", CountryName.China, "Location", "Descrtipion", user);
+        eventEJB.createNewEvent("AA", CountryName.China, "Location", "Descrtipion", user);
+        eventEJB.createNewEvent("AA", CountryName.France, "Location", "Descrtipion", user);
+        eventEJB.createNewEvent("AA", CountryName.China, "Location", "Descrtipion", user);
+        eventEJB.createNewEvent("AA", CountryName.China, "Location", "Descrtipion", user);
+
+        assertEquals(4, eventEJB.getEventsByCountry(CountryName.China).size());
+        assertEquals(1, eventEJB.getEventsByCountry(CountryName.France).size());
+    }
 }
