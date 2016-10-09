@@ -3,7 +3,7 @@ package controller;
 import ejb.UserEJB;
 import entity.User;
 
-import javax.faces.bean.SessionScoped;
+import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
@@ -23,13 +23,23 @@ public class UserController implements Serializable {
     public UserController(){
     }
 
-    public boolean isLoggedIn(){
-        return activeUser != null;
+    public String login(){
+        boolean valid = userEJB.login(formUsername, formPassword);
+        if(valid){
+            activeUser = userEJB.findUser(formUsername);
+            return "home.jsf";
+        } else {
+            return "login.jsf";
+        }
     }
 
     public String logOut(){
         activeUser = null;
         return "home.jsf";
+    }
+
+    public boolean isLoggedIn(){
+        return activeUser != null;
     }
 
     public String getFormUsername() {

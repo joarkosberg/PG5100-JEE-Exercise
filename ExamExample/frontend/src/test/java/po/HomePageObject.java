@@ -1,5 +1,6 @@
 package po;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
 public class HomePageObject extends PageObject {
@@ -17,7 +18,9 @@ public class HomePageObject extends PageObject {
         waitForPageToLoad();
     }
 
-    public void logout(){
-
+    public LoginPageObject toLoginPage(){
+        getDriver().findElement(By.id("loginButton")).click();
+        waitForPageToLoad();
+        return new LoginPageObject(getDriver());
     }
 }

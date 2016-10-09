@@ -43,4 +43,10 @@ public abstract class PageObject {
             waitForPageToLoad();
         }
     }
+
+    public void setText(String id, String text){
+        WebElement element = driver.findElement(By.id(id));
+        element.clear();
+        element.sendKeys(text);
+    }
 }
