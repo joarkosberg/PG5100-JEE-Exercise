@@ -4,7 +4,6 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
-      xmlns:f="http://xmlns.jcp.org/jsf/core"
 >
 
 
@@ -27,8 +26,10 @@
     <ui:insert name="login">
         <c:choose>
             <c:when test="#{userController.loggedIn}">
-                <p>Hi #{userController.activeUser.username}!</p>
-                <h:commandButton value="Log out" action="#{userController.logOut}" id="logoutButton"/>
+                <h:form id="logoutForm">
+                    <p>Hi #{userController.activeUser.username}!</p>
+                    <h:commandButton value="Log out" action="#{userController.logout}" id="logoutButton"/>
+                </h:form>
             </c:when>
             <c:otherwise>
                 <p>Not logged in</p>
