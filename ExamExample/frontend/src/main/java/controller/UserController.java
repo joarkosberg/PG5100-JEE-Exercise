@@ -54,8 +54,12 @@ public class UserController implements Serializable {
         } catch (IllegalArgumentException ex){ //Not valid country
             return "newUser.jsf";
         }
-        User user = userEJB.createNewUser(formUsername, formPassword, formFirstName, formMiddleName,
-                formLastName, countryName);
+
+        User user = null;
+        try {
+            user = userEJB.createNewUser(formUsername, formPassword, formFirstName, formMiddleName,
+                    formLastName, countryName);
+        } catch(Exception e){}
 
         if(user != null){
             activeUser = user;
