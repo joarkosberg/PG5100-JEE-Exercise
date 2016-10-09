@@ -48,6 +48,11 @@
                 <artifactId>commons-codec</artifactId>
                 <version>1.6</version>
             </dependency>
+            <dependency>
+                <groupId>org.jboss.resteasy</groupId>
+                <artifactId>resteasy-client</artifactId>
+                <version>3.0.16.Final</version>
+            </dependency>
 
 
             <!-- JPA / Hibernate / Database -->

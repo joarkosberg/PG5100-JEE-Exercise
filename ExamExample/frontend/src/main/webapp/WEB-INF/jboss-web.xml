@@ -1,4 +1,4 @@
 <?xml version="1.0" ?>
 <jboss-web>
-    <context-root>/eventlist</context-root>
+    <context-root>/exam_example</context-root>
 </jboss-web>
