@@ -5,7 +5,7 @@ import validation.Country;
 import validation.NotEmpty;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,8 +25,7 @@ public class User {
     public static final String COUNT_ALL_USERS = "COUNT_ALL_USERS";
 
     @Id
-    //Regex here {}
-    @Size(min = 2, max = 32)
+    @Pattern(regexp = "[A-Za-z0-9]{2,32}")
     private String username;
 
     @NotEmpty

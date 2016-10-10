@@ -8,9 +8,11 @@ import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 
 import javax.ejb.EJB;
+import javax.ejb.EJBException;
 
 import static org.junit.Assert.*;
 
@@ -31,21 +33,44 @@ public class UserEJBTest {
     @Test
     public void testCreateNewUser(){
         long originalUserCount = userEJB.countAllUsers();
-        userEJB.createNewUser("AA", "AAA", "A", null, "AA", CountryName.Denmark);
+        userEJB.createNewUser("AA", "AAA", "AAA", null, "AAA", CountryName.Denmark);
         assertEquals(originalUserCount + 1, userEJB.countAllUsers());
     }
 
     @Test
     public void testLoginWithoutUser() {
-        boolean logedIn = userEJB.login("Brukernavn", "Password");
-        assertFalse(logedIn);
+        boolean loggedIn = userEJB.login("Brukernavn", "Password");
+        assertFalse(loggedIn);
     }
 
     @Test
     public void testLoginWithValidUser(){
         String password = "AAA";
-        User user = userEJB.createNewUser("AAA", password, "AAA", null, "AAA", CountryName.Albania);
-        boolean logedIn = userEJB.login(user.getUsername(), password);
-        assertTrue(logedIn);
+        User user = userEJB.createNewUser("BB", password, "AAA", null, "AAA", CountryName.Albania);
+        boolean loggedIn = userEJB.login(user.getUsername(), password);
+        assertTrue(loggedIn);
+    }
+
+    @Test(expected = EJBException.class)
+    public void testCreateNewUserWithEmptyField(){
+        userEJB.createNewUser("CC", "AAA", "", null, "AAA", CountryName.Albania);
+    }
+
+    /* Why no work ?
+    @Test(expected = EJBException.class)
+    public void testCreateNewUserWithFieldFilledBySpaces(){
+        String name = "       ";
+        User user = userEJB.createNewUser("DD", "AAA", name, null, "AAA", CountryName.Albania);
+    }
+    */
+
+    @Test(expected = EJBException.class)
+    public void testCreateNewUserWithUserNameCharactersInvalid(){
+        userEJB.createNewUser("!!DD", "AAA", "AAA", null, "AAA", CountryName.Albania);
+    }
+
+    @Test(expected = EJBException.class)
+    public void testCreateNewUserWithTooShortUsername(){
+        userEJB.createNewUser("A", "AAA", "AAA", null, "AAA", CountryName.Albania);
     }
 }
