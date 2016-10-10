@@ -42,7 +42,6 @@ public class UserEJB {
         user.setLast_name(last_name);
         user.setCountry(countryName);
 
-        //Hash Password
         String salt = getSalt();
         user.setSalt(salt);
         String hash = computeHash(password, salt);
@@ -96,7 +95,7 @@ public class UserEJB {
     protected String getSalt(){
         SecureRandom random = new SecureRandom();
         int bitsPerChar = 5;
-        int twoPowerOfBits = 32; // 2^5
+        int twoPowerOfBits = 32;
         int n = 26;
         assert n * bitsPerChar >= 128;
 

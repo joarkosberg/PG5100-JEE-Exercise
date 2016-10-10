@@ -30,9 +30,9 @@ public class UserEJBTest {
 
     @Test
     public void testCreateNewUser(){
-        long orginalUserCount = userEJB.countAllUsers();
+        long originalUserCount = userEJB.countAllUsers();
         userEJB.createNewUser("AA", "AAA", "A", null, "AA", CountryName.Denmark);
-        assertEquals(orginalUserCount + 1, userEJB.countAllUsers());
+        assertEquals(originalUserCount + 1, userEJB.countAllUsers());
     }
 
     @Test

@@ -29,7 +29,7 @@ public class EventEJB {
                                              @NotNull User author){
         User u = em.find(User.class, author.getUsername());
         if(u == null){
-            throw new IllegalArgumentException("No user with username: "+u);
+            throw new IllegalArgumentException("No user with username: " + u);
         }
 
         Event event = new Event();

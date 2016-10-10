@@ -1,6 +1,8 @@
 package entity;
 
 import enums.CountryName;
+import validation.Country;
+import validation.NotEmpty;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -32,23 +34,26 @@ public class Event {
     public static final String COUNT_ALL_EVENTS = "COUNT_ALL_EVENTS";
     public static final String DELETE_EVENT = "DELETE_EVENT";
 
-    @Id @GeneratedValue
+    @Id
+    @GeneratedValue
     private long id;
 
-    @NotNull
-    @Size(min = 0, max = 50)
+    @NotEmpty
+    @Size(min = 1, max = 50)
     private String title;
 
-    @NotNull
+    @Country
     private CountryName country;
 
-    @Size(min = 0, max = 80)
+    @NotEmpty
+    @Size(min = 1, max = 90)
     private String location;
 
-    @Size(min = 0, max = 256)
+    @NotEmpty
+    @Size(min = 2, max = 512)
     private String description;
 
-    @NotNull
+    @NotEmpty
     @Size(min = 1, max = 32)
     private String author;
 

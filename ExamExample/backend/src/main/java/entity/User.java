@@ -1,6 +1,8 @@
 package entity;
 
 import enums.CountryName;
+import validation.Country;
+import validation.NotEmpty;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -27,26 +29,25 @@ public class User {
     @Size(min = 2, max = 32)
     private String username;
 
-    @NotNull
+    @NotEmpty
     @Size(min = 1, max = 28)
     private String first_name;
 
-    @Size(min = 1, max = 28)
+    @Size(max = 28)
     private String middle_name;
 
-    @NotNull
+    @NotEmpty
     @Size(min = 1, max = 28)
     private String last_name;
 
-    @NotNull
-    //NotEmpty
+    @NotEmpty
     private String hash;
 
-    @NotNull
+    @NotEmpty
     @Size(max = 26)
     private String salt;
 
-    @NotNull
+    @Country
     @Enumerated(EnumType.STRING)
     private CountryName country;
 
