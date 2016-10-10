@@ -1,6 +1,6 @@
 package no.westerdals.frontend.controller;
 
-import ejb.EventEJB;
+import no.westerdals.backend.ejb.EventEJB;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;

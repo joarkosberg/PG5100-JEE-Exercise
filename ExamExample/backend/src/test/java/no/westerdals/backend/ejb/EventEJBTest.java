@@ -3,8 +3,6 @@ package no.westerdals.backend.ejb;
 import no.westerdals.backend.entity.Event;
 import no.westerdals.backend.entity.User;
 import no.westerdals.backend.enums.CountryName;
-import no.westerdals.backend.ejb.EventEJB;
-import no.westerdals.backend.ejb.UserEJB;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
@@ -21,7 +19,7 @@ public class EventEJBTest {
     @Deployment
     public static JavaArchive createDeployment() {
         return ShrinkWrap.create(JavaArchive.class)
-                .addClasses(UserEJB.class, EventEJB.class, CountryName.class, User.class, Event.class)
+                .addPackages(true, "no.westerdals.backend")
                 .addPackages(true, "org.apache.commons.codec")
                 .addAsResource("META-INF/persistence.xml");
     }

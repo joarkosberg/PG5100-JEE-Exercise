@@ -1,8 +1,8 @@
 package no.westerdals.frontend.controller;
 
-import ejb.UserEJB;
-import entity.User;
-import enums.CountryName;
+import no.westerdals.backend.ejb.UserEJB;
+import no.westerdals.backend.entity.User;
+import no.westerdals.backend.enums.CountryName;
 
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;

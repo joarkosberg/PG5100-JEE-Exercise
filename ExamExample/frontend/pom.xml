@@ -18,7 +18,7 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.joarkosberg</groupId>
+            <groupId>no.westerdals</groupId>
             <artifactId>backend</artifactId>
             <version>${project.version}</version>
         </dependency>

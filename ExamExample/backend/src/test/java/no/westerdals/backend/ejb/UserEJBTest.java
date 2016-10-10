@@ -54,13 +54,11 @@ public class UserEJBTest {
         userEJB.createNewUser("CC", "AAA", "", null, "AAA", CountryName.Albania);
     }
 
-    /* Why no work ?
     @Test(expected = EJBException.class)
     public void testCreateNewUserWithFieldFilledBySpaces(){
         String name = "       ";
         User user = userEJB.createNewUser("DD", "AAA", name, null, "AAA", CountryName.Albania);
     }
-    */
 
     @Test(expected = EJBException.class)
     public void testCreateNewUserWithUserNameCharactersInvalid(){
