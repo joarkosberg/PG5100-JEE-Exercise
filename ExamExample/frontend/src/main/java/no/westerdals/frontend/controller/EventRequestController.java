@@ -13,7 +13,7 @@ import java.util.List;
 
 @Named
 @RequestScoped
-public class EventController implements Serializable {
+public class EventRequestController implements Serializable {
 
     @Inject
     private EventEJB eventEJB;
@@ -25,7 +25,7 @@ public class EventController implements Serializable {
     private String formLocation;
     private String formDescription;
 
-    public EventController(){
+    public EventRequestController(){
     }
 
     public String createNewEvent(){
@@ -53,12 +53,12 @@ public class EventController implements Serializable {
         return Arrays.stream(CountryName.values()).map(Enum::name).toArray(String[]::new);
     }
 
-    public boolean isAnyEventsMade(){
-        return eventEJB.countAllPosts() > 0;
-    }
-
     public List<Event> getAllEvents(){
         return eventEJB.getAllEvents();
+    }
+
+    public List<Event> getAllEventsByCountry(CountryName country){
+        return eventEJB.getEventsByCountry(country);
     }
 
     public String getFormTitle() {

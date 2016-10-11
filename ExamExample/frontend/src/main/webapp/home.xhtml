@@ -3,11 +3,14 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
 >
 
 <ui:composition template="layout.xhtml">
     <ui:define name="title">Event List Home Page</ui:define>
+
+
 
     <ui:define name="content">
         <c:if test="#{userController.loggedIn}">
@@ -15,23 +18,47 @@
         </c:if>
 
 
+
         <h2>Future Events</h2>
         <c:if test="#{userController.loggedIn}">
             <h:form id="showOnlyOwnCountryForm">
-                <h:selectBooleanCheckbox value="#{userController.formCountryName}"
-                                         id="showOnlyOwnCountry"/>
+                <h:selectBooleanCheckbox value="#{eventSessionController.showOnlyOwnCountry}"
+                                         id="showOnlyOwnCountry" onclick="submit()"/>
                 <h:outputLabel for="showOnlyOwnCountry" value="Only #{userController.formCountryName}"/>
             </h:form>
         </c:if>
 
+
+
         <c:choose>
-            <c:when test="#{eventController.anyEventsMade}">
-
+            <c:when test="#{eventSessionController.anyEventsMade}">
                 <!-- Show Events -->
-                <c:forEach var="event" items="#{eventController.allEvents}">
-                    <h:outputText value="#{event.title}"/>
-                </c:forEach>
-
+                <h:dataTable value="#{eventSessionController.events}" var="event" border="2" id="eventTable">
+                    <h:column>
+                        <f:facet name="header">Country</f:facet>
+                        <h:outputText value="#{event.country}"/>
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Title</f:facet>
+                        <h:outputText value="#{event.title}"/>
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Location</f:facet>
+                        <h:outputText value="#{event.location}"/>
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Participants</f:facet>
+                        <h:outputText value="0 participants"/>
+                    </h:column>
+                    <c:if test="#{userController.loggedIn}">
+                        <h:column>
+                            <f:facet name="header">Going</f:facet>
+                            <h:form>
+                                <h:selectBooleanCheckbox/>
+                            </h:form>
+                        </h:column>
+                    </c:if>
+                </h:dataTable>
             </c:when>
             <c:otherwise>
                 <p>No events yet :( Be the first to create one!</p>

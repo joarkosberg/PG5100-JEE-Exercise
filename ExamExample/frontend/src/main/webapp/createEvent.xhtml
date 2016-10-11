@@ -14,21 +14,21 @@
         <h:form id="newEventForm">
             <h:panelGrid columns="2">
                 <h:outputLabel value="Title : "/>
-                <h:inputText value="#{eventController.formTitle}" id="title"/>
+                <h:inputText value="#{eventRequestController.formTitle}" id="title"/>
 
                 <h:outputLabel value="Country : "/>
-                <h:selectOneMenu value="#{eventController.formCountryName}" id="countryName">
-                    <f:selectItems value="#{eventController.countryNames}" />
+                <h:selectOneMenu value="#{eventRequestController.formCountryName}" id="countryName">
+                    <f:selectItems value="#{eventRequestController.countryNames}" />
                 </h:selectOneMenu>
 
                 <h:outputLabel value="Location : "/>
-                <h:inputText value="#{eventController.formLocation}" id="location"/>
+                <h:inputText value="#{eventRequestController.formLocation}" id="location"/>
 
                 <h:outputLabel value="Description : "/>
-                <h:inputTextarea value="#{eventController.formDescription}" id="description"/>
+                <h:inputTextarea value="#{eventRequestController.formDescription}" id="description"/>
             </h:panelGrid>
 
-            <h:commandButton value="Create" action="#{eventController.createNewEvent}" id="create"/>
+            <h:commandButton value="Create" action="#{eventRequestController.createNewEvent}" id="create"/>
             <h:button value="Cancel" outcome="home" id="cancel"/>
         </h:form>
     </ui:define>
