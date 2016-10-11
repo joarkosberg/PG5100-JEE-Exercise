@@ -26,7 +26,12 @@
 
         <c:choose>
             <c:when test="#{eventController.anyEventsMade}">
+
                 <!-- Show Events -->
+                <c:forEach var="event" items="#{eventController.allEvents}">
+                    <h:outputText value="#{event.title}"/>
+                </c:forEach>
+
             </c:when>
             <c:otherwise>
                 <p>No events yet :( Be the first to create one!</p>

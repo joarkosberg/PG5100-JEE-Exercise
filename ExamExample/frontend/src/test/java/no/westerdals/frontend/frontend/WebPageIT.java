@@ -42,8 +42,8 @@ public class WebPageIT extends WebTestBase{
 
         String username = "TotalyNotValid";
         String password = "SuchValidDoe";
-        loginPageObject.login(username, password);
-        assertNull(homePageObject);
+        HomePageObject home = loginPageObject.login(username, password);
+        assertNull(home);
         assertTrue(loginPageObject.isOnPage());
     }
 
@@ -55,8 +55,8 @@ public class WebPageIT extends WebTestBase{
         NewUserPageObject newUserPageObject = loginPageObject.toNewUserPage();
         assertTrue(newUserPageObject.isOnPage());
 
-        newUserPageObject.createNewUser("Username", "Pass1", "Pass2");
-        assertNull(homePageObject);
+        HomePageObject home = newUserPageObject.createNewUser("Username", "Pass1", "Pass2");
+        assertNull(home);
         assertTrue(newUserPageObject.isOnPage());
     }
 
@@ -70,7 +70,6 @@ public class WebPageIT extends WebTestBase{
 
         String username = "Username";
         newUserPageObject.createNewUser(username, "Pass", "Pass");
-        assertNotNull(homePageObject); //Avoid exception if null
         assertTrue(homePageObject.isOnPage());
         assertTrue(homePageObject.isLoggedIn(username));
     }
@@ -86,7 +85,6 @@ public class WebPageIT extends WebTestBase{
         String username = "user";
         String password = "pass";
         newUserPageObject.createNewUser(username, password, password);
-        assertNotNull(homePageObject); //Avoid exception if null
         assertTrue(homePageObject.isOnPage());
         assertTrue(homePageObject.isLoggedIn(username));
 
