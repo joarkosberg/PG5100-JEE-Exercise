@@ -32,12 +32,19 @@ public abstract class PageObject {
     }
 
     public boolean isLoggedIn(){
-        List<WebElement> logout = driver.findElements(By.id("logoutButton"));
+        List<WebElement> logout = driver.findElements(By.id("logoutForm"));
         return !logout.isEmpty();
     }
 
+    public boolean isLoggedIn(String username){
+        if(!isLoggedIn()){
+            return false;
+        }
+        return driver.findElement(By.id("logoutForm:welcomeMessage")).getText().contains(username);
+    }
+
     public void logout(){
-        List<WebElement> logout = driver.findElements(By.id("logoutButton"));
+        List<WebElement> logout = driver.findElements(By.id("logoutForm:logoutButton"));
         if(! logout.isEmpty()){
             logout.get(0).click();
             waitForPageToLoad();

@@ -14,6 +14,12 @@ public class LoginPageObject extends PageObject {
         return getDriver().getTitle().contains("Login");
     }
 
+    public NewUserPageObject toNewUserPage(){
+        getDriver().findElement(By.id("loginForm:create")).click();
+        waitForPageToLoad();
+        return new NewUserPageObject(getDriver());
+    }
+
     public HomePageObject login(String username, String password){
         setText("loginForm:username", username);
         setText("loginForm:password", password);

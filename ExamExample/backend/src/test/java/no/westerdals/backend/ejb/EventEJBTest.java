@@ -45,7 +45,7 @@ public class EventEJBTest {
 
     @Test
     public void testGetEventsByCountry(){
-        User user = userEJB.createNewUser("AAA", "AAA", "A", null, "AA", CountryName.Denmark);
+        User user = userEJB.createNewUser("BB", "AAA", "A", null, "AA", CountryName.Denmark);
         eventEJB.createNewEvent("AA", CountryName.China, "Location", "Descrtipion", user);
         eventEJB.createNewEvent("AA", CountryName.China, "Location", "Descrtipion", user);
         eventEJB.createNewEvent("AA", CountryName.France, "Location", "Descrtipion", user);

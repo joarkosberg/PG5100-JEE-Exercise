@@ -23,12 +23,12 @@
         <c:choose>
             <c:when test="#{userController.loggedIn}">
                 <h:form id="logoutForm">
-                    <p>Hi #{userController.activeUser.username}!</p>
+                    <h:outputLabel value="Hi #{userController.activeUser.username}!"  id="welcomeMessage" />
                     <h:commandButton value="Log out" action="#{userController.logout}" id="logoutButton"/>
                 </h:form>
             </c:when>
             <c:otherwise>
-                <p>Not logged in</p>
+                <h:outputText value="Not logged in"/>
                 <h:button value="Log In" outcome="login.jsp"  id="loginButton"/>
             </c:otherwise>
         </c:choose>
