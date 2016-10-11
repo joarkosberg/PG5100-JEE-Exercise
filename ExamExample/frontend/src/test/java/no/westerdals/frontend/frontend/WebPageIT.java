@@ -1,5 +1,6 @@
 package no.westerdals.frontend.frontend;
 
+import no.westerdals.backend.enums.CountryName;
 import no.westerdals.frontend.controller.EventRequestController;
 import no.westerdals.frontend.po.CreateEventPageObject;
 import no.westerdals.frontend.po.HomePageObject;
@@ -100,20 +101,43 @@ public class WebPageIT extends WebTestBase{
         CreateEventPageObject createEventPageObject = homePageObject.toCreateEventPage();
         assertTrue(createEventPageObject.isOnPage());
 
-        createEventPageObject.createNewEvent();
+        createEventPageObject.createNewEvent(CountryName.China.toString());
         assertTrue(homePageObject.isOnPage());
         assertEquals(orgNumberOfEvents + 1, homePageObject.getCountOfEvents());
     }
 
     @Test
     public void testCreateEventInDifferentCountries(){
+        //Create user
         String username = "bbb";
         String password = "bbb";
         createAndLoginUser(username, password, homePageObject);
+
+        //Count original amount of events
+        int originalAmount = homePageObject.getCountOfEvents();
+
+        //Create events
+        createNewEvent(CountryName.China.toString(), homePageObject);
+        createNewEvent(CountryName.France.toString(), homePageObject);
+
+        //Check amount of events with and without toggle
+        assertEquals(originalAmount + 1, homePageObject.getCountOfEvents());
+        homePageObject.toggleOnlyMyCountry();
+        assertEquals(originalAmount + 2, homePageObject.getCountOfEvents());
     }
 
     @Test
     public void testCreateEventsFromDifferentUsers(){
+        createAndLoginUser("ccc", "ccc", homePageObject);
 
+        int originalAmount = homePageObject.getCountOfEvents();
+
+        createNewEvent(CountryName.China.toString(), homePageObject);
+        homePageObject.logout();
+
+        createAndLoginUser("ddd", "ddd", homePageObject);
+        createNewEvent(CountryName.China.toString(), homePageObject);
+
+        assertEquals(originalAmount + 2, homePageObject.getCountOfEvents());
     }
 }

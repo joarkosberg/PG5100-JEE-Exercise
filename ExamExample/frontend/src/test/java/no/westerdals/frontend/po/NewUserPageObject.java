@@ -1,5 +1,6 @@
 package no.westerdals.frontend.po;
 
+import no.westerdals.backend.enums.CountryName;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -25,7 +26,8 @@ public class NewUserPageObject extends PageObject {
 
         //Select Country
         try {
-            new Select(getDriver().findElement(By.id("registerForm:countryName"))).selectByVisibleText(COUNTRY);
+            new Select(getDriver().findElement(By.id("registerForm:countryName")))
+                    .selectByVisibleText(CountryName.China.toString());
         } catch (Exception e){
             return null;
         }

@@ -29,4 +29,9 @@ public class HomePageObject extends PageObject {
         waitForPageToLoad();
         return new CreateEventPageObject(getDriver());
     }
+
+    public boolean toggleOnlyMyCountry(){
+        getDriver().findElement(By.id("showOnlyOwnCountryForm:showOnlyOwnCountry")).click();
+        return getDriver().findElement(By.id("showOnlyOwnCountryForm:showOnlyOwnCountry")).isSelected();
+    }
 }

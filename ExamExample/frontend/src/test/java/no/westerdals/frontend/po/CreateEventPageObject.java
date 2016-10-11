@@ -15,14 +15,14 @@ public class CreateEventPageObject extends PageObject {
         return getDriver().getTitle().contains("Create New Event");
     }
 
-    public HomePageObject createNewEvent (){
+    public HomePageObject createNewEvent (String country){
         setText("newEventForm:title", "Tittel");
         setText("newEventForm:location", "Location");
         setText("newEventForm:description", "Description");
 
         //Select Country
         try {
-            new Select(getDriver().findElement(By.id("newEventForm:countryName"))).selectByVisibleText(COUNTRY);
+            new Select(getDriver().findElement(By.id("newEventForm:countryName"))).selectByVisibleText(country);
         } catch (Exception e) {
             return null;
         }

@@ -1,5 +1,6 @@
 package no.westerdals.frontend.frontend;
 
+import no.westerdals.frontend.po.CreateEventPageObject;
 import no.westerdals.frontend.po.HomePageObject;
 import no.westerdals.frontend.po.LoginPageObject;
 import no.westerdals.frontend.po.NewUserPageObject;
@@ -8,16 +9,12 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.remote.DesiredCapabilities;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 import static org.junit.Assume.assumeTrue;
 
 public abstract class WebTestBase {
@@ -74,16 +71,6 @@ public abstract class WebTestBase {
         return new ChromeDriver();
     }
 
-    private static WebDriver getFirefoxDriver(){
-        setupDriverExecutable("geckodriver", "webdriver.gecko.driver");
-
-        DesiredCapabilities desiredCapabilities = DesiredCapabilities.firefox();
-        desiredCapabilities.setCapability("marionette", true);
-        desiredCapabilities.setJavascriptEnabled(true);
-
-        return  new FirefoxDriver(desiredCapabilities);
-    }
-
     protected WebDriver getDriver(){
         return driver;
     }
@@ -116,5 +103,12 @@ public abstract class WebTestBase {
         loginPageObject.login(username, password);
         assertTrue(home.isOnPage());
         assertTrue(home.isLoggedIn(username));
+    }
+
+    protected void createNewEvent(String country, HomePageObject home){
+        CreateEventPageObject createEventPageObject = home.toCreateEventPage();
+        assertTrue(createEventPageObject.isOnPage());
+        createEventPageObject.createNewEvent(country);
+        assertTrue(home.isOnPage());
     }
 }

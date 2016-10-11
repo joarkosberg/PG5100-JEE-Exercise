@@ -12,7 +12,6 @@ import java.util.List;
 
 public abstract class PageObject {
     private final WebDriver driver;
-    protected final String COUNTRY = "China";
     public abstract boolean isOnPage();
 
     public PageObject(WebDriver driver) {
