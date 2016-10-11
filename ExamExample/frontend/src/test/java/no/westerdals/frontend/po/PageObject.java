@@ -5,12 +5,14 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.List;
 
 public abstract class PageObject {
     private final WebDriver driver;
+    protected final String COUNTRY = "China";
     public abstract boolean isOnPage();
 
     public PageObject(WebDriver driver) {
@@ -41,6 +43,10 @@ public abstract class PageObject {
             return false;
         }
         return driver.findElement(By.id("logoutForm:welcomeMessage")).getText().contains(username);
+    }
+
+    public int getCountOfEvents(){
+        return driver.findElements(By.xpath("//table[@id='eventTable']/tbody/tr")).size();
     }
 
     public void logout(){

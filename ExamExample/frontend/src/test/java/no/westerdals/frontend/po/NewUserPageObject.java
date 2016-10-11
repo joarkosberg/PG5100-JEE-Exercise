@@ -25,7 +25,7 @@ public class NewUserPageObject extends PageObject {
 
         //Select Country
         try {
-            new Select(getDriver().findElement(By.id("registerForm:countryName"))).selectByVisibleText("China");
+            new Select(getDriver().findElement(By.id("registerForm:countryName"))).selectByVisibleText(COUNTRY);
         } catch (Exception e){
             return null;
         }

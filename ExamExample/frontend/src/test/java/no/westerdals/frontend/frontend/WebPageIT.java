@@ -1,5 +1,7 @@
 package no.westerdals.frontend.frontend;
 
+import no.westerdals.frontend.controller.EventRequestController;
+import no.westerdals.frontend.po.CreateEventPageObject;
 import no.westerdals.frontend.po.HomePageObject;
 import no.westerdals.frontend.po.LoginPageObject;
 import no.westerdals.frontend.po.NewUserPageObject;
@@ -18,9 +20,7 @@ public class WebPageIT extends WebTestBase{
         assertTrue(JBossUtil.isJBossUpAndRunning());
         homePageObject = new HomePageObject(getDriver());
         homePageObject.toStartingPage();
-        homePageObject.logout();
-        assertTrue(homePageObject.isOnPage());
-        assertFalse(homePageObject.isLoggedIn());
+        logout(homePageObject);
     }
 
     @Test
@@ -76,26 +76,44 @@ public class WebPageIT extends WebTestBase{
 
     @Test
     public void testLogin(){
-        LoginPageObject loginPageObject = homePageObject.toLoginPage();
-        assertTrue(loginPageObject.isOnPage());
-
-        NewUserPageObject newUserPageObject = loginPageObject.toNewUserPage();
-        assertTrue(newUserPageObject.isOnPage());
-
         String username = "user";
         String password = "pass";
-        newUserPageObject.createNewUser(username, password, password);
-        assertTrue(homePageObject.isOnPage());
-        assertTrue(homePageObject.isLoggedIn(username));
 
-        homePageObject.logout();
-        assertTrue(homePageObject.isOnPage());
-        assertFalse(homePageObject.isLoggedIn());
+        createAndLoginUser(username, password, homePageObject);
+        logout(homePageObject);
 
-        homePageObject.toLoginPage();
+        LoginPageObject loginPageObject = homePageObject.toLoginPage();
         assertTrue(loginPageObject.isOnPage());
         loginPageObject.login(username, password);
         assertTrue(homePageObject.isOnPage());
         assertTrue(homePageObject.isLoggedIn(username));
+    }
+
+    @Test
+    public void testCreateOneEvent(){
+        String username = "aaa";
+        String password = "aaa";
+        createAndLoginUser(username, password, homePageObject);
+
+        int orgNumberOfEvents = homePageObject.getCountOfEvents();
+
+        CreateEventPageObject createEventPageObject = homePageObject.toCreateEventPage();
+        assertTrue(createEventPageObject.isOnPage());
+
+        createEventPageObject.createNewEvent();
+        assertTrue(homePageObject.isOnPage());
+        assertEquals(orgNumberOfEvents + 1, homePageObject.getCountOfEvents());
+    }
+
+    @Test
+    public void testCreateEventInDifferentCountries(){
+        String username = "bbb";
+        String password = "bbb";
+        createAndLoginUser(username, password, homePageObject);
+    }
+
+    @Test
+    public void testCreateEventsFromDifferentUsers(){
+
     }
 }

@@ -1,5 +1,8 @@
 package no.westerdals.frontend.frontend;
 
+import no.westerdals.frontend.po.HomePageObject;
+import no.westerdals.frontend.po.LoginPageObject;
+import no.westerdals.frontend.po.NewUserPageObject;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -11,6 +14,9 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import static org.junit.Assume.assumeTrue;
 
@@ -84,5 +90,31 @@ public abstract class WebTestBase {
 
     protected String getPageSource(){
         return driver.getPageSource();
+    }
+
+    protected void createAndLoginUser(String username, String password, HomePageObject home){
+        LoginPageObject loginPageObject = home.toLoginPage();
+        assertTrue(loginPageObject.isOnPage());
+
+        NewUserPageObject newUserPageObject = loginPageObject.toNewUserPage();
+        assertTrue(newUserPageObject.isOnPage());
+
+        newUserPageObject.createNewUser(username, password, password);
+        assertTrue(home.isOnPage());
+        assertTrue(home.isLoggedIn(username));
+    }
+
+    protected void logout(HomePageObject home){
+        home.logout();
+        assertTrue(home.isOnPage());
+        assertFalse(home.isLoggedIn());
+    }
+
+    protected void login(String username, String password, HomePageObject home){
+        LoginPageObject loginPageObject = home.toLoginPage();
+        assertTrue(loginPageObject.isOnPage());
+        loginPageObject.login(username, password);
+        assertTrue(home.isOnPage());
+        assertTrue(home.isLoggedIn(username));
     }
 }

@@ -23,4 +23,10 @@ public class HomePageObject extends PageObject {
         waitForPageToLoad();
         return new LoginPageObject(getDriver());
     }
+
+    public CreateEventPageObject toCreateEventPage(){
+        getDriver().findElement(By.id("eventButton")).click();
+        waitForPageToLoad();
+        return new CreateEventPageObject(getDriver());
+    }
 }

@@ -72,4 +72,6 @@ public class EventEJBTest {
         User user = userEJB.createNewUser("DD", "AAA", "A", null, "AAA", CountryName.Albania);
         eventEJB.createNewEvent("", CountryName.China, "Location", "Descrtipion", user);
     }
+
+
 }
