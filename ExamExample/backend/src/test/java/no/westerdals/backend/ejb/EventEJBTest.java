@@ -11,6 +11,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import javax.ejb.EJB;
+import javax.ejb.EJBException;
 
 import static org.junit.Assert.assertEquals;
 
@@ -32,11 +33,11 @@ public class EventEJBTest {
 
     @Test
     public void testCreateNewEvent(){
-        long orgCount = eventEJB.countAllPosts();
+        long orgCount = eventEJB.countAllEvents();
         User user = userEJB.createNewUser("AA", "AAA", "A", null, "AA", CountryName.Denmark);
         Event event = eventEJB.createNewEvent("Title", CountryName.Denmark, "Location", "Description", user);
 
-        assertEquals(orgCount + 1, eventEJB.countAllPosts());
+        assertEquals(orgCount + 1, eventEJB.countAllEvents());
         assertEquals(event.getAuthor(), user.getUsername());
 
         userEJB.addEvent(user.getUsername(), event.getId());
@@ -54,5 +55,21 @@ public class EventEJBTest {
 
         assertEquals(4, eventEJB.getEventsByCountry(CountryName.China).size());
         assertEquals(1, eventEJB.getEventsByCountry(CountryName.France).size());
+    }
+
+    @Test
+    public void testDeletePost(){
+        User user = userEJB.createNewUser("CC", "AAA", "A", null, "AA", CountryName.Denmark);
+        Event event = eventEJB.createNewEvent("AA", CountryName.China, "Location", "Descrtipion", user);
+
+        long orginalCount= eventEJB.countAllEvents();
+        eventEJB.deleteEvent(event);
+        assertEquals(orginalCount - 1, eventEJB.countAllEvents());
+    }
+
+    @Test(expected = EJBException.class)
+    public void testCreateNewEventWithEmptyField(){
+        User user = userEJB.createNewUser("DD", "AAA", "A", null, "AAA", CountryName.Albania);
+        eventEJB.createNewEvent("", CountryName.China, "Location", "Descrtipion", user);
     }
 }

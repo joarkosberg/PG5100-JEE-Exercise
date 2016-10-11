@@ -53,15 +53,15 @@ public class EventEJB {
         return em.createNamedQuery(Event.GET_EVENTS_BY_COUNTRY).setParameter("country",country).getResultList();
     }
 
-    public long countAllPosts(){
+    public long countAllEvents(){
         Query query = em.createNamedQuery(Event.COUNT_ALL_EVENTS);
         List<Long> r = query.getResultList();
         return r.get(0);
     }
 
-    public void deletePost(long id){
+    public void deleteEvent(Event event){
         Query query = em.createNamedQuery(Event.DELETE_EVENT);
-        query.setParameter("id", id);
+        query.setParameter("id", event.getId());
         query.executeUpdate();
     }
 }

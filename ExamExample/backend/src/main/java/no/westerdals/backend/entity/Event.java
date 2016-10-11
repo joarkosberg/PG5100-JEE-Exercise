@@ -38,14 +38,15 @@ public class Event {
     private long id;
 
     @NotEmpty
-    @Size(min = 1, max = 50)
+    @Size(min = 1, max = 64)
     private String title;
 
     @Country
+    @Enumerated(EnumType.STRING)
     private CountryName country;
 
     @NotEmpty
-    @Size(min = 1, max = 90)
+    @Size(min = 1, max = 128)
     private String location;
 
     @NotEmpty
