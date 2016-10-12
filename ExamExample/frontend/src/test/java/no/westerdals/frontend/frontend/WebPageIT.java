@@ -124,6 +124,7 @@ public class WebPageIT extends WebTestBase{
         assertEquals(originalAmount + 1, homePageObject.getCountOfEvents());
         homePageObject.toggleOnlyMyCountry();
         assertEquals(originalAmount + 2, homePageObject.getCountOfEvents());
+        homePageObject.toggleOnlyMyCountry(); //Turn it on again so session has it on for rest of tests.
     }
 
     @Test
