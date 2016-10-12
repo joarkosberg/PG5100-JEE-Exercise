@@ -48,13 +48,16 @@
                     </h:column>
                     <h:column>
                         <f:facet name="header">Participants</f:facet>
-                        <h:outputText value="0 participants"/>
+                        <h:outputText value="#{event.attendingUsers.size()}"/>
                     </h:column>
                     <c:if test="#{userController.loggedIn}">
                         <h:column>
                             <f:facet name="header">Going</f:facet>
                             <h:form>
-                                <h:selectBooleanCheckbox/>
+                                <h:selectBooleanCheckbox
+                                        value="#{eventSessionController.attendingEvent[event.id]}"
+                                        onclick="submit()"
+                                        valueChangeListener="#{eventSessionController.updateAttendance(event.id, !eventSessionController.attendingEvent[event.id])}"/>
                             </h:form>
                         </h:column>
                     </c:if>

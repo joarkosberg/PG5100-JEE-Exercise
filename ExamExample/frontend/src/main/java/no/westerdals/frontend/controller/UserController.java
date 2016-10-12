@@ -1,6 +1,7 @@
 package no.westerdals.frontend.controller;
 
 import no.westerdals.backend.ejb.UserEJB;
+import no.westerdals.backend.entity.Event;
 import no.westerdals.backend.entity.User;
 import no.westerdals.backend.enums.CountryName;
 
@@ -67,6 +68,18 @@ public class UserController implements Serializable {
         } else {
             return "newUser.jsf";
         }
+    }
+
+    public boolean isUserAttendingEvent(Event event){
+        return userEJB.isUserAttendingEvent(activeUser, event);
+    }
+
+    public void addEvent(long eventId){
+        userEJB.addEvent(activeUser.getUsername(), eventId);
+    }
+
+    public void removeEvent(long eventId){
+        userEJB.removeEvent(activeUser.getUsername(), eventId);
     }
 
     public String logout(){

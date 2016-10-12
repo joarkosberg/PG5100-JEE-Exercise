@@ -27,7 +27,7 @@ public class EventEJB {
     public synchronized Event createNewEvent(String title, @NotNull CountryName countryName,
                                              String location, String description,
                                              @NotNull User author){
-        User u = em.find(User.class, author.getUsername());
+        User u = userEJB.findUser(author.getUsername());
         if(u == null){
             throw new IllegalArgumentException("No user with username: " + u);
         }

@@ -12,6 +12,7 @@ import javax.persistence.Query;
 import javax.validation.constraints.NotNull;
 import java.math.BigInteger;
 import java.security.SecureRandom;
+import java.util.Iterator;
 import java.util.List;
 
 @Stateless
@@ -51,6 +52,11 @@ public class UserEJB {
         return user;
     }
 
+    public boolean isUserAttendingEvent(User user, Event event){
+        User u = findUser(user.getUsername());
+        return u.getEvents().stream().anyMatch(e -> e.getId() == event.getId());
+    }
+
     public boolean login(String userName, String password) {
         User user = findUser(userName);
         if (user == null) {
@@ -63,7 +69,7 @@ public class UserEJB {
     }
 
     public void addEvent(String username, Long eventId){
-        User user = em.find(User.class, username);
+        User user = findUser(username);
         Event event = em.find(Event.class, eventId);
 
         if(user.getEvents().stream().anyMatch(e -> e.getId() == (eventId))){
@@ -72,6 +78,28 @@ public class UserEJB {
 
         user.getEvents().add(event);
         event.getAttendingUsers().add(user);
+    }
+
+    public void removeEvent(String username, long eventId){
+        User user = findUser(username);
+
+        Iterator<Event> eventIterator = user.getEvents().iterator();
+        while(eventIterator.hasNext()){
+            Event current = eventIterator.next();
+            if(current.getId() == (eventId)){
+                eventIterator.remove();
+
+                Iterator<User> iterUser = current.getAttendingUsers().iterator();
+                while(iterUser.hasNext()){
+                    User user1 = iterUser.next();
+                    if(user.getUsername().equals(user1.getUsername())){
+                        iterUser.remove();
+                        break;
+                    }
+                }
+                break;
+            }
+        }
     }
 
     public List<User> getAllUsers(){
