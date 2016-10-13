@@ -158,6 +158,25 @@ public class WebPageIT extends WebTestBase{
 
     @Test
     public void testTwoUsersAttendingSameEvent(){
-        //TODO
+        String username1 = "fff";
+        String password1 = "fff";
+        createAndLoginUser(username1, password1, homePageObject);
+
+        String title = "bbb";
+        createNewEvent(title, CountryName.China.toString(), homePageObject);
+
+        homePageObject.toggleAttendEvent(title);
+        assertEquals(1, homePageObject.getNumberOfAttendees(title));
+
+        homePageObject.logout();
+        createAndLoginUser("ggg", "ggg", homePageObject);
+        homePageObject.toggleAttendEvent(title);
+        assertEquals(2, homePageObject.getNumberOfAttendees(title));
+
+        logout(homePageObject);
+        login(username1, password1, homePageObject);
+        assertEquals(2, homePageObject.getNumberOfAttendees(title));
+        homePageObject.toggleAttendEvent(title);
+        assertEquals(1, homePageObject.getNumberOfAttendees(title));
     }
 }
