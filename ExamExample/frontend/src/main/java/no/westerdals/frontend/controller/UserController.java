@@ -5,8 +5,8 @@ import no.westerdals.backend.entity.Event;
 import no.westerdals.backend.entity.User;
 import no.westerdals.backend.enums.CountryName;
 
+import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
-import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
 import java.util.Arrays;
@@ -15,7 +15,7 @@ import java.util.Arrays;
 @SessionScoped
 public class UserController implements Serializable {
 
-    @Inject
+    @EJB
     private UserEJB userEJB;
 
     private String formUsername;

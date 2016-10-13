@@ -15,8 +15,8 @@ public class CreateEventPageObject extends PageObject {
         return getDriver().getTitle().contains("Create New Event");
     }
 
-    public HomePageObject createNewEvent (String country){
-        setText("newEventForm:title", "Tittel");
+    public HomePageObject createNewEvent (String title, String country){
+        setText("newEventForm:title", title);
         setText("newEventForm:location", "Location");
         setText("newEventForm:description", "Description");
 

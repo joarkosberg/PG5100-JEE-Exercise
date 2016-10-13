@@ -44,10 +44,6 @@ public abstract class PageObject {
         return driver.findElement(By.id("logoutForm:welcomeMessage")).getText().contains(username);
     }
 
-    public int getCountOfEvents(){
-        return driver.findElements(By.xpath("//table[@id='eventTable']/tbody/tr")).size();
-    }
-
     public void logout(){
         List<WebElement> logout = driver.findElements(By.id("logoutForm:logoutButton"));
         if(! logout.isEmpty()){

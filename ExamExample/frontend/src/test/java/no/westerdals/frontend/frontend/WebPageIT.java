@@ -101,7 +101,7 @@ public class WebPageIT extends WebTestBase{
         CreateEventPageObject createEventPageObject = homePageObject.toCreateEventPage();
         assertTrue(createEventPageObject.isOnPage());
 
-        createEventPageObject.createNewEvent(CountryName.China.toString());
+        createEventPageObject.createNewEvent("Title", CountryName.China.toString());
         assertTrue(homePageObject.isOnPage());
         assertEquals(orgNumberOfEvents + 1, homePageObject.getCountOfEvents());
     }
@@ -117,8 +117,8 @@ public class WebPageIT extends WebTestBase{
         int originalAmount = homePageObject.getCountOfEvents();
 
         //Create events
-        createNewEvent(CountryName.China.toString(), homePageObject);
-        createNewEvent(CountryName.France.toString(), homePageObject);
+        createNewEvent("Title", CountryName.China.toString(), homePageObject);
+        createNewEvent("Title", CountryName.France.toString(), homePageObject);
 
         //Check amount of events with and without toggle
         assertEquals(originalAmount + 1, homePageObject.getCountOfEvents());
@@ -133,12 +133,31 @@ public class WebPageIT extends WebTestBase{
 
         int originalAmount = homePageObject.getCountOfEvents();
 
-        createNewEvent(CountryName.China.toString(), homePageObject);
+        createNewEvent("Title", CountryName.China.toString(), homePageObject);
         homePageObject.logout();
 
         createAndLoginUser("ddd", "ddd", homePageObject);
-        createNewEvent(CountryName.China.toString(), homePageObject);
+        createNewEvent("Title", CountryName.China.toString(), homePageObject);
 
         assertEquals(originalAmount + 2, homePageObject.getCountOfEvents());
+    }
+
+    @Test
+    public void testCreateAndAttendEvent(){
+        createAndLoginUser("eee", "eee", homePageObject);
+
+        String title = "aaa";
+        createNewEvent(title, CountryName.China.toString(), homePageObject);
+
+        assertEquals(0, homePageObject.getNumberOfAttendees(title));
+        homePageObject.toggleAttendEvent(title);
+        assertEquals(1, homePageObject.getNumberOfAttendees(title));
+        homePageObject.toggleAttendEvent(title);
+        assertEquals(0, homePageObject.getNumberOfAttendees(title));
+    }
+
+    @Test
+    public void testTwoUsersAttendingSameEvent(){
+        //TODO
     }
 }

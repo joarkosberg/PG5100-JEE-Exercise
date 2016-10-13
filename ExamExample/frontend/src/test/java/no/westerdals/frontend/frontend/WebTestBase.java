@@ -105,10 +105,10 @@ public abstract class WebTestBase {
         assertTrue(home.isLoggedIn(username));
     }
 
-    protected void createNewEvent(String country, HomePageObject home){
+    protected void createNewEvent(String title, String country, HomePageObject home){
         CreateEventPageObject createEventPageObject = home.toCreateEventPage();
         assertTrue(createEventPageObject.isOnPage());
-        createEventPageObject.createNewEvent(country);
+        createEventPageObject.createNewEvent(title, country);
         assertTrue(home.isOnPage());
     }
 }

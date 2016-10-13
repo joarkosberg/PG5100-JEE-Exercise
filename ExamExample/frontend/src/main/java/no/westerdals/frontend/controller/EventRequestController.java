@@ -4,6 +4,7 @@ import no.westerdals.backend.ejb.EventEJB;
 import no.westerdals.backend.entity.Event;
 import no.westerdals.backend.enums.CountryName;
 
+import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -15,7 +16,7 @@ import java.util.List;
 @RequestScoped
 public class EventRequestController implements Serializable {
 
-    @Inject
+    @EJB
     private EventEJB eventEJB;
     @Inject
     UserController userController;
