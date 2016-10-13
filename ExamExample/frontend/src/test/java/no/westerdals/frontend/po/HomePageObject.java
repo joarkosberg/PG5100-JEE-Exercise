@@ -65,12 +65,4 @@ public class HomePageObject extends PageObject {
         elements.get(0).click();
         waitForPageToLoad();
     }
-
-    public boolean isAttendingEvent(String title){
-        List<WebElement> elements = getDriver().findElements(
-                By.xpath("//table[@id='eventTable']//tbody" +
-                        "//tr[contains(td[2], '" + title + "')]" +
-                        "/td[5]/form/input[@type='checkbox' and @checked='checked']"));
-        return !elements.isEmpty();
-    }
 }

@@ -1,15 +1,12 @@
 package no.westerdals.frontend.frontend;
 
 import no.westerdals.backend.enums.CountryName;
-import no.westerdals.frontend.controller.EventRequestController;
 import no.westerdals.frontend.po.CreateEventPageObject;
 import no.westerdals.frontend.po.HomePageObject;
 import no.westerdals.frontend.po.LoginPageObject;
 import no.westerdals.frontend.po.NewUserPageObject;
 import org.junit.Before;
 import org.junit.Test;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
 
 import static org.junit.Assert.*;
 

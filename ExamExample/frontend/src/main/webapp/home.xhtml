@@ -7,16 +7,15 @@
       xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
 >
 
+
 <ui:composition template="layout.xhtml">
     <ui:define name="title">Event List Home Page</ui:define>
-
 
 
     <ui:define name="content">
         <c:if test="#{userController.loggedIn}">
             <h:button value="Create Event" outcome="createEvent.jsp"  id="eventButton"/>
         </c:if>
-
 
 
         <h2>Future Events</h2>
@@ -27,7 +26,6 @@
                 <h:outputLabel for="showOnlyOwnCountry" value="Only #{userController.formCountryName}"/>
             </h:form>
         </c:if>
-
 
 
         <c:choose>
