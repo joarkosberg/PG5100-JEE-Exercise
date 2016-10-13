@@ -25,6 +25,8 @@
         <wildfly.version>10.1.0.Final</wildfly.version>
         <jbossTarget>${basedir}/target/downloaded_Wildfly</jbossTarget>
         <jbossHome>${jbossTarget}/wildfly-${wildfly.version}</jbossHome>
+        <version.jacoco>0.7.7.201606060606</version.jacoco>
+        <fs>${file.separator}</fs>
     </properties>
 
 
@@ -219,6 +221,40 @@
                             <goals>
                                 <goal>undeploy</goal>
                                 <goal>shutdown</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.jacoco</groupId>
+                    <artifactId>jacoco-maven-plugin</artifactId>
+                    <version>0.7.7.201606060606</version>
+                    <executions>
+                        <execution>
+                            <id>default-prepare-agent</id>
+                            <goals>
+                                <goal>prepare-agent</goal>
+                            </goals>
+                        </execution>
+                        <execution>
+                            <id>default-report</id>
+                            <phase>prepare-package</phase>
+                            <goals>
+                                <goal>report</goal>
+                            </goals>
+                        </execution>
+                        <execution>
+                            <id>default-prepare-agent-integration</id>
+                            <phase>package</phase>
+                            <goals>
+                                <goal>prepare-agent-integration</goal>
+                            </goals>
+                        </execution>
+                        <execution>
+                            <id>default-report-integration</id>
+                            <goals>
+                                <goal>report-integration</goal>
                             </goals>
                         </execution>
                     </executions>

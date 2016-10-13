@@ -102,12 +102,6 @@ public class UserEJB {
         }
     }
 
-    public List<User> getAllUsers(){
-        Query query = em.createNamedQuery(User.GET_ALL_USERS);
-        List<User> users = query.getResultList();
-        return users;
-    }
-
     public long countAllUsers(){
         Query query = em.createNamedQuery(User.COUNT_ALL_USERS);
         List<Long> count = query.getResultList();
