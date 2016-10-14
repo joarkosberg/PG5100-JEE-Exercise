@@ -24,6 +24,8 @@
         <wildfly.version>10.1.0.Final</wildfly.version>
         <jbossTarget>${basedir}/target/downloaded_Wildfly</jbossTarget>
         <jbossHome>${jbossTarget}/wildfly-${wildfly.version}</jbossHome>
+        <version.jacoco>0.7.7.201606060606</version.jacoco>
+        <fs>${file.separator}</fs>
     </properties>
 
 
@@ -48,6 +50,11 @@
                 <artifactId>javax.el-api</artifactId>
                 <version>3.0.0</version>
                 <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.jboss.resteasy</groupId>
+                <artifactId>resteasy-client</artifactId>
+                <version>3.0.16.Final</version>
             </dependency>
 
             <!-- JPA / Hibernate / Database -->

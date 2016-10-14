@@ -6,14 +6,12 @@ import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 public abstract class PageObject {
-
     private final WebDriver driver;
+    public abstract boolean isOnPage();
 
     public PageObject(WebDriver driver) {
         this.driver = driver;
     }
-
-    public abstract boolean isOnPage();
 
     protected WebDriver getDriver(){
         return driver;
