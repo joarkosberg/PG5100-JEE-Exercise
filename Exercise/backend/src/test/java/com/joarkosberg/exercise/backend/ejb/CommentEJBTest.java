@@ -1,8 +1,5 @@
 package com.joarkosberg.exercise.backend.ejb;
 
-import com.joarkosberg.exercise.backend.ejb.CommentEJB;
-import com.joarkosberg.exercise.backend.ejb.PostEJB;
-import com.joarkosberg.exercise.backend.ejb.UserEJB;
 import com.joarkosberg.exercise.backend.entity.Comment;
 import com.joarkosberg.exercise.backend.entity.Post;
 import com.joarkosberg.exercise.backend.entity.User;
@@ -21,10 +18,8 @@ import static org.junit.Assert.assertEquals;
 public class CommentEJBTest {
     @Deployment
     public static JavaArchive createDeployment() {
-
         return ShrinkWrap.create(JavaArchive.class)
-                .addClasses(User.class, Post.class, Comment.class,
-                        UserEJB.class, PostEJB.class, CommentEJB.class)
+                .addPackages(true, "com.joarkosberg.exercise.backend")
                 .addPackages(true, "org.apache.commons.codec")
                 .addAsResource("META-INF/persistence.xml");
     }

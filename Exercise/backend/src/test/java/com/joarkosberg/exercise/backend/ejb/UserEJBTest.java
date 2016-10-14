@@ -25,11 +25,9 @@ import static org.junit.Assert.*;
 public class UserEJBTest {
     @Deployment
     public static JavaArchive createDeployment() {
-
         return ShrinkWrap.create(JavaArchive.class)
-                .addClasses(User.class, Post.class, Comment.class,
-                        UserEJB.class, PostEJB.class, CommentEJB.class,
-                        DeleterEJB.class)
+                .addPackages(true, "com.joarkosberg.exercise.backend")
+                .addClass(DeleterEJB.class)
                 .addPackages(true, "org.apache.commons.codec")
                 .addAsResource("META-INF/persistence.xml");
     }

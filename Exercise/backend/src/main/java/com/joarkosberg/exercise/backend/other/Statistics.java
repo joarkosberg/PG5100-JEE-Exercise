@@ -41,7 +41,6 @@ public class Statistics {
         }
     }
 
-
     public Long getNumberOfUsers() {
         return numberOfUsers;
     }

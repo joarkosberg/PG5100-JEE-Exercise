@@ -120,7 +120,7 @@
             <dependency>
                 <groupId>org.jacoco</groupId>
                 <artifactId>org.jacoco.core</artifactId>
-                <version>0.7.7.201606060606</version>
+                <version>${version.jacoco}</version>
                 <scope>test</scope>
             </dependency>
             <dependency>
