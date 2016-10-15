@@ -18,7 +18,7 @@ public abstract class PageObject {
     }
 
     protected String getBaseUrl(){
-        return "http://localhost:8080/redditclone";
+        return "http://localhost:8080/redditclone/";
     }
 
     protected Boolean waitForPageToLoad() {
