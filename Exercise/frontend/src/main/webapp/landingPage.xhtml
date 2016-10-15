@@ -76,6 +76,7 @@
                 <div id="postView">
 
 
+                    <!-- Sorting -->
                     <h:form id="sortByPopularityForm">
                         <h:selectBooleanCheckbox value="#{postSessionController.sortByPopularity}"
                                                  id="sortByPopularity" onclick="submit()"/>
@@ -91,6 +92,14 @@
                             <h:outputText value="#{post.poster.userName} posted on #{post.created}: #{post.text}">
                                 <f:convertDateTime pattern="dd:NN:yy - hh:mm"/>
                             </h:outputText>
+
+                            <!--Score and voting-->
+                            <h:form>
+                                <!-- Show comments button -->
+                                <h:outputText value="Score: #{post.upVotes - post.downVotes} "/>
+                                <h:commandButton value="Upvote" action="#{postController.upvotePost(post)}"/>
+                                <h:commandButton value="Downvote" action="#{postController.downvotePost(post)}"/>
+                            </h:form>
 
                             <!--Buttons-->
                             <h:form>

@@ -30,6 +30,14 @@ public class PostController implements Serializable{
         return "landingPage.jsf";
     }
 
+    public void upvotePost(Post post){
+        postEJB.upVotePost(post);
+    }
+
+    public void downvotePost(Post post){
+        postEJB.downVotePost(post);
+    }
+
     public Post findPost(long id){
         return postEJB.findPost(id);
     }

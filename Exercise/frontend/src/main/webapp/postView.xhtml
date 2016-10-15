@@ -22,6 +22,10 @@
             </h:outputText>
             <br/>
             <h:outputText value=" #{postSessionController.activePost.text}"/>
+            <br/>
+            <h:outputText value="Score: #{postSessionController.activePost.upVotes - postSessionController.activePost.downVotes} "/>
+            <h:outputText value="Upvotes: #{postSessionController.activePost.upVotes} "/>
+            <h:outputText value="Downvotes: #{postSessionController.activePost.downVotes} "/>
         </div>
 
 

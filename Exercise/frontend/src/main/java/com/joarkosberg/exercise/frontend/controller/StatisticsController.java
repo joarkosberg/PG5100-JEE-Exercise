@@ -27,6 +27,14 @@ public class StatisticsController {
         return statistics.getNumberOfComments();
     }
 
+    public Long getNumberOfUpvotes(){
+        return statistics.getNumberOfUpvotes();
+    }
+
+    public Long getNumberOfDownvotes(){
+        return statistics.getNumberOfDownvotes();
+    }
+
     public TreeMap<User.CountryName, Long> getCountriesByUsers() {
         return statistics.getCountriesByUsers();
     }

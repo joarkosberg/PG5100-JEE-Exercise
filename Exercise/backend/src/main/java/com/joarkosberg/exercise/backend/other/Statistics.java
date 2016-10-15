@@ -3,6 +3,8 @@ package com.joarkosberg.exercise.backend.other;
 import com.joarkosberg.exercise.backend.ejb.CommentEJB;
 import com.joarkosberg.exercise.backend.ejb.PostEJB;
 import com.joarkosberg.exercise.backend.ejb.UserEJB;
+import com.joarkosberg.exercise.backend.entity.Comment;
+import com.joarkosberg.exercise.backend.entity.Post;
 import com.joarkosberg.exercise.backend.entity.User;
 
 import javax.ejb.EJB;
@@ -18,6 +20,8 @@ public class Statistics {
     private Long numberOfUsers;
     private Long numberOfPosts;
     private Long numberOfComments;
+    private Long numberOfUpvotes;
+    private Long numberOfDownvotes;
     private TreeMap<User.CountryName, Long> countriesByUsers = new TreeMap<>();
 
     @EJB
@@ -39,6 +43,24 @@ public class Statistics {
         for(User.CountryName country : countries) {
             countriesByUsers.put(country, userEJB.countOfUsersByCountry(country));
         }
+
+        //Count votes
+        numberOfUpvotes = Long.valueOf(0);
+        numberOfDownvotes = Long.valueOf(0);
+
+
+        List<Post> posts = postEJB.getAllPosts();
+        List<Comment> comments = commentEJB.getAllComments();
+
+        for(Post post : posts){
+            numberOfUpvotes += post.getUpVotes();
+            numberOfDownvotes += post.getDownVotes();
+        }
+        for(Comment comment : comments){
+            numberOfUpvotes += comment.getUpVotes();
+            numberOfDownvotes += comment.getDownVotes();
+        }
+
     }
 
     public Long getNumberOfUsers() {
@@ -51,6 +73,14 @@ public class Statistics {
 
     public Long getNumberOfComments() {
         return numberOfComments;
+    }
+
+    public Long getNumberOfUpvotes() {
+        return numberOfUpvotes;
+    }
+
+    public Long getNumberOfDownvotes() {
+        return numberOfDownvotes;
     }
 
     public TreeMap<User.CountryName, Long> getCountriesByUsers() {
