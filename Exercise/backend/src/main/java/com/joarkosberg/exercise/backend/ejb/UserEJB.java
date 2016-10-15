@@ -26,6 +26,9 @@ public class UserEJB {
     public synchronized User createNewUser(@NotNull String userName, @NotNull String password,
                                            @NotNull String name, String surname,
                                            User.CountryName countryName, @NotNull String email){
+        if(findUserByUserName(userName) != null){
+            return null;
+        }
         User user = new User();
         user.setUserName(userName);
         user.setName(name);

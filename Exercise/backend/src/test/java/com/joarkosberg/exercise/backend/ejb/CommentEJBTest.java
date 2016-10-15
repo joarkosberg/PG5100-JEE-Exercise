@@ -5,6 +5,7 @@ import com.joarkosberg.exercise.backend.entity.Post;
 import com.joarkosberg.exercise.backend.entity.User;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.test.spi.ArquillianProxyException;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.junit.Test;
@@ -46,11 +47,6 @@ public class CommentEJBTest {
     }
 
     @Test
-    public void testCommentConstraints(){
-        //TODO
-    }
-
-    @Test
     public void testVotingOnComment(){
         User user = userEJB.createNewUser("BB", "B", "B", null, User.CountryName.Albania, "abc@abc.com");
         Post post = postEJB.createNewPost(user, "Title", "Text text");
@@ -63,5 +59,13 @@ public class CommentEJBTest {
         assertEquals(0, comment.getDownVotes());
         commentEJB.downVoteComment(comment);
         assertEquals(1, commentEJB.findComment(comment.getId()).getDownVotes());
+    }
+
+
+    @Test(expected = ArquillianProxyException.class)
+    public void testCommentWithNullParameter(){
+        User user = userEJB.createNewUser("CC", "C", "C", null, User.CountryName.Albania, "abc@abc.com");
+        Post post = postEJB.createNewPost(user, "Title", "Text text");
+        commentEJB.createNewCommentOnPost(user, post, null);
     }
 }

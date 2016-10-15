@@ -10,6 +10,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import javax.ejb.EJB;
+import javax.ejb.EJBException;
 
 import static org.junit.Assert.assertEquals;
 
@@ -39,11 +40,6 @@ public class PostEJBTest {
     }
 
     @Test
-    public void testPostConstraints(){
-        //TODO
-    }
-
-    @Test
     public void testVotingOnPost(){
         User user = userEJB.createNewUser("BB", "B", "B", null, User.CountryName.Albania, "abc@abc.com");
         Post post = postEJB.createNewPost(user, "Title", "Text text");
@@ -55,5 +51,11 @@ public class PostEJBTest {
         assertEquals(0, post.getDownVotes());
         postEJB.downVotePost(post);
         assertEquals(1, postEJB.findPost(post.getId()).getDownVotes());
+    }
+
+    @Test(expected = EJBException.class)
+    public void testCreateNewUserWithShortTitle(){
+        User user = userEJB.createNewUser("CC", "C", "C", null, User.CountryName.Albania, "abc@abc.com");
+        postEJB.createNewPost(user, "T", "Text text");
     }
 }

@@ -14,6 +14,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import javax.ejb.EJB;
+import javax.ejb.EJBException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,9 +58,10 @@ public class UserEJBTest {
         assertEquals(2, usersCount);
     }
 
-    @Test
-    public void testUserConstraints(){
-        //TODO
+
+    @Test(expected = EJBException.class)
+    public void testCreateNewUserWithShortUsername(){
+        userEJB.createNewUser("C", "A", "A", null, User.CountryName.Albania, "abc@abc.com");
     }
 
     @Test
