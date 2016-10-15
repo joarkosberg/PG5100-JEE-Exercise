@@ -23,8 +23,8 @@
             <br/>
             <h:outputText value=" #{postSessionController.activePost.text}"/>
             <br/>
-            <h:outputText value="Score: #{postSessionController.activePost.upVotes - postSessionController.activePost.downVotes} "/>
-            <h:outputText value="Upvotes: #{postSessionController.activePost.upVotes} "/>
+            <h:outputText value="Score: #{postSessionController.activePost.upVotes - postSessionController.activePost.downVotes}, "/>
+            <h:outputText value="Upvotes: #{postSessionController.activePost.upVotes}, "/>
             <h:outputText value="Downvotes: #{postSessionController.activePost.downVotes} "/>
         </div>
 
@@ -36,6 +36,8 @@
                 <h:outputText value="#{comment.commenter.userName} commented on #{comment.created}: #{comment.text}">
                     <f:convertDateTime pattern="dd:NN:yy - hh:mm"/>
                 </h:outputText>
+                <br/>
+                <h:outputText value="Score: #{comment.upVotes - comment.downVotes} "/>
             </div>
         </c:forEach>
         <hr/>

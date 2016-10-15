@@ -38,6 +38,14 @@ public class CommentController implements Serializable{
     }
     */
 
+    public void upvoteComment(Comment comment){
+        commentEJB.upVoteComment(comment);
+    }
+
+    public void downvoteComment(Comment comment){
+        commentEJB.downVoteComment(comment);
+    }
+
     public String getFormText() {
         return formText;
     }
@@ -49,9 +57,5 @@ public class CommentController implements Serializable{
     public String deleteComment(long id){
         commentEJB.deleteComment(id);
         return "landingPage.jsf";
-    }
-
-    public List<Comment> getAllComments(){
-        return commentEJB.getAllComments();
     }
 }

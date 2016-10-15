@@ -109,7 +109,7 @@
                                 <!-- Delete button -->
                                 <c:if test="#{post.poster.id == userController.activeUser.id}">
                                     <div id="deleteButton">
-                                        <h:commandButton value="Delete" action="#{postController.deletePost(post.id)}"/>
+                                        <h:commandButton value="Delete Post" action="#{postController.deletePost(post.id)}"/>
                                     </div>
                                 </c:if>
                             </h:form>
@@ -133,9 +133,17 @@
                         <h4>Comments:</h4>
                         <c:forEach var="comment" items="#{post.comments}">
                             <div class="comment">
+                                <!--Comment-->
                                 <h:outputText value="#{comment.commenter.userName} commented on #{comment.created}: #{comment.text}">
                                     <f:convertDateTime pattern="dd:NN:yy - hh:mm"/>
                                 </h:outputText>
+
+                                <!--Score and voting-->
+                                <h:form>
+                                    <h:outputText value="Score: #{comment.upVotes - comment.downVotes} "/>
+                                    <h:commandButton value="Upvote" action="#{commentController.upvoteComment(comment)}"/>
+                                    <h:commandButton value="Downvote" action="#{commentController.downvoteComment(comment)}"/>
+                                </h:form>
                             </div>
                         </c:forEach>
                         <hr/>
