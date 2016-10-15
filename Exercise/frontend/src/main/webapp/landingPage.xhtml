@@ -71,8 +71,6 @@
         </c:if>
         <div id="posts">
             <c:forEach var="post" items="#{postController.allPosts}">
-
-
                 <!-- Post -->
                 <div class="post">
                     <!-- Post data -->
@@ -81,17 +79,18 @@
                         <f:convertDateTime pattern="dd:NN:yy - hh:mm"/>
                     </h:outputText>
 
-                    <!-- Show comments button -->
-                    //TODO
+                    <!--Buttons-->
+                    <h:form>
+                        <!-- Show comments button -->
+                        <h:commandButton value="Show" action="#{postSessionController.showPost(post)}"/>
 
-                    <!-- Delete button -->
-                    <c:if test="#{post.poster.id == userController.activeUser.id}">
-                        <div class="deleteButton">
-                            <h:form>
+                        <!-- Delete button -->
+                        <c:if test="#{post.poster.id == userController.activeUser.id}">
+                            <div id="deleteButton">
                                 <h:commandButton value="Delete" action="#{postController.deletePost(post.id)}"/>
-                            </h:form>
-                        </div>
-                    </c:if>
+                            </div>
+                        </c:if>
+                    </h:form>
 
                     <!-- Comment field -->
                     <c:if test="#{userController.loggedIn}">

@@ -30,6 +30,10 @@ public class PostController implements Serializable{
         return "landingPage.jsf";
     }
 
+    public Post findPost(long id){
+        return postEJB.findPost(id);
+    }
+
     public String getFormTitle() {
         return formTitle;
     }

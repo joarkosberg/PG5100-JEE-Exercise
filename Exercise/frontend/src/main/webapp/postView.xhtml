@@ -1,16 +1,40 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
 >
 
+
 <ui:composition template="layout.xhtml">
-    <ui:define name="title">Posts</ui:define>
-    <ui:define name="header">Posts:</ui:define>
+    <ui:define name="title">Post</ui:define>
+    <ui:define name="header">Post:</ui:define>
+
 
     <ui:define name="content">
-        <h:outputText value="POSTS"/>
+        <div class="post">
+            <!-- Post data -->
+            <h2>#{postSessionController.activePost.title}</h2>
+            <h:outputText value="#{postSessionController.activePost.poster.userName} posted on #{postSessionController.activePost.created}:">
+                <f:convertDateTime pattern="dd:NN:yy - hh:mm"/>
+            </h:outputText>
+            <br/>
+            <h:outputText value=" #{postSessionController.activePost.text}"/>
+        </div>
+
+
+        <!-- Comments -->
+        <h4>Comments:</h4>
+        <c:forEach var="comment" items="#{postSessionController.activePost.comments}">
+            <div class="comment">
+                <h:outputText value="#{comment.commenter.userName} commented on #{comment.created}: #{comment.text}">
+                    <f:convertDateTime pattern="dd:NN:yy - hh:mm"/>
+                </h:outputText>
+            </div>
+        </c:forEach>
+        <hr/>
     </ui:define>
 </ui:composition>
 </html>
