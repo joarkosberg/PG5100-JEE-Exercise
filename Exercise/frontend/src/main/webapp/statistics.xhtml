@@ -1,8 +1,9 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
 >
 
 <ui:composition template="layout.xhtml">
@@ -12,11 +13,17 @@
     <ui:define name="content">
         <h:outputText value="Number of users: #{statisticsController.numberOfUsers}"/>
         <br />
+
         <h:outputText value="Number of posts: #{statisticsController.numberOfPosts}"/>
         <br />
+
         <h:outputText value="Number of comments: #{statisticsController.numberOfComments}"/>
-        <br />
+        <br /><br />
+
         <h:outputText value="Number of users by country:"/>
+        <c:forEach items="#{statisticsController.countriesByUsers}" var="entry" >
+            <li><b>#{entry.key}</b> : #{entry.value} users</li>
+        </c:forEach>
     </ui:define>
 </ui:composition>
 </html>
