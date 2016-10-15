@@ -29,7 +29,7 @@ public class UserController implements Serializable{
 
     public String logOut(){
         activeUser = null;
-        return "login.jsf";
+        return "landingPage.jsf";
     }
 
     public String logIn(){
@@ -43,8 +43,13 @@ public class UserController implements Serializable{
     }
 
     public String registerNew(){
-        User user = userEJB.createNewUser(formUserName, formPassword, "Name", null,
-                User.CountryName.France, "Email@mail.com");
+        User user = null;
+
+        try {
+            user = userEJB.createNewUser(formUserName, formPassword, "Name", null,
+                    User.CountryName.France, "Email@mail.com");
+        } catch (Exception e){}
+
         if(user != null){
             activeUser = user;
             return "landingPage.jsf";

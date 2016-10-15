@@ -23,14 +23,19 @@ public class UserEJB {
     public UserEJB(){
     }
 
-    public synchronized User createNewUser(@NotNull String userName, @NotNull String password,
+    public synchronized User createNewUser(@NotNull String username, @NotNull String password,
                                            @NotNull String name, String surname,
                                            User.CountryName countryName, @NotNull String email){
-        if(findUserByUserName(userName) != null){
+        if (username.isEmpty() || password.isEmpty()) {
             return null;
         }
+
+        if(findUserByUserName(username) != null){
+            return null;
+        }
+
         User user = new User();
-        user.setUserName(userName);
+        user.setUserName(username);
         user.setName(name);
         user.setSurname(surname);
         user.setCountry(countryName);

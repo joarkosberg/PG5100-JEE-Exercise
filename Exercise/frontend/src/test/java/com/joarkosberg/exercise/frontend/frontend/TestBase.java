@@ -1,5 +1,6 @@
 package com.joarkosberg.exercise.frontend.frontend;
 
+import com.joarkosberg.exercise.frontend.po.LandingPageObject;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -10,6 +11,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import static org.junit.Assume.assumeTrue;
 
@@ -73,5 +76,11 @@ public abstract class TestBase {
 
     protected String getPageSource() {
         return driver.getPageSource();
+    }
+
+    protected void logout(LandingPageObject landing){
+        landing.logout();
+        assertTrue(landing.isOnPage());
+        assertFalse(landing.isLoggedIn());
     }
 }

@@ -16,6 +16,7 @@ public class BaseIT extends TestBase{
         landing = new LandingPageObject(getDriver());
         landing.toStartingPage();
         assertTrue(landing.isOnPage());
+        logout(landing);
     }
 
     @Test
@@ -30,5 +31,33 @@ public class BaseIT extends TestBase{
         assertTrue(login.isOnPage());
     }
 
+    @Test
+    public void testLoginWithoutValidUser(){
+        LoginPageObject login = landing.toLoginPage();
+        assertTrue(login.isOnPage());
+        LandingPageObject l = login.login("NOTaUSER", "SUCH PASSWORD");
+        assertNull(l);
+        assertTrue(login.isOnPage());
+    }
 
+    @Test
+    public void testCreateUserWithoutPassword(){
+        LoginPageObject login = landing.toLoginPage();
+        assertTrue(login.isOnPage());
+        LandingPageObject l = login.createNewUser("userWihoutPass", "");
+        assertNull(l);
+        assertTrue(login.isOnPage());
+    }
+
+    @Test
+    public void testCreateValidUser(){
+        LoginPageObject login = landing.toLoginPage();
+        assertTrue(login.isOnPage());
+
+        String username = "AAA";
+        login.createNewUser(username, "AAA");
+
+        assertTrue(landing.isOnPage());
+        assertTrue(landing.isLoggedIn(username));
+    }
 }

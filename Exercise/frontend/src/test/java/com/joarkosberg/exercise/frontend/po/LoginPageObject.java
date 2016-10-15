@@ -19,13 +19,31 @@ public class LoginPageObject extends PageObject {
         waitForPageToLoad();
     }
 
-    public void changeData(String value){
-        WebElement text = getDriver().findElement(By.id("form:text"));
-        WebElement button = getDriver().findElement(By.id("form:modify"));
+    public LandingPageObject createNewUser(String username, String password){
+        setText("userForm:username", username);
+        setText("userForm:password", password);
 
-        text.clear();
-        text.sendKeys(value);
+        WebElement button = getDriver().findElement(By.id("userForm:create"));
         button.click();
         waitForPageToLoad();
+
+        if(isOnPage())
+            return null;
+        else
+            return new LandingPageObject(getDriver());
+    }
+
+    public LandingPageObject login(String username, String password) {
+        setText("userForm:username", username);
+        setText("userForm:password", password);
+
+        WebElement button = getDriver().findElement(By.id("userForm:login"));
+        button.click();
+        waitForPageToLoad();
+
+        if(isOnPage())
+            return null;
+        else
+            return new LandingPageObject(getDriver());
     }
 }

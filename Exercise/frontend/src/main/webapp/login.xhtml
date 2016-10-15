@@ -10,16 +10,16 @@
     <ui:define name="header">Login / Create New User</ui:define>
 
     <ui:define name="content">
-        <h:form id="loginForm">
+        <h:form id="userForm">
             <h:panelGrid columns="2">
-                <h:outputLabel value="User name : "/>
-                <h:inputText value="#{userController.formUserName}" id="userId"/>
+                <h:outputLabel value="Username : "/>
+                <h:inputText value="#{userController.formUserName}" id="username"/>
 
                 <h:outputLabel value="Password : "/>
                 <h:inputSecret value="#{userController.formPassword}" id="password"/>
             </h:panelGrid>
 
-            <h:commandButton value="Log in" action="#{userController.logIn}" id="logIn"/>
+            <h:commandButton value="Log in" action="#{userController.logIn}" id="login"/>
             <h:commandButton value="Register new" action="#{userController.registerNew}" id="create"/>
         </h:form>
     </ui:define>

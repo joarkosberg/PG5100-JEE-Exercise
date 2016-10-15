@@ -65,6 +65,12 @@ public class UserEJBTest {
     }
 
     @Test
+    public void testCreateNewUserWithEmptyPassword(){
+        User user = userEJB.createNewUser("AA", "", "A", null, User.CountryName.Albania, "abc@abc.com");
+        assertNull(user);
+    }
+
+    @Test
     public void testGetRepresentedCountries(){
         userEJB.createNewUser("AA", "A", "A", null, User.CountryName.Albania, "abc@abc.com");
         userEJB.createNewUser("BB", "B", "B", null, User.CountryName.Albania, "abc@abc.com");
