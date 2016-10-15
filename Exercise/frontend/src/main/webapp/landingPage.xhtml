@@ -48,7 +48,6 @@
         </c:choose>
 
 
-
         <!-- Creating new post only if user is logged in -->
         <c:if test="#{userController.loggedIn}">
             <h:form id="postForm">
@@ -63,62 +62,78 @@
         </c:if>
 
 
-
         <!-- Show list of posts and comments-->
         <h2>Latest Post:</h2>
-        <c:if test="#{postController.allPosts.size() == 0}">
-            <h:outputText value="No posts yet :( "/>
-        </c:if>
-        <div id="posts">
-            <c:forEach var="post" items="#{postController.allPosts}">
-                <!-- Post -->
-                <div class="post">
-                    <!-- Post data -->
-                    <h2>#{post.title}</h2>
-                    <h:outputText value="#{post.poster.userName} posted on #{post.created}: #{post.text}">
-                        <f:convertDateTime pattern="dd:NN:yy - hh:mm"/>
-                    </h:outputText>
+        <c:choose>
 
-                    <!--Buttons-->
-                    <h:form>
-                        <!-- Show comments button -->
-                        <h:commandButton value="Show" action="#{postSessionController.showPost(post)}"/>
 
-                        <!-- Delete button -->
-                        <c:if test="#{post.poster.id == userController.activeUser.id}">
-                            <div id="deleteButton">
-                                <h:commandButton value="Delete" action="#{postController.deletePost(post.id)}"/>
-                            </div>
-                        </c:if>
+            <c:when test="#{postController.allPosts.size() == 0}">
+                <h:outputText value="No posts yet :( "/>
+            </c:when>
+
+
+            <c:otherwise>
+                <div id="postView">
+
+
+                    <h:form id="sortByPopularityForm">
+                        <h:selectBooleanCheckbox value="#{postSessionController.sortByPopularity}"
+                                                 id="sortByPopularity" onclick="submit()"/>
+                        <h:outputLabel for="sortByPopularity" value="Sort by popularity"/>
                     </h:form>
 
-                    <!-- Comment field -->
-                    <c:if test="#{userController.loggedIn}">
-                        <h:form id="commentOnPostForm">
-                            <h:outputLabel value="New comment on post:"/>
-                            <br/>
-                            <h:inputTextarea value="#{commentController.formText}" pt:placeholder="Comment"
-                                             cols="30" rows="2" id="commentOnPostText"/>
-                            <h:commandButton value="Comment" action="#{
-                            commentController.commentOnPost(userController.activeUser, post)}"
-                                             id="createCommentOnPost"/>
-                        </h:form>
-                    </c:if>
+
+                    <c:forEach var="post" items="#{postController.allPosts}">
+                        <!-- Post -->
+                        <div class="post">
+                            <!-- Post data -->
+                            <h2>#{post.title}</h2>
+                            <h:outputText value="#{post.poster.userName} posted on #{post.created}: #{post.text}">
+                                <f:convertDateTime pattern="dd:NN:yy - hh:mm"/>
+                            </h:outputText>
+
+                            <!--Buttons-->
+                            <h:form>
+                                <!-- Show comments button -->
+                                <h:commandButton value="Show" action="#{postSessionController.showPost(post)}"/>
+
+                                <!-- Delete button -->
+                                <c:if test="#{post.poster.id == userController.activeUser.id}">
+                                    <div id="deleteButton">
+                                        <h:commandButton value="Delete" action="#{postController.deletePost(post.id)}"/>
+                                    </div>
+                                </c:if>
+                            </h:form>
+
+                            <!-- Comment field -->
+                            <c:if test="#{userController.loggedIn}">
+                                <h:form id="commentOnPostForm">
+                                    <h:outputLabel value="New comment on post:"/>
+                                    <br/>
+                                    <h:inputTextarea value="#{commentController.formText}" pt:placeholder="Comment"
+                                                     cols="30" rows="2" id="commentOnPostText"/>
+                                    <h:commandButton value="Comment" action="#{
+                                    commentController.commentOnPost(userController.activeUser, post)}"
+                                                     id="createCommentOnPost"/>
+                                </h:form>
+                            </c:if>
+                        </div>
+
+
+                        <!-- Comments -->
+                        <h4>Comments:</h4>
+                        <c:forEach var="comment" items="#{post.comments}">
+                            <div class="comment">
+                                <h:outputText value="#{comment.commenter.userName} commented on #{comment.created}: #{comment.text}">
+                                    <f:convertDateTime pattern="dd:NN:yy - hh:mm"/>
+                                </h:outputText>
+                            </div>
+                        </c:forEach>
+                        <hr/>
+                    </c:forEach>
                 </div>
-
-
-                <!-- Comments -->
-                <h4>Comments:</h4>
-                <c:forEach var="comment" items="#{post.comments}">
-                    <div class="comment">
-                        <h:outputText value="#{comment.commenter.userName} commented on #{comment.created}: #{comment.text}">
-                            <f:convertDateTime pattern="dd:NN:yy - hh:mm"/>
-                        </h:outputText>
-                    </div>
-                </c:forEach>
-                <hr/>
-            </c:forEach>
-        </div>
+            </c:otherwise>
+        </c:choose>
     </ui:define>
 </ui:composition>
 </html>

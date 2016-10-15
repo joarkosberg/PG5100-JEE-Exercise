@@ -2,6 +2,7 @@ package com.joarkosberg.exercise.frontend.controller;
 
 import com.joarkosberg.exercise.backend.entity.Post;
 
+import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -15,6 +16,12 @@ public class PostSessionController implements Serializable {
     private PostController postController;
 
     private Post activePost;
+    private boolean sortByPopularity;
+
+    @PostConstruct
+    public void init(){
+        sortByPopularity = false;
+    }
 
     public PostSessionController (){
     }
@@ -30,5 +37,13 @@ public class PostSessionController implements Serializable {
 
     public void setActivePost(Post activePost) {
         this.activePost = activePost;
+    }
+
+    public boolean isSortByPopularity() {
+        return sortByPopularity;
+    }
+
+    public void setSortByPopularity(boolean sortByPopularity) {
+        this.sortByPopularity = sortByPopularity;
     }
 }
