@@ -5,28 +5,28 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
 >
 
+
     <h:head>
         <title>
             <ui:insert name="title">Default title</ui:insert>
         </title>
 
-        <link rel="stylesheet" type="text/css" href="../style/style.css"/>
+        <link rel="stylesheet" type="text/css" href="style/style.css"/>
     </h:head>
+
+
     <h:body>
         <h1>
-            <ui:insert name="title">Example title</ui:insert>
+            <ui:insert name="header">Example title</ui:insert>
         </h1>
         <hr/>
 
         <ui:insert name="content">Default content</ui:insert>
         <hr/>
 
-        <p>
-            <a href="landingPage.xhtml">Main page</a>
-        </p>
-        <p>
-            <a href="statistics.xhtml">Statistics on site</a>
-        </p>
+        <h:button value="Main page" outcome="landingPage" id="homepage"/>
+        <h:button value="Statistics on site" outcome="statistics" id="statistics"/>
+
         <p>
             Code available at: <a href="https://github.com/joarkosberg/PG5100-JEE-Exercise">GitHub</a>
         </p>

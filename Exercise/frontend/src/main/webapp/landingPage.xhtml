@@ -10,20 +10,24 @@
 >
 
 
-<ui:composition template="../layout.xhtml">
+<ui:composition template="layout.xhtml">
     <!-- Title -->
-    <c:choose>
-        <c:when test="#{userController.loggedIn}">
-            <ui:define name="title">
-                Welcome in #{userController.registeredUser.userName}!
-            </ui:define>
-        </c:when>
-        <c:otherwise>
-            <ui:define name="title">
-                Please login to participate in the community!
-            </ui:define>
-        </c:otherwise>
-    </c:choose>
+    <ui:define name="title">
+        Landing page
+    </ui:define>
+
+
+    <!-- Header -->
+    <ui:define name="header">
+        <c:choose>
+            <c:when test="#{userController.loggedIn}">
+                Welcome in #{userController.activeUser.userName}!
+            </c:when>
+            <c:otherwise>
+                Please login to participate!
+            </c:otherwise>
+        </c:choose>
+    </ui:define>
     <hr/>
 
 
@@ -33,7 +37,7 @@
         <c:choose>
             <c:when test="#{userController.loggedIn}">
                 <h:form id="logoutForm">
-                    <h:outputText value="Hi #{userController.registeredUser.userName}!  "/>
+                    <h:outputText value="Hi #{userController.activeUser.userName}!  "/>
                     <h:commandButton value="Log Out" action="#{userController.logOut}" id="logoutButton"/>
                 </h:form>
             </c:when>
@@ -53,7 +57,7 @@
                 <h:inputText value="#{postController.formTitle}" pt:placeholder="Title" id="postTitle"/>
                 <br/>
                 <h:inputTextarea value="#{postController.formText}" pt:placeholder="Text" cols="50" rows="5" id="postText"/>
-                <h:commandButton value="Post" action="#{postController.doPostText(userController.registeredUser)}"
+                <h:commandButton value="Post" action="#{postController.doPostText(userController.activeUser)}"
                                  id="createPost"/>
             </h:form>
         </c:if>
@@ -81,7 +85,7 @@
                     //TODO
 
                     <!-- Delete button -->
-                    <c:if test="#{post.poster.id == userController.registeredUser.id}">
+                    <c:if test="#{post.poster.id == userController.activeUser.id}">
                         <div class="deleteButton">
                             <h:form>
                                 <h:commandButton value="Delete" action="#{postController.deletePost(post.id)}"/>
@@ -97,7 +101,7 @@
                             <h:inputTextarea value="#{commentController.formText}" pt:placeholder="Comment"
                                              cols="30" rows="2" id="commentOnPostText"/>
                             <h:commandButton value="Comment" action="#{
-                            commentController.commentOnPost(userController.registeredUser, post)}"
+                            commentController.commentOnPost(userController.activeUser, post)}"
                                              id="createCommentOnPost"/>
                         </h:form>
                     </c:if>

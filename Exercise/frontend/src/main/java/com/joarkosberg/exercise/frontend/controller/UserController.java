@@ -3,8 +3,8 @@ package com.joarkosberg.exercise.frontend.controller;
 import com.joarkosberg.exercise.backend.ejb.UserEJB;
 import com.joarkosberg.exercise.backend.entity.User;
 
+import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
-import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
 
@@ -12,34 +12,30 @@ import java.io.Serializable;
 @SessionScoped
 public class UserController implements Serializable{
 
-    @Inject
+    @EJB
     private UserEJB userEJB;
 
     private String formUserName;
     private String formPassword;
 
-    private User registeredUser;
+    private User activeUser;
 
     public UserController(){
     }
 
     public boolean isLoggedIn(){
-        return registeredUser != null;
-    }
-
-    public User getRegisteredUser(){
-        return registeredUser;
+        return activeUser != null;
     }
 
     public String logOut(){
-        registeredUser = null;
+        activeUser = null;
         return "login.jsf";
     }
 
     public String logIn(){
         boolean valid = userEJB.login(formUserName, formPassword);
         if(valid){
-            registeredUser = userEJB.findUserByUserName(formUserName);
+            activeUser = userEJB.findUserByUserName(formUserName);
             return "landingPage.jsf";
         } else {
             return "login.jsf";
@@ -50,7 +46,7 @@ public class UserController implements Serializable{
         User user = userEJB.createNewUser(formUserName, formPassword, "Name", null,
                 User.CountryName.France, "Email@mail.com");
         if(user != null){
-            registeredUser = user;
+            activeUser = user;
             return "landingPage.jsf";
         } else {
             return "login.jsf";
@@ -71,5 +67,13 @@ public class UserController implements Serializable{
 
     public void setFormPassword(String formPassword) {
         this.formPassword = formPassword;
+    }
+
+    public User getActiveUser(){
+        return activeUser;
+    }
+
+    public void setActiveUser(User activeUser){
+        this.activeUser = activeUser;
     }
 }
