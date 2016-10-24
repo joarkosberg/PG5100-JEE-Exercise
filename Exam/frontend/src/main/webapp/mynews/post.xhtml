@@ -1,0 +1,102 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+>
+
+
+<ui:composition template="layout.xhtml">
+    <ui:define name="title">News</ui:define>
+    <ui:define name="header">News Details</ui:define>
+
+
+    <ui:define name="content">
+        <!-- The post -->
+        <div id="news">
+            <h2>News</h2>
+            <h:outputText value="On the "/>
+            <h:outputText value="#{postPageController.postProfile.created}">
+                <f:convertDateTime pattern="dd.MM.yyyy - HH:mm:ss"/>
+            </h:outputText>
+            <h:outputText value=", user #{postPageController.postProfile.author} wrote:"/>
+            <h:outputText value="#{postPageController.postProfile.text}"/>
+            <hr/>
+        </div>
+
+
+        <!-- New comment -->
+        <c:if test="#{loggingController.loggedIn}">
+            <h:form id="newCommentForm">
+                <h:inputTextarea value="#{postRequestController.formText}" id="text" rows="1"/>
+                <h:commandButton value="Add Comment" action="#{postRequestController.createNewComment}" id="create"/>
+            </h:form>
+            <hr/>
+        </c:if>
+
+
+        <!-- Show comments -->
+        <c:choose>
+            <!-- Show if any exist -->
+            <c:when test="#{postPageController.anyCommentsMadeForPost}">
+                <h:dataTable value="#{postPageController.comments}" var="comment" border="1" id="commentTable">
+                    <h:column>
+                        <f:facet name="header">Author</f:facet>
+                        <h:form>
+                            <h:commandLink  value="#{comment.author}"
+                                            action="#{userPageController.goToUserPage(comment.author)}"/>
+                        </h:form>
+                    </h:column>
+
+                    <h:column>
+                        <f:facet name="header">Comment</f:facet>
+                        <h:outputText value="#{postPageController.getCheckedComment(comment.id)}"/>
+                    </h:column>
+
+                    <h:column>
+                        <f:facet name="header">Score</f:facet>
+                        <h:outputText value="#{postRequestController.getScore(comment.id)}"/>
+                    </h:column>
+
+                    <c:if test="#{loggingController.loggedIn}">
+                        <h:column>
+                            <f:facet name="header">Your Vote</f:facet>
+                            <h:form>
+                                <h:selectOneRadio value="#{postPageController.commentVotes[comment.id]}"
+                                                  onclick="submit()"
+                                                  valueChangeListener="#{postRequestController.radioButtonClicked}">
+                                    <f:attribute name="inputId" value="#{comment.id}" />
+                                    <f:selectItems value="#{postRequestController.possibleValues}"
+                                                   var="i"
+                                                   itemLabel="#{i}"
+                                                   itemValue="#{i}"/>
+                                </h:selectOneRadio>
+                            </h:form>
+                        </h:column>
+                    </c:if>
+
+                    <c:if test="#{postPageController.postProfile.author.equals(loggingController.activeUser)}">
+                        <h:column>
+                            <f:facet name="header">Moderation</f:facet>
+                            <h:form>
+                                <h:selectBooleanCheckbox
+                                        value="#{comment.moderated}"
+                                        onclick="submit()"
+                                        valueChangeListener="#{postPageController.moderateComment(comment.id, !comment.moderated)}"/>
+                            </h:form>
+                        </h:column>
+                    </c:if>
+                </h:dataTable>
+            </c:when>
+
+
+            <!-- No comments -->
+            <c:otherwise>
+                <h:outputText value="No comments yet :( Be the first to create one!"/>
+            </c:otherwise>
+        </c:choose>
+    </ui:define>
+</ui:composition>
+</html>

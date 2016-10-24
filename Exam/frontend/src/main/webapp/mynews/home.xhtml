@@ -1,0 +1,97 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+>
+
+
+<ui:composition template="layout.xhtml">
+    <ui:define name="title">Home</ui:define>
+    <ui:define name="header">MyNews Home Page</ui:define>
+
+
+    <ui:define name="content">
+        <!-- New Post -->
+        <c:if test="#{loggingController.loggedIn}">
+            <h:form id="newPostForm">
+                <h:inputTextarea value="#{postRequestController.formText}" id="text" rows="1"/>
+                <h:commandButton value="Create" action="#{postRequestController.createNewPost}" id="create"/>
+            </h:form>
+        </c:if>
+
+
+        <h2>News</h2>
+        <!-- Show posts -->
+        <c:choose>
+            <!-- Show if any posts exist -->
+            <c:when test="#{homePageController.anyPostsMade}">
+                <!-- Sort posts -->
+                <h:form id="selectSortingForm">
+                    <h:outputLabel value="Sort: "/>
+                    <h:selectOneMenu id="selectSorting" value="#{homePageController.sort}" onchange="submit()">
+                        <f:selectItem itemValue="#{true}" itemLabel="Time" />
+                        <f:selectItem itemValue="#{false}" itemLabel="Score" />
+                    </h:selectOneMenu>
+                </h:form>
+
+
+                <h:dataTable value="#{homePageController.posts}" var="post" border="1" id="postTable">
+                    <h:column>
+                        <f:facet name="header">Time</f:facet>
+                        <h:outputText value="#{post.created}">
+                            <f:convertDateTime pattern="dd.MM.yyyy - HH:mm:ss"/>
+                        </h:outputText>
+                    </h:column>
+
+                    <h:column>
+                        <f:facet name="header">Author</f:facet>
+                        <h:form>
+                            <h:commandLink  value="#{post.author}"
+                                            action="#{userPageController.goToUserPage(post.author)}"/>
+                        </h:form>
+                    </h:column>
+
+                    <h:column>
+                        <f:facet name="header">News</f:facet>
+                        <h:form>
+                            <h:commandLink value="#{homePageController.getTruncatedText(post.id)}"
+                                           action="#{postPageController.goToPostPage(post.id)}"/>
+                        </h:form>
+                    </h:column>
+
+                    <h:column>
+                        <f:facet name="header">Score</f:facet>
+                        <h:outputText value="#{postRequestController.getScore(post.id)}"/>
+                    </h:column>
+
+                    <c:if test="#{loggingController.loggedIn}">
+                        <h:column>
+                            <f:facet name="header">Your Vote</f:facet>
+                            <h:form>
+                                <h:selectOneRadio value="#{homePageController.postVotes[post.id]}"
+                                                  onclick="submit()"
+                                                  valueChangeListener="#{postRequestController.radioButtonClicked}">
+                                    <f:attribute name="inputId" value="#{post.id}" />
+                                    <f:selectItems value="#{postRequestController.possibleValues}"
+                                                   var="i"
+                                                   itemLabel="#{i}"
+                                                   itemValue="#{i}"/>
+                                </h:selectOneRadio>
+                            </h:form>
+                        </h:column>
+                    </c:if>
+                </h:dataTable>
+            </c:when>
+
+
+            <!-- No posts -->
+            <c:otherwise>
+                <h:outputText value="No News yet :( Be the first to create one!"/>
+            </c:otherwise>
+        </c:choose>
+    </ui:define>
+</ui:composition>
+</html>

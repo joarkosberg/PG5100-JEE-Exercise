@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Theory</title>
+    <link rel="stylesheet" type="text/css" href="style/style.css"/>
+</head>
+
+
+<body>
+    <h1>Theory Questions/Answers</h1>
+    <hr/>
+
+
+    <p><b>1) Explain the main differences between JPQL and SQL, and why one might rather want to use
+        JPQL when developing JEE programs.</b></p>
+    <p>The main difference lays in that JPQL uses an entity or entities while on the other side normal SQL uses a table structure.
+        This makes JPQL easier to read in the context of object-oriented programming, since you use entities rather than tables.
+        A big reason to use JPQL is that it can bind parameters for you which is secure for SQL injections.
+        Another reason is that JPQL ensures portability across different databases.
+    </p>
+    <hr/>
+
+
+    <p><b>2) In the context of JPA, explain the main differences between a “pessimistic” and an “optimistic”
+        lock, and when one might choose to use one of them instead of the other.</b></p>
+    <p>
+        <b>Optimistic Lock:</b>
+        Optimistic locking relies on that transactions don't conflict often.
+        It is handled by the code, and uses versioning without any guarantee.
+        The version gets checked in the start of and transaction and at the end. If the version number
+        differ an exception is thrown and the transaction is marked for rollback
+
+        <br/><br/>
+        <b>Pessimistic Lock:</b>
+        Pessimistic locking is made for transactions with a high possibility for conflicts.
+        It is handled by the database with a full guarantee.
+
+        <br/><br/>
+        <b>Who should be used?</b>
+        Who you use depends on what kind of application you have. Optimistic is more lightweight since it is handled
+        in code and not in the database, whereas pessimistic is heavier and slower since it is handled by the database.
+        So using the pessimistic over optimistic should be based on if it is a high chance of conflict since it
+        handles conflicts better. While an application with low chance for conflict should use optimistic.
+    </p>
+    <hr/>
+
+
+    <p><b>3) In the context of EJB, explain what “Dependency Injection” is, how it works, and why it is
+        useful.</b></p>
+    <p>
+        The way you normally would find other objects which you have a dependency to would be through JNDI.
+        In that way you would initiate your own of that object with the new operator.
+        With the dependency injection design pattern, the container injects the dependent objects for you.
+        The way it works is that it injects a reference to a resource into an attribute at deployment time.
+        It is quite useful since you let the container do most of the work so you can focus on what you need to do.
+
+        <br/><br/>
+        You can inject many types of resources but those used in the context of EJB is:
+        <br/>
+        @EJB and @Inject
+    </p>
+    <hr/>
+
+
+    <p><b>4) In the context of EJB, explain the concept of “Proxy class”, how it works, and why it is useful.</b></p>
+    <p>
+        Proxies are often used when lazily fetching a reference to an entity or something alike.
+        The container handles all the EJBs, and adds a lot of futures like pooling for stateless beans.
+        So when a client asks for data from an ejb it is given a proxy  of the instance of an ejb.
+        It is very useful since the container take care of the proxy calls and provides service for the bean instance
+        inside such as pooling for stateless beans and managing a beans life cycle.
+    </p>
+    <hr/>
+
+
+    <p><b>5) In the context of JSF, explain the differences and relation between the XHTML files in the
+        “webapp” folder and the actual HTML files rendered on the browser when one accesses those files
+        via a JSF servlet.</b></p>
+    <p>
+        XHTML is built upon HTML and is reformulated in XML. XHTML follows therefore a specific schema with a
+        graphical representation in the browser. JSF is a backend technology used, and a JSF page is an XHTML file pretty much.
+        When a client asks for an jsf site the server will render the jsf site in HTML before it gets sent back to the browser.
+
+    </p>
+    <hr/>
+
+
+    <p><b>6) In a Maven project, explain the steps required to configure automated testing with Selenium, as
+        done in class (eg., what needs to be configured, which Maven phases are involved, why the tests
+        have to be written as integration instead of unit tests, how to automatically get and install a JEE
+        container, etc).</b></p>
+    <p>
+        There are a few steps you need to go through to get Maven up and running with automatic testing
+        through selenium. The most important dependency you need is wildfly which is the container for the database.
+        Here are the steps you need to go through:
+
+        <br/>
+        <ol>
+            <li>You need a selenium dependency in your pom file.</li>
+            <li>
+                You need to specify when the tests should run in the maven-failsafe-plugin plugin like this:<br/>
+                &lt;execution>
+                &lt;id>run-tests&lt;/id>
+                &lt;phase>integration-test&lt;/phase>
+                &lt;goals>
+                &lt;goal>integration-test&lt;/goal>
+                &lt;goal>verify&lt;/goal>
+                &lt;/goals>
+                &lt;/execution>
+                <br/>Here you specify that you should run integration tests during the "verify" life cycle method.
+            </li>
+            <li>
+                You need to specify that maven should automatically download and unpack the container (wildfly),
+                this is done in the maven-dependency-plugin plugin.
+            </li>
+            <li>
+                Last you need the wildfly-maven-plugin. Here you configure user for container. Then under executions
+                you must tell the container when it should deploy and undeploy. Which in this case is pre-integration-test
+                and post-integration-test
+            </li>
+            <li>
+                After setting these plugins and dependency up your integrations test will run when the
+                maven lifecycle verify is run
+            </li>
+        </ol>
+
+        All these steps can be seen here in my exam application also.
+    </p>
+    <hr/>
+
+
+    <p><b>BONUS) E13: JavaAgent - Do explain what “it is actually doing”, eg why that string in the java-opts
+        tag has to be written that way.</b></p>
+    <p>
+        The java-opts string is there to attach the jacoco java agent to the server when tests are run.
+        JavaAgent is passed as an argument in the JVM when running the given application.
+        Then when the server is shutdown jacoco gets the coverage data in the target folder.
+        The string is just the file path to the executable jacoco file and where it should output.
+        It uses a lot of auto generated parts so it keeps it self universal for different systems.
+
+        <br/><br/>
+        Here is an example of the string without most auto-generated values to show the file path it uses:
+        <br/>
+        -javaagent:C:\Users\user\.m2\repository\org\jacoco\org.jacoco.agent\0.7.7.2016\org.jacoco.agent-0.7.7.2016-runtime.jar=destfile=${basedir}\target\jacoco-it.exec
+        <br/><br/>
+        First it says the file path to the jacoco agent on the pc, then it says its "=destfile=" which is where the output
+        file for execution data should end up. Here the output ends up in the target folder for each module which uses it.
+        This is because it uses ${basedir} which get the basedir for the module it's in.
+    </p>
+    <hr/>
+
+
+    <a href="index.html">Back to index</a>
+</body>
+</html>

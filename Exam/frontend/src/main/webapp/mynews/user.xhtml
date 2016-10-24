@@ -1,0 +1,42 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+>
+
+
+<ui:composition template="layout.xhtml">
+    <ui:define name="title">User</ui:define>
+    <ui:define name="header">User Details</ui:define>
+
+
+    <ui:define name="content">
+        <h:outputText value="Id: " style="font-weight:bold"/>
+        <h:outputText id="userId" value="#{userPageController.userProfile.userId}"/>
+        <br/>
+
+        <h:outputText value="Name: " style="font-weight:bold"/>
+        <h:outputText value="#{userPageController.userProfile.firstName}"/>
+        <br/>
+
+        <h:outputText value="Middle Name: " style="font-weight:bold"/>
+        <h:outputText value="#{userPageController.userProfile.middleName}"/>
+        <br/>
+
+        <h:outputText value="Family name: " style="font-weight:bold"/>
+        <h:outputText value="#{userPageController.userProfile.lastName}"/>
+        <br/>
+
+        <h:outputText value="Member Since: " style="font-weight:bold"/>
+        <h:outputText value="#{userPageController.userProfile.registrationTime}">
+            <f:convertDateTime pattern="dd.MM.yyyy"/>
+        </h:outputText>
+        <br/>
+
+        <h:outputText value="Karma: " style="font-weight:bold"/>
+        <h:outputText id="karma" value="#{userPageController.karma}"/>
+    </ui:define>
+</ui:composition>
+</html>
